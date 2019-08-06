@@ -13,7 +13,7 @@ const general = {
   deviceAngle: 90,
   defaultAreaId: '',
   isNodesVisible: false,
-  isMapEditorVisible: false,
+  isMapEditorVisible: true,
   voiceDirectionIsEnabled: true,
 }
 

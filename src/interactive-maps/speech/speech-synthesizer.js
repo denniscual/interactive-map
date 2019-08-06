@@ -103,30 +103,36 @@ const getProp = curry((path, object) => {
 })
 
 class SpeechSynthesis {
-  // Maybe type -> can accept null, undefined, and the ideal type.
-  options = {}
-
-  bingToken = {
-    token: null,
-    timestamp: 0,
-  }
-
-  audioElement = {}
-
-  polly = {}
-
-  store = {}
-
-  cancel = noop
-
-  getVoices = noop
-
-  pause = noop
-
-  resume = noop
-
   constructor(options) {
+    // Maybe type -> can accept null, undefined, and the ideal type.
+    this.options = {}
+
+    this.bingToken = {
+      token: null,
+      timestamp: 0,
+    }
+
+    this.audioElement = {}
+
+    this.polly = {}
+
+    this.store = {}
+
+    this.cancel = noop
+
+    this.getVoices = noop
+
+    this.pause = noop
+
+    this.resume = noop
+
     this.options = validateOptions(options)
+
+    this.getBingToken = this.getBingToken.bind(this)
+    this.createBlobByText = this.createBlobByText.bind(this)
+    this.speak = this.speak.bind(this)
+    this.createMediaSrc = this.createMediaSrc.bind(this)
+    this.getAudioElement = this.getAudioElement.bind(this)
     // // create audio
     // this.audioElement = document.createElement('audio')
     // this.audioElement.setAttribute(
@@ -165,7 +171,7 @@ class SpeechSynthesis {
     )
   }
 
-  getBingToken = () => {
+  getBingToken() {
     if (Date.now() - this.bingToken.timestamp > 5400) {
       return getBingToken(this.options.providerOptions.subscriptionKey).then(
         bingToken => {
@@ -181,7 +187,7 @@ class SpeechSynthesis {
   /**
    * The blob is the resolved value of a Promise.
    */
-  createBlobByText = text => {
+  createBlobByText(text) {
     const key = stringHash(text)
     return get(key, this.store).then(val => {
       if (val) {
@@ -243,17 +249,22 @@ class SpeechSynthesis {
 
   // speak = text => this.createBlobByText(text).then(this.playAudio)
 
-  speak = text => this.createBlobByText(text).then(console.log)
+  speak(text) {
+    return this.createBlobByText(text).then(console.log)
+  }
 
-  createMediaSrc = text =>
-    this.createBlobByText(text).then(blob => {
+  createMediaSrc(text) {
+    return this.createBlobByText(text).then(blob => {
       if (text === '') {
         return ''
       }
       return URL.createObjectURL(blob)
     })
+  }
 
-  getAudioElement = () => this.audioElement
+  getAudioElement() {
+    return this.audioElement
+  }
 }
 
 export { SpeechSynthesis, providers }
