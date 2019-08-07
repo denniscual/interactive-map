@@ -84,9 +84,11 @@ const useNextActiveArea = (endpoint: string, portal: string) => {
 
   React.useEffect(
     function settingActiveArea() {
-      if (endpointNode) {
+      if (endpointNode && endpointNode['data-area-type'] !== 'portal') {
         const areaID = endpointNode['data-area-id']
         activeArea.setID(areaID)
+      } else {
+        activeArea.setID('RESET')
       }
     },
     [endpointNode, activeArea]

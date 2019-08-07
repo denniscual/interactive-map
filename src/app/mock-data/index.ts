@@ -9,11 +9,11 @@ import { createNodesDirections, createMapGraphAndMapNodes } from './__utils__'
 
 // Response general modifiers data
 const general = {
-  defaultStartingPoint: 'little-pond_Basement',
+  defaultStartingPoint: 'snowy-wood_Level-1',
   deviceAngle: 90,
   defaultAreaId: '',
   isNodesVisible: false,
-  isMapEditorVisible: true,
+  isMapEditorVisible: false,
   voiceDirectionIsEnabled: true,
 }
 

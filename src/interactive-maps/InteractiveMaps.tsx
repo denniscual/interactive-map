@@ -44,9 +44,6 @@ const createStoresForFloor = curry((stores: types.Entity[], floorID: string) =>
     .map(filteredStore => filteredStore.id)
 ) // Curried createStoresForFloor
 
-// Another name of React.createElement
-const e = createElement
-
 const sortAreasAlphabetically = (areas: types.IncludedArea[]) => {
   return areas.sort((a, b) => {
     if (a.label < b.label) {
