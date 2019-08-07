@@ -95,7 +95,7 @@ const RoutePath: React.FC<{
   }, [polylineEl, polylinePoints])
 
   return (
-    <>
+    <g id="wayfinder">
       {/* This polyline element is used as data not UI. It means, no need to display
       this in browser. We are using this polyline to get the length of polyline with
       points prop. Then, assign it to AnimatedRoutePath. */}
@@ -109,7 +109,7 @@ const RoutePath: React.FC<{
           fill="none"
         />
       )}
-    </>
+    </g>
   )
 } // FC RoutePath
 

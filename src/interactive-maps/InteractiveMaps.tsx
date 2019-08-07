@@ -1,4 +1,4 @@
-import React, { createElement, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { values, curry } from 'ramda'
 import * as maps from './maps'
 import * as floors from './floors'
