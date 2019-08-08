@@ -134,6 +134,13 @@ const Nodes: React.FC<{
       JSON.stringify(stores)
     )
 
+    // ------- Code for directions -------- //
+    // NOTE: This is just dummy
+    const directionsCode = createCodeVariableWithValue(
+      'directions',
+      JSON.stringify([])
+    )
+
     // ------- Code for portals -------- //
     const portals = groupAreasByType(mapNodesWhichArePortal, 'portal')
     const portalsCode = createCodeVariableWithValue(
@@ -171,7 +178,13 @@ const Nodes: React.FC<{
     )
     const nodesCode = createCodeVariableWithValue('nodes', stringifyElements)
 
-    return [importingReactModuleCode, storesCode, portalsCode, nodesCode]
+    return [
+      importingReactModuleCode,
+      directionsCode,
+      storesCode,
+      portalsCode,
+      nodesCode,
+    ]
   }, [activeFloorID, mapNodeElements, mapNodesByID, mapNodesWhichArePortal])
 
   return <GeneratedCodes title="Nodes" mapCodes={mapCodes} />

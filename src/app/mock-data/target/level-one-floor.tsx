@@ -1,5 +1,4 @@
 import React from 'react'
-
 export const directions = []
 
 export const stores = {
@@ -1349,6 +1348,84 @@ export const nodes = (
       data-label="Escalator 2 (to Ground level)"
       fill="red"
       id="node_escalator-to-ground-level-2"
+      r="15"
+    />
+    <circle
+      cx={1386}
+      cy={1152}
+      data-area-id=""
+      data-area-type=""
+      data-direct-nodes={[]}
+      data-floor-id="levelOneFloor"
+      data-key-id="node_0.663906"
+      data-label=""
+      fill="red"
+      id="node_0.663906"
+      r="15"
+    />
+    <circle
+      cx={1530}
+      cy={1158}
+      data-area-id=""
+      data-area-type=""
+      data-direct-nodes={[]}
+      data-floor-id="levelOneFloor"
+      data-key-id="node_0.042899"
+      data-label=""
+      fill="red"
+      id="node_0.042899"
+      r="15"
+    />
+    <circle
+      cx={1431}
+      cy={1247}
+      data-area-id=""
+      data-area-type=""
+      data-direct-nodes={['node_0.042899', 'node_0.663906']}
+      data-floor-id="levelOneFloor"
+      data-key-id="node_0.250652"
+      data-label=""
+      fill="red"
+      id="node_0.250652"
+      r="15"
+    />
+    <circle
+      cx={931}
+      cy={1166}
+      data-area-id=""
+      data-area-type=""
+      data-direct-nodes={[]}
+      data-floor-id="levelOneFloor"
+      data-key-id="node_0.754054"
+      data-label=""
+      fill="red"
+      id="node_0.754054"
+      r="15"
+    />
+    <circle
+      cx={1088}
+      cy={1122}
+      data-area-id=""
+      data-area-type=""
+      data-direct-nodes={[]}
+      data-floor-id="levelOneFloor"
+      data-key-id="node_0.759344"
+      data-label=""
+      fill="red"
+      id="node_0.759344"
+      r="15"
+    />
+    <circle
+      cx={1045}
+      cy={1213}
+      data-area-id=""
+      data-area-type=""
+      data-direct-nodes={[]}
+      data-floor-id="levelOneFloor"
+      data-key-id="node_0.678138"
+      data-label=""
+      fill="red"
+      id="node_0.678138"
       r="15"
     />
   </g>

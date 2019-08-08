@@ -7,13 +7,15 @@ import {
 } from './target'
 import { createNodesDirections, createMapGraphAndMapNodes } from './__utils__'
 
+console.log(groundFloor)
+
 // Response general modifiers data
 const general = {
   defaultStartingPoint: 'snowy-wood_Level-1',
   deviceAngle: 90,
   defaultAreaId: '',
   isNodesVisible: false,
-  isMapEditorVisible: false,
+  isMapEditorVisible: true,
   voiceDirectionIsEnabled: true,
 }
 

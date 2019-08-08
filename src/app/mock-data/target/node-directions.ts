@@ -521,4 +521,9 @@ export default [
     id: 'node_0.9072',
     directions: [[['node_0.1951', 'node_0.3635'], 'RIGHT']],
   },
+  {
+    id: 'node_0.250652',
+    directions: [[['node_0.042899', 'node_0.663906'], 'LEFT']],
+  },
+  { id: 'node_0.678138', directions: [] },
 ]

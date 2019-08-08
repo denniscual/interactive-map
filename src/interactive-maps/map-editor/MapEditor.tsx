@@ -9,6 +9,7 @@ import * as messageBoxCoordinates from './message-box-coordinates'
 import { generatedCodes } from './codes'
 import { nodes as nodeUtils, svg } from '../__utils__'
 import { useAppSelector, appUtils } from '../app-state-manager'
+import { MapNodes } from '../map-nodes/types'
 import * as types from '../types'
 import 'styled-components/macro'
 
@@ -157,6 +158,64 @@ const directNodesCSS = `
   }
 `
 
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+// Node Directions use for MapNodeInspector
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+const nodeDirectionsCSS = `
+  list-style-type: none;
+  padding: 0;
+  border: 1px solid #bbbbbb;
+    padding: 0 0.5em;
+
+  > li {
+    border-bottom: 1px solid #bbbbbb;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+`
+const useNodeDirections = (
+  tempMapNode: TempMapNodeProps,
+  mapNodesDirections: MapNodes
+) => {
+  const mapNodesDirectionsDispatch = rootMapNodes.mapNodesDirectionsStateManager.useMapNodesDirectionsDispatch()
+  return React.useMemo(() => {
+    let nodeDirections: JSX.Element[] = []
+    if (tempMapNode && tempMapNode['data-key-id'] !== '') {
+      const keyID = tempMapNode['data-key-id']
+      const ownNodeDirections = mapNodesDirections.get(keyID)
+      if (ownNodeDirections) {
+        // TODO: We need to add a cleanup feature. When one of the node is remove
+        // in `nodes`, then we need to delete this node direction.
+        for (const [nodes, direction] of ownNodeDirections.entries()) {
+          const nodesElement = nodes
+            .reduce((acc, value) => acc.concat(`${value} `), '')
+            .trim()
+          const deleteNodeDirections: React.MouseEventHandler = () => {
+            mapNodesDirectionsDispatch({
+              type: 'DELETE_DIRECTION',
+              meta: { key: keyID, directionKey: nodes },
+            })
+          }
+          const directionElement = (
+            <li key={nodesElement}>
+              <p>Nodes: {nodesElement}</p>
+              <p>Direction: {direction}</p>
+              <button onClick={deleteNodeDirections}>Delete direction</button>
+            </li>
+          )
+          nodeDirections.push(directionElement)
+        }
+      }
+    }
+    return nodeDirections
+  }, [tempMapNode, mapNodesDirections, mapNodesDirectionsDispatch])
+}
+
 type TempMapNodeProps = Pick<
   types.MapNodesProps,
   | 'id'
@@ -226,6 +285,9 @@ const MapNodeInspector: React.FC<{
     activeMapNodeID
   ]
   const mapNodeDispatch = rootMapNodes.mapNodesStateManager.useMapNodesDispatch()
+  // Map nodes directions
+  const mapNodesDirections = rootMapNodes.mapNodesDirectionsStateManager.useMapNodesDirections()
+  console.log('nodes', mapNodesDirections)
 
   // Persisting the activeMapNode into tempMapNode
   React.useEffect(() => {
@@ -269,6 +331,8 @@ const MapNodeInspector: React.FC<{
   const handleClearErrorFields: React.FocusEventHandler = e => {
     setFieldErrors([])
   }
+
+  const nodeDirections = useNodeDirections(tempMapNode, mapNodesDirections)
 
   const directNodes = React.useMemo(() => {
     if (tempMapNode) {
@@ -325,6 +389,10 @@ const MapNodeInspector: React.FC<{
               <span css={spanErrorCSS}>This field is required.</span>
             </div>
           )}
+        </div>
+        <div css={nodeFieldGroupCSS}>
+          <label>Node Directions</label>
+          <ul css={nodeDirectionsCSS}>{nodeDirections}</ul>
         </div>
         <div css={nodeFieldGroupCSS}>
           <label>Node Label</label>
@@ -420,7 +488,7 @@ const StyledPath = styled.path<{ stroke: string }>`
 // Right now, we group the directions then merge it in application level. What we gonna do
 // is when creating direction, we don't need to group the directions instead put it to
 // a single variable code. Use a dedicated Codes component in here.
-const MapNodeDirections: React.FC<{ activeMapNodeID: string }> = ({
+const MapNodeDirectionPaths: React.FC<{ activeMapNodeID: string }> = ({
   activeMapNodeID,
 }) => {
   const mapNodes = rootMapNodes.mapNodesStateManager.useMapNodes()
@@ -430,8 +498,6 @@ const MapNodeDirections: React.FC<{ activeMapNodeID: string }> = ({
     return null
   }
   const nodeWithDirections = mapNodesDirections.get(node['data-key-id'])
-  // Early Exit pattern. We gonna exit immediately the execution if
-  // nodeWithDirections is undefined.
   if (!nodeWithDirections) {
     return null
   }
@@ -456,7 +522,12 @@ const MapNodeDirections: React.FC<{ activeMapNodeID: string }> = ({
       {pointsWithDirection.map(({ id, points, direction }) => {
         const path = svg.svgShapePath(points, svg.lineCommand)
         const stroke = direction === 'LEFT' ? 'green' : '#e400ff'
-        return <StyledPath key={id} stroke={stroke} d={path} />
+        const handleClick: React.MouseEventHandler = () => {
+          console.log('click')
+        }
+        return (
+          <StyledPath onClick={handleClick} key={id} stroke={stroke} d={path} />
+        )
       })}
     </g>
   )
@@ -776,7 +847,7 @@ const InternalMapEditor: React.FC<MapEditorProps> = ({
           </g> */}
           {children}
           <DirectNodesPaths activeMapNodeID={activeMapNode} />
-          <MapNodeDirections activeMapNodeID={activeMapNode} />
+          <MapNodeDirectionPaths activeMapNodeID={activeMapNode} />
           {mapNodeElements}
           {mapNodeMessageBox}
         </StyledMapContainer>
