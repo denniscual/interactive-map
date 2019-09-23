@@ -12,8 +12,8 @@ const general = {
   defaultStartingPoint: 'snowy-wood_Level-1',
   deviceAngle: 90,
   defaultAreaId: '',
-  isNodesVisible: false,
-  isMapEditorVisible: false,
+  isNodesVisible: true,
+  isMapEditorVisible: true,
   voiceDirectionIsEnabled: true,
 }
 
