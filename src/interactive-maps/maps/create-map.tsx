@@ -41,10 +41,7 @@ const CopiedStartpointArea: React.FC<{ startpoint: string }> = ({
   const mapAreas = areas.stateManager.useAreasToObj()
   const startpointArea = mapAreas[startpoint]
   return (
-    // TODO: Find a better way to sit the wayfinder below the startpoint area
-    // instead of relying to `className`. Relying to `className` makes this
-    // feature coupled to application which is not right timing to do it.
-    <g id="copied-startpoint-area" className="cls-3-ground">
+    <g id="copied-startpoint-area" className="portal-area">
       <use href={`#${startpointArea.value.areaID}`} />{' '}
     </g>
   )

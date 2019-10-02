@@ -219,7 +219,7 @@ export interface Floor {
   nodesDirections: Record<string, Types.MapNodeDirections>
   nodes: JSX.Element // svg nodes or points
   map: string // svg map => wrap into a string
-  mapCSS: MapCSS
+  mapCSS?: MapCSS
   // mapCSS?: string // optional css styles for map
   activeAreaCSS?: string
   portals: Portal[]
@@ -306,6 +306,7 @@ export interface Modifiers {
   // TODO: Change the name of this variable into voiceDirectionIsEnable
   // enable or disable voice direction functionality.
   voiceDirectionIsEnabled: boolean
+  mapCSS: MapCSS
 }
 
 // ----------------------------------------------------------- //

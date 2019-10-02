@@ -208,7 +208,7 @@ const useDataSourceForInteractiveMap = (
             props: utils.mapElements.getSVGRootProps(floor.map),
             // If the floor map has its own css styles, use it. Else, use the general
             // map css
-            css: floor.mapCSS,
+            css: floor.mapCSS || general.mapCSS,
             floorID: floor.id,
           },
           // Modifiers, use for enabling or disabling map features like map-editor.
@@ -302,12 +302,6 @@ const MapsDataSource: React.FC<{
     areas: mapAreas,
   } = useDataSourceForInteractiveMap(dataSource)
   const defaultNav = useDefaultNav(mapAreas, defaultStartingPoint)
-  // TODO: We gonna revert our implementation for map nodes. Instead of adding all map nodes,
-  // what we gonna do is group the adding of map nodes based in active floor. First of all is get
-  // the map nodes based in defaultNav.startpoint.value.floorID and pass it as the init value of MapNodesProvider.
-  // Then the changes, ADD_NODES action, of the map nodes will happen inside the VoiceDirectionAndWayfinder Component specifically
-  // at line 420. In this way, when the effect callback `settingNextSpeechCollection` in VoiceDirectionAndWayfinder is invoked,
-  // not only active floor is updated and also the mapNodes because of the batch update which is created by React.
   const defaultMapNodesObj = React.useMemo(() => {
     const { floorID } = defaultNav.startpoint.value
     if (floorID) {

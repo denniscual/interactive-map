@@ -1,5 +1,5 @@
 import {
-  maps,
+  mapsAndStyles,
   basement,
   groundFloor,
   levelOneFloor,
@@ -15,6 +15,7 @@ const general = {
   isNodesVisible: false,
   isMapEditorVisible: true,
   voiceDirectionIsEnabled: true,
+  mapCSS: mapsAndStyles.styles,
 }
 
 /**
@@ -40,8 +41,7 @@ const floors = [
     graphAndNodes: createMapGraphAndMapNodes(basement.nodes.props.children),
     nodesDirections: createNodesDirections(nodeDirections),
     nodes: basement.nodes,
-    map: maps.basement.map,
-    mapCSS: maps.basement.mapCSS,
+    map: mapsAndStyles.basement.map,
     portals: [
       {
         id: 'node_elevator-1',
@@ -69,8 +69,7 @@ const floors = [
     graphAndNodes: createMapGraphAndMapNodes(groundFloor.nodes.props.children),
     nodesDirections: createNodesDirections(groundFloor.directions),
     nodes: groundFloor.nodes,
-    map: maps.groundFloor.map,
-    mapCSS: maps.groundFloor.mapCSS,
+    map: mapsAndStyles.groundFloor.map,
     portals: [
       {
         id: 'node_elevator-1',
@@ -114,8 +113,7 @@ const floors = [
     ),
     nodesDirections: createNodesDirections(levelOneFloor.directions),
     nodes: levelOneFloor.nodes,
-    map: maps.levelOneFloor.map,
-    mapCSS: maps.levelOneFloor.mapCSS,
+    map: mapsAndStyles.levelOneFloor.map,
     portals: [
       // {
       //   id: 'node_elevator-1',
@@ -147,6 +145,9 @@ const floors = [
 // data should come in parsed svg map. Navigation needs the node id of area, what we gonna do is
 // enhanced this areas data then add the associated node for every area. We can do it
 // because type area node element has a reference, through its attribute `data-area-id`, to map element.
+
+// TODO: Check the added css for different level maps. Why we add `suffix` level name in classname.
+// TODO: We need to simplify the `nodes` and `svg` because right now, the data are duplicated.
 
 // Response stores data
 const stores = {
