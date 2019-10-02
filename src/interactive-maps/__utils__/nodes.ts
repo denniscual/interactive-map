@@ -121,6 +121,10 @@ export const createMapNodesObj = (
     .filter(floor => floor.id === floorID)
     .map(floor => floor.nodes)[0]
   const mapNodes = transformElementsToArray(mapNodeElements)
+  // Return empty because sometimes are maps doesn't have associated nodes.
+  if (!mapNodes) {
+    return {}
+  }
   const enhancedMapNodes = mapNodes.map(mapNode => ({
     ...mapNode,
     'data-direct-nodes': createDirectNodesWithValueKeyID(mapNodes, mapNode),

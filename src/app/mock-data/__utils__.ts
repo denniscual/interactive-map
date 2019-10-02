@@ -95,6 +95,9 @@ const transformMapCirclesToNodes = (mapCircles: types.MapCircle[]) => {
 export const createMapGraphAndMapNodes = (
   mapCircles: types.MapCircle[]
 ): types.MapGraphAndMapNodes => {
+  if (!mapCircles) {
+    return { mapNodes: {}, mapGraph: {} }
+  }
   const mapNodes = transformMapCirclesToNodes(mapCircles)
   const mapGraph = Object.keys(mapNodes)
     // Iterate to each node and create an array of nodes which has a weighted direct nodes assign.

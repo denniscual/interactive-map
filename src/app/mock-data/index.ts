@@ -3,6 +3,7 @@ import {
   basement,
   groundFloor,
   levelOneFloor,
+  levelTwoFloor,
   nodeDirections,
 } from './target'
 import { createNodesDirections, createMapGraphAndMapNodes } from './__utils__'
@@ -139,6 +140,21 @@ const floors = [
       endpoint: '',
     },
   },
+  {
+    id: 'levelTwoFloor',
+    label: 'Level Two',
+    graphAndNodes: createMapGraphAndMapNodes(
+      levelTwoFloor.nodes.props.children
+    ),
+    nodesDirections: createNodesDirections(levelOneFloor.directions),
+    nodes: levelTwoFloor.nodes,
+    map: mapsAndStyles.levelTwoFloor.map,
+    portals: [],
+    navigation: {
+      startpoint: '',
+      endpoint: '',
+    },
+  },
 ]
 
 // TODO: In our current navigation area / search area, the data is coming from nodes. In near future,
@@ -157,6 +173,7 @@ const stores = {
   ...groundFloor.stores,
   // Level one floor
   ...levelOneFloor.stores,
+  ...levelTwoFloor.stores,
 }
 
 // Response portals data.
