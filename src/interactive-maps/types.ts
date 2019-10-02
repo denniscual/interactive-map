@@ -254,7 +254,10 @@ export interface IncludedArea {
   floorID: string
   label: string
   childs: string[]
-  departmentDesc: string[]
+  /**
+   * NOTE: This field could be client specific.
+   */
+  departmentDesc?: string[]
   categories: string[]
 }
 
