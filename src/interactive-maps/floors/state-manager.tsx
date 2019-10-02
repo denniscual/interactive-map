@@ -35,15 +35,14 @@ const useAllAreas = () => {
     .reduce((acc, value) => acc.concat(...value), [])
 }
 
-// TODO: We gonna remove this hook from this library because this is a client specific feature.
 const useAllCategoriesObj = () => {
   const areas = useAllAreas()
   return areas
-    .map(area => area.categoryAndProductIds)
+    .map(area => area.categories)
     .reduce((acc, value) => acc.concat(...value), [])
     .reduce((acc, value) => {
       const foundArea = areas.find(area =>
-        area.categoryAndProductIds.includes(value)
+        area.categories.includes(value)
       ) as types.IncludedArea
       return {
         ...acc,

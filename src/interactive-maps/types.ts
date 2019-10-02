@@ -255,7 +255,7 @@ export interface IncludedArea {
   label: string
   childs: string[]
   departmentDesc: string[]
-  categoryAndProductIds: string[]
+  categories: string[]
 }
 
 export type MapComponent = React.FC<{

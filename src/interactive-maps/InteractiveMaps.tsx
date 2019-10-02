@@ -107,7 +107,7 @@ const createAreasByID = (
         label: dataLabel,
         childs,
         departmentDesc,
-        categoryAndProductIds: areaCategories,
+        categories: areaCategories,
       })
       return includedAreas
     }
