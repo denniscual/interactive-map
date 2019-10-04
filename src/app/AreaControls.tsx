@@ -32,12 +32,12 @@ const AreasControls: React.FC<{
         key={area.id}
         active={area.id === activeAreaID}
         onClick={() => {
-          invariant(
-            foundArea,
-            'Destination area is not exist. Please contact the Administrator.'
-          )
+          // invariant(
+          //   foundArea,
+          //   'Destination area is not exist. Please contact the Administrator.'
+          // )
           activeArea.setID(area.id)
-          navigationDispatch({ type: 'END_POINT', payload: foundArea })
+          // navigationDispatch({ type: 'END_POINT', payload: foundArea })
         }}
       >
         {area.label}
@@ -62,8 +62,8 @@ const AreasControls: React.FC<{
     if (foundArea) {
       return (
         <div>
-          {/* <h4>Area ID: {foundArea.id}</h4>
-          <p>Area label: {foundArea.label}</p> */}
+          <h4>Area ID: {foundArea.id}</h4>
+          <p>Area label: {foundArea.label}</p>
         </div>
       )
     }

@@ -10,12 +10,12 @@ import { createNodesDirections, createMapGraphAndMapNodes } from './__utils__'
 
 // Response general modifiers data
 const general = {
-  defaultStartingPoint: 'snowy-wood_Level-1',
+  defaultStartingPoint: 'node_0.102676',
   deviceAngle: 90,
   defaultAreaId: '',
   isNodesVisible: false,
   isMapEditorVisible: true,
-  voiceDirectionIsEnabled: true,
+  voiceDirectionIsEnabled: false,
   mapCSS: mapsAndStyles.styles,
 }
 
@@ -162,7 +162,6 @@ const floors = [
 // enhanced this areas data then add the associated node for every area. We can do it
 // because type area node element has a reference, through its attribute `data-area-id`, to map element.
 
-// TODO: Check the added css for different level maps. Why we add `suffix` level name in classname.
 // TODO: We need to simplify the `nodes` and `svg` because right now, the data are duplicated.
 
 // Response stores data
