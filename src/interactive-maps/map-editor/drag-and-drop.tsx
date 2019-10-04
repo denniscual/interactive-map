@@ -4,8 +4,8 @@ import { dissoc } from 'ramda'
 import { mapNodesDirectionsStateManager } from '../map-nodes'
 import * as DnD from 'react-dnd'
 import * as messageBoxCoordinates from './message-box-coordinates'
+import { css } from 'emotion'
 import * as types from '../types'
-import 'styled-components/macro'
 
 const ItemTypes = {
   MAP_NODE: 'MAP_NODE',
@@ -125,7 +125,7 @@ const dragSourceMessageBoxCollect: DnD.DragSourceCollector<
   isDragging: monitor.isDragging(),
 })
 
-const messageBoxCSS = `
+const messageBoxCSS = css`
   width: 250px;
   height: 150px;
   stroke: #b2b2b2;
@@ -133,17 +133,17 @@ const messageBoxCSS = `
   fill: #ffffff;
 `
 
-const textCSS = `
+const textCSS = css`
   font-size: 1.7em;
 `
 
-const buttonGroupCSS = `
+const buttonGroupCSS = css`
   &:hover {
     cursor: pointer;
   }
 `
 
-const buttonCSS = `
+const buttonCSS = css`
   width: 109px;
   height: 52px;
   stroke-width: 2px;
@@ -213,19 +213,19 @@ const MapNodeDirectionsMessageBox: React.FC<
     return (
       <>
         <rect
-          css={messageBoxCSS}
+          className={messageBoxCSS}
           x={messageBoxX}
           y={messageBoxY}
           rx="5"
           ry="5"
         />
-        <g css={buttonGroupCSS}>
-          <text css={textCSS} x={textX + 25} y={textY - 10}>
+        <g className={buttonGroupCSS}>
+          <text className={textCSS} x={textX + 25} y={textY - 10}>
             Add direction
           </text>
           <g onClick={handleLeftButton}>
             <rect
-              css={buttonCSS}
+              className={buttonCSS}
               fill="#282828"
               x={buttonX - 59}
               y={buttonY}
@@ -233,7 +233,7 @@ const MapNodeDirectionsMessageBox: React.FC<
               ry="5"
             />
             <text
-              css={textCSS}
+              className={textCSS}
               fill="#ffffff"
               x={buttonTextX - 74}
               y={buttonTextY}
@@ -243,7 +243,7 @@ const MapNodeDirectionsMessageBox: React.FC<
           </g>
           <g onClick={handleRightButton}>
             <rect
-              css={buttonCSS}
+              className={buttonCSS}
               onClick={handleRightButton}
               fill="#282828"
               x={buttonX + 60}
@@ -252,7 +252,7 @@ const MapNodeDirectionsMessageBox: React.FC<
               ry="5"
             />
             <text
-              css={textCSS}
+              className={textCSS}
               fill="#ffffff"
               x={buttonTextX + 50}
               y={buttonTextY}
@@ -343,15 +343,15 @@ const MapNodeMessageBox: React.FC<MessageBoxProps> = ({
     return (
       <>
         <rect
-          css={messageBoxCSS}
+          className={messageBoxCSS}
           x={messageBoxX}
           y={messageBoxY}
           rx="5"
           ry="5"
         />
-        <g css={buttonGroupCSS} onClick={handleMapNodeDeleteButton}>
+        <g className={buttonGroupCSS} onClick={handleMapNodeDeleteButton}>
           <rect
-            css={buttonCSS}
+            className={buttonCSS}
             fill="red"
             x={messageBoxX}
             y={messageBoxY}
@@ -359,7 +359,7 @@ const MapNodeMessageBox: React.FC<MessageBoxProps> = ({
             ry="5"
           />
           <text
-            css={textCSS}
+            className={textCSS}
             fill="#ffffff"
             x={messageBoxX}
             y={messageBoxY + 31}
@@ -367,9 +367,9 @@ const MapNodeMessageBox: React.FC<MessageBoxProps> = ({
             Delete
           </text>
         </g>
-        <g css={buttonGroupCSS} onClick={handleMapNodeAddDirectionButton}>
+        <g className={buttonGroupCSS} onClick={handleMapNodeAddDirectionButton}>
           <rect
-            css={buttonCSS}
+            className={buttonCSS}
             fill="blue"
             x={messageBoxX + 140}
             y={messageBoxY}
@@ -377,7 +377,7 @@ const MapNodeMessageBox: React.FC<MessageBoxProps> = ({
             ry="5"
           />
           <text
-            css={textCSS}
+            className={textCSS}
             fill="#ffffff"
             x={messageBoxX + 140}
             y={messageBoxY + 31}
@@ -385,19 +385,27 @@ const MapNodeMessageBox: React.FC<MessageBoxProps> = ({
             Direction
           </text>
         </g>
-        <g css={buttonGroupCSS} onClick={handleMapNodeAddDirectNodesButton}>
-          <text css={textCSS} x={textX} y={textY}>
+        <g
+          className={buttonGroupCSS}
+          onClick={handleMapNodeAddDirectNodesButton}
+        >
+          <text className={textCSS} x={textX} y={textY}>
             Add direct nodes?
           </text>
           <rect
-            css={buttonCSS}
+            className={buttonCSS}
             fill="#282828"
             x={buttonX}
             y={buttonY}
             rx="5"
             ry="5"
           />
-          <text css={textCSS} fill="#ffffff" x={buttonTextX} y={buttonTextY}>
+          <text
+            className={textCSS}
+            fill="#ffffff"
+            x={buttonTextX}
+            y={buttonTextY}
+          >
             Ok
           </text>
         </g>

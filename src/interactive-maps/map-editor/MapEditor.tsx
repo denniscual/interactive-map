@@ -10,8 +10,8 @@ import { generatedCodes } from './codes'
 import { nodes as nodeUtils, svg } from '../__utils__'
 import { useAppSelector, appUtils } from '../app-state-manager'
 import { MapNodes } from '../map-nodes/types'
+import { css } from 'emotion'
 import * as types from '../types'
-import 'styled-components/macro'
 
 // TODO: activeTool could handle a string or array type.
 const activeToolReducer = (
@@ -24,7 +24,7 @@ const activeToolReducer = (
   return state
 }
 
-const mapEditorCSS = `
+const mapEditorCSS = css`
   display: flex;
   text-align: left;
 `
@@ -43,12 +43,12 @@ const StyledMapContainer = styled.svg<{
   cursor: ${({ activeTool }) => utils.mapNodeHoverIcon(activeTool)};
 `
 
-const panelCSS = `
+const panelCSS = css`
   width: 20%;
   margin-right: 2em;
 `
 
-const mapNodeListCSS = `
+const mapNodeListCSS = css`
   height: 80vh;
   overflow: auto;
 
@@ -97,7 +97,7 @@ const MapNodesPanel: React.FC<{
     setMapNodeMessageBox,
   ])
   return (
-    <div css={panelCSS}>
+    <div className={panelCSS}>
       <header>
         <h2>Map Node List</h2>
       </header>
@@ -106,7 +106,7 @@ const MapNodesPanel: React.FC<{
   )
 }
 
-const nodeFieldGroupCSS = `
+const nodeFieldGroupCSS = css`
   margin-bottom: 1em;
 
   label {
@@ -123,7 +123,7 @@ const nodeFieldGroupCSS = `
   }
 `
 
-const directNodesCSS = `
+const directNodesCSS = css`
   display: flex;
   flex-direction: row;
   justify-content: left;
@@ -164,11 +164,11 @@ const directNodesCSS = `
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
-const nodeDirectionsCSS = `
+const nodeDirectionsCSS = css`
   list-style-type: none;
   padding: 0;
   border: 1px solid #bbbbbb;
-    padding: 0 0.5em;
+  padding: 0 0.5em;
 
   > li {
     border-bottom: 1px solid #bbbbbb;
@@ -264,7 +264,7 @@ const initTempMapNode = {
   'data-key-id': '',
 }
 
-const spanErrorCSS = `
+const spanErrorCSS = css`
   color: red;
   margin-top: 0.3em;
   display: block;
@@ -287,7 +287,6 @@ const MapNodeInspector: React.FC<{
   const mapNodeDispatch = rootMapNodes.mapNodesStateManager.useMapNodesDispatch()
   // Map nodes directions
   const mapNodesDirections = rootMapNodes.mapNodesDirectionsStateManager.useMapNodesDirections()
-  console.log('nodes', mapNodesDirections)
 
   // Persisting the activeMapNode into tempMapNode
   React.useEffect(() => {
@@ -373,11 +372,11 @@ const MapNodeInspector: React.FC<{
   return (
     <div onBlur={handleClearErrorFields}>
       <form onSubmit={handleNodeUpdate}>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>Node Key ID</label>
           <input type="text" value={tempMapNode['data-key-id']} disabled />
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>Node ID</label>
           <MapNodeInput
             field="id"
@@ -386,15 +385,15 @@ const MapNodeInspector: React.FC<{
           />
           {fieldErrors.length > 0 && fieldErrors.includes('id') && (
             <div>
-              <span css={spanErrorCSS}>This field is required.</span>
+              <span className={spanErrorCSS}>This field is required.</span>
             </div>
           )}
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>Node Directions</label>
-          <ul css={nodeDirectionsCSS}>{nodeDirections}</ul>
+          <ul className={nodeDirectionsCSS}>{nodeDirections}</ul>
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>Node Label</label>
           <MapNodeInput
             field="data-label"
@@ -402,7 +401,7 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>CX Coordinate</label>
           <MapNodeInput
             field="cx"
@@ -410,7 +409,7 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>CY Coordinate</label>
           <MapNodeInput
             field="cy"
@@ -418,7 +417,7 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>Area Type</label>
           <MapNodeInput
             field="data-area-type"
@@ -426,7 +425,7 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>Area ID</label>
           <MapNodeInput
             field="data-area-id"
@@ -434,13 +433,13 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>Floor ID</label>
           <input type="text" value={tempMapNode['data-floor-id']} disabled />
         </div>
-        <div css={nodeFieldGroupCSS}>
+        <div className={nodeFieldGroupCSS}>
           <label>Direct Nodes</label>
-          <ul css={directNodesCSS}>{directNodes}</ul>
+          <ul className={directNodesCSS}>{directNodes}</ul>
         </div>
         <button hidden />
       </form>
@@ -457,7 +456,7 @@ const MapNodeInspector: React.FC<{
   )
 })
 
-const directNodesPathCSS = `
+const directNodesPathCSS = css`
   stroke: #607d8b;
   stroke-width: 7px;
 `
@@ -471,7 +470,7 @@ const DirectNodesPaths: React.FC<{ activeMapNodeID: string }> = React.memo(
       paths = utils
         .createDirectNodePaths(activeMapNodeID, mapNodes)
         .map((directNodePath, idx) => (
-          <path key={idx} css={directNodesPathCSS} d={directNodePath} />
+          <path key={idx} className={directNodesPathCSS} d={directNodePath} />
         ))
     }
     return <g id="map-node-direct-nodes">{paths}</g>
@@ -796,8 +795,8 @@ const InternalMapEditor: React.FC<MapEditorProps> = ({
       messageBoxCoordinatesDispatch={messageBoxCoordinateDispatch}
       activeTool={activeTool}
     >
-      <div css={mapEditorCSS}>
-        <div css={panelCSS}>
+      <div className={mapEditorCSS}>
+        <div className={panelCSS}>
           <header>
             <h2>Toolbox</h2>
           </header>

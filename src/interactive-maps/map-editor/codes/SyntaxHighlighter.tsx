@@ -3,7 +3,7 @@ import Clipboard from 'clipboard'
 import Prism from 'prismjs'
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace'
 import './syntax-highlighter.css'
-import 'styled-components/macro'
+import { css } from 'emotion'
 
 type Languages = 'javascript' | 'css'
 
@@ -19,7 +19,7 @@ Prism.plugins.NormalizeWhitespace.setDefaults({
 // Add copy-to-clipboard functionality
 new Clipboard('#btn-clipboard')
 
-const syntaxHighlighterCSS = `
+const syntaxHighlighterCSS = css`
   position: relative;
   overflow: scroll;
   max-height: 1000px;
@@ -41,7 +41,7 @@ const SyntaxHighlighter: React.FC<{
   }, [code])
 
   return (
-    <div css={syntaxHighlighterCSS}>
+    <div className={syntaxHighlighterCSS}>
       <button id="btn-clipboard" data-clipboard-text={code}>
         Copy code
       </button>

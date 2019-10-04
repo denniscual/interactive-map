@@ -1,6 +1,5 @@
 import React from 'react'
 import { mapNodesStateManager } from '../../map-nodes'
-import 'styled-components/macro'
 import { useAppSelector, appUtils } from '../../app-state-manager'
 import * as types from '../../types'
 

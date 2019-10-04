@@ -1,7 +1,7 @@
 import React from 'react'
-import 'styled-components/macro'
+import { css } from 'emotion'
 
-const toolboxItemCSS = `
+const toolboxItemCSS = css`
   h4 {
     margin-bottom: 1.2em;
   }
@@ -12,7 +12,7 @@ const ToolboxItem: React.FC<{ title: string; description?: string }> = ({
   children,
 }) => {
   return (
-    <section css={toolboxItemCSS}>
+    <section className={toolboxItemCSS}>
       <h4>{title}</h4>
       {children}
       <p>{description}</p>
