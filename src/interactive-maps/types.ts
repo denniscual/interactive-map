@@ -212,6 +212,22 @@ export interface MapCSS {
   activeArea: string
 }
 
+export interface OriginalFloor {
+  id: string
+  label: string
+  nodesDirections: {
+    id: string
+    directions: (string | string[])[][]
+  }[]
+  nodes: JSX.Element // svg nodes or points
+  map: string // svg map => wrap into a string
+  mapCSS?: MapCSS
+  // mapCSS?: string // optional css styles for map
+  activeAreaCSS?: string
+  portals: Portal[]
+  navigation: ChangeTypeOfKeys<Navigation, 'startpoint' | 'endpoint', string>
+}
+
 export interface Floor {
   id: string
   label: string
@@ -266,10 +282,12 @@ export type MapComponent = React.FC<{
   startpointMarker?: JSX.Element
 }>
 
+// TODO: Re-use some type from OriginaFloor. We can use extend.
 export interface EnhancedFloor {
   id: string
   label: string
   graphAndNodes: MapGraphAndMapNodes // nodes which we are using in graph
+  nodesDirections: Record<string, Types.MapNodeDirections>
   Map: MapComponent
   portals: Portal[]
   stores: string[]
@@ -316,9 +334,18 @@ export interface Modifiers {
 // ----------------------------------------------------------- //
 export interface InteractiveMapsDataSource {
   general: Modifiers
-  floors: Floors
+  floors: OriginalFloor[]
+  // TODO: We can add the store into floors. Or I think so.
   stores: CollectionOfEntity
   portals: CollectionOfEntity
+}
+
+export type VoiceAssistantModifier = {
+  speechSynthesizer: {
+    speak: () => {}
+    audioElement: HTMLAudioElement
+  }
+  send: any
 }
 
 // ----------------------------------------------------------- //

@@ -1,3 +1,3 @@
-import VoiceAssistant from './VoiceAssistant'
+import VoiceAssistant from './VoiceAssistant';
 
-export { VoiceAssistant }
+export { VoiceAssistant };

@@ -1,3 +1,3 @@
-import * as stateManager from './state-manager'
+import * as stateManager from './state-manager';
 
-export { stateManager }
+export { stateManager };

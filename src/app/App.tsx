@@ -9,9 +9,19 @@ import InteractiveMaps, {
   useInteractiveMaps,
   Types,
 } from '../interactive-maps'
-import dataSource from './mock-data'
+import { getMapDataSource } from './map'
 
 const { useAppSelector, appUtils } = appStateManager
+
+const getStoreId = () => {
+  const storeIdEnv = (process.env.STORE_ID || '').toUpperCase()
+
+  if (!storeIdEnv && process.env.NODE_ENV === 'development') {
+    return 'ES65DFT420'
+  }
+
+  return storeIdEnv
+}
 
 const StyledSection = styled.section`
   margin: 4em;
@@ -27,7 +37,7 @@ const useMapTransition1 = (
 ) => {
   // create transition effect
   const transitions = useTransition(activeFloorID, null, {
-    from: { position: 'relative', opacity: 0 },
+    from: { position: 'relative', opacity: 0, height: '100%' },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
   })
@@ -63,7 +73,7 @@ const TestInteractiveMaps: React.FC = () => {
 }
 
 const App: React.FC = () => (
-  <InteractiveMaps dataSource={dataSource}>
+  <InteractiveMaps dataSource={getMapDataSource(getStoreId())}>
     <TestInteractiveMaps />
   </InteractiveMaps>
 )

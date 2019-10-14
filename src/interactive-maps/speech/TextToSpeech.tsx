@@ -88,8 +88,9 @@ const TextToSpeech: React.FC<{
   collection?: ReadonlyArray<string>
   onFirstAudioEnded?: types.Noop
   onAudioCollectionEnded?: types.Noop
-  onPlay?: types.Noop
+  onPlay?: (phrase: string) => {}
   onEnded?: types.Noop
+  options?: types.VoiceAssistantModifier
   // Audio cancellation
   // When the speech server takes too long to generate the audio based in audioText, we gonna call
   // this event handler.
@@ -105,6 +106,7 @@ const TextToSpeech: React.FC<{
     onEnded = noop,
     audioDelay,
     onAudioTimeout = noop,
+    options,
   }) => {
     const audioEl = React.useRef<HTMLAudioElement | null>(null)
     const [speech, setSpeech] = React.useState<Speech>({ text: '' })
@@ -161,6 +163,11 @@ const TextToSpeech: React.FC<{
       [collection, text, textToSpeechReset]
     )
 
+    // TODO: We need this to the template
+    // - its own speech synthesizer
+    // - its own audio element
+    // - and send
+
     const [src, setSrc] = React.useState('')
     const createMediaSrcWithAudioCancellation = useCreateMediaSrcWithAudioCancellation(
       audioDelay
@@ -168,27 +175,35 @@ const TextToSpeech: React.FC<{
     React.useEffect(
       function settingMediaSrcAndHandleAudioCancellation() {
         if (speech.text !== '') {
-          const _audioEl = audioEl.current
-          const subscriber = createMediaSrcWithAudioCancellation(
-            speech
-          ).subscribe({
-            next(src) {
-              setSrc(src)
-            },
-            error(error) {
-              const { type } = error
-              if (type === 'AUDIO_TIMEOUT') {
-                // reset
-                textToSpeechReset()
-                onAudioTimeout()
+          // If the speech synthesizer is handled by the template app
+          if (options && options.send) {
+            options.send({
+              type: 'FLASH_MESSAGE',
+              message: { en: speech.text },
+            })
+          } else {
+            const _audioEl = audioEl.current
+            const subscriber = createMediaSrcWithAudioCancellation(
+              speech
+            ).subscribe({
+              next(src) {
+                setSrc(src)
+              },
+              error(error) {
+                const { type } = error
+                if (type === 'AUDIO_TIMEOUT') {
+                  // reset
+                  textToSpeechReset()
+                  onAudioTimeout()
+                }
+              },
+            })
+            return function effectCleanup() {
+              if (_audioEl) {
+                _audioEl.pause()
               }
-            },
-          })
-          return function effectCleanup() {
-            if (_audioEl) {
-              _audioEl.pause()
+              subscriber.unsubscribe()
             }
-            subscriber.unsubscribe()
           }
         }
       },
@@ -202,60 +217,72 @@ const TextToSpeech: React.FC<{
 
     React.useEffect(
       function attachEventHandlers() {
-        if (audioEl.current) {
-          // We gonna assign the audioEl.current into variable audioElement. Why? Because
-          // once the effect cleanup is invoked, we have an assurance that the
-          // audioElement is pointing to previous audioEl.current object. Internally,
-          // React would mutate the audioEl.current in next render. So before the mutation,
-          // we already assigned the previous audioEl.current so that after the mutation and
-          // the invocation of the effect cleanup in next render, the audioElement
-          // which is accessible to cleanup would point to previous audioElement.current via closure
-          // which basically the behaviour which we want because we want to remove
-          // the listeners from previous element not the new element.
-          const audioElement = audioEl.current
-          const handlePlay = () => {
-            onPlay()
-          }
-          const handleEnded = () => {
-            // This would handle the tracking of audios for speech collection
-            if (
-              !isNil(speechGenerator.current) &&
-              arrayIsNotEmpty(collection)
-            ) {
-              const { value: speech, done } = speechGenerator.current.next()
-              // Processing every item of the speech collection.
-              if (speech) {
-                // If generator is not yet done, we gonna update the audioText into
-                // the next generator text
-                if (!done) {
-                  setSpeech({ text: speech.text, index: speech.index })
-                }
-                // We gonna invoke the onFirstAudioEnded in here if the index is 1.
-                // If the index is 1, it means that the first audio is already ended because
-                // it is already processed. How can we say it is already processed? Basically
-                // the speech.index will not be equal to 1 if the first audio, speech.index === 0, is not
-                // yet finished.
-                if (speech.index === 1) {
-                  onFirstAudioEnded()
-                }
+        const handlePlay = () => {
+          // onPlay(speech.text);
+        }
+        const handleEnded = () => {
+          // This would handle the tracking of audios for speech collection
+          if (!isNil(speechGenerator.current) && arrayIsNotEmpty(collection)) {
+            const { value: speech, done } = speechGenerator.current.next()
+            // Processing every item of the speech collection.
+            if (speech) {
+              // If generator is not yet done, we gonna update the audioText into
+              // the next generator text
+              if (!done) {
+                setSpeech({ text: speech.text, index: speech.index })
               }
-              // If value is undefined, it means that the collection is already finished.
-              else {
-                // reset
-                textToSpeechReset()
-                onAudioCollectionEnded()
+              // We gonna invoke the onFirstAudioEnded in here if the index is 1.
+              // If the index is 1, it means that the first audio is already ended because
+              // it is already processed. How can we say it is already processed? Basically
+              // the speech.index will not be equal to 1 if the first audio, speech.index === 0, is not
+              // yet finished.
+              if (speech.index === 1) {
+                onFirstAudioEnded()
               }
             }
-            onEnded()
+            // If value is undefined, it means that the collection is already finished.
+            else {
+              // reset
+              textToSpeechReset()
+              onAudioCollectionEnded()
+            }
           }
+          onEnded()
+        }
 
-          audioElement.addEventListener('play', handlePlay)
-          audioElement.addEventListener('ended', handleEnded)
+        if (options && options.speechSynthesizer) {
+          const {
+            audioElement: templateAudioElement,
+          } = options.speechSynthesizer
+
+          templateAudioElement.addEventListener('play', handlePlay)
+          templateAudioElement.addEventListener('ended', handleEnded)
 
           return function effectCleanup() {
-            // audioElement in here is pointing to previous audioEl.current object.
-            audioElement.removeEventListener('play', handlePlay)
-            audioElement.removeEventListener('ended', handleEnded)
+            templateAudioElement.removeEventListener('play', handlePlay)
+            templateAudioElement.removeEventListener('ended', handleEnded)
+          }
+        } else {
+          if (audioEl.current) {
+            // We gonna assign the audioEl.current into variable audioElement. Why? Because
+            // once the effect cleanup is invoked, we have an assurance that the
+            // audioElement is pointing to previous audioEl.current object. Internally,
+            // React would mutate the audioEl.current in next render. So before the mutation,
+            // we already assigned the previous audioEl.current so that after the mutation and
+            // the invocation of the effect cleanup in next render, the audioElement
+            // which is accessible to cleanup would point to previous audioElement.current via closure
+            // which basically the behaviour which we want because we want to remove
+            // the listeners from previous element not the new element.
+            const audioElement = audioEl.current
+
+            audioElement.addEventListener('play', handlePlay)
+            audioElement.addEventListener('ended', handleEnded)
+
+            return function effectCleanup() {
+              // audioElement in here is pointing to previous audioEl.current object.
+              audioElement.removeEventListener('play', handlePlay)
+              audioElement.removeEventListener('ended', handleEnded)
+            }
           }
         }
       },
@@ -266,10 +293,14 @@ const TextToSpeech: React.FC<{
         onEnded,
         onPlay,
         textToSpeechReset,
+        speech,
+        options,
       ]
     )
 
-    return <audio ref={audioEl} autoPlay src={src} />
+    return null
+
+    // return <audio ref={audioEl} autoPlay src={src} />;
   }
 )
 
