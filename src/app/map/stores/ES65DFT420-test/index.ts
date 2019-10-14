@@ -5,11 +5,6 @@ import mapCSS from '../map-css'
 import storeAreas from './store-areas'
 import { StoreMapConfig } from '../../types'
 
-// TODO:
-// - Update interactive maps using the new flow.
-// - We need to support the making 1 or more active area elements in one navigation.
-//   This is basically the same in Target. But we need to know if this is good solution.
-
 const floors = [
   {
     id: 'levelOneFloor',
