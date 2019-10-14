@@ -1,22 +1,22 @@
-import React from 'react';
-import * as stateManager from './state-manager';
-import { usePrevious } from '../__utils__';
-import { isNil } from 'ramda';
-import { Navigation } from '../types';
-import { Observable } from 'rxjs';
+import React from 'react'
+import * as stateManager from './state-manager'
+import { usePrevious } from '../__utils__'
+import { isNil } from 'ramda'
+import { Navigation } from '../types'
+import { Observable } from 'rxjs'
 
-type NavigationObservableTypes = 'new' | 'sameFloors' | 'differentFloors';
+type NavigationObservableTypes = 'new' | 'sameFloors' | 'differentFloors'
 interface NavigationObservable {
-  type: NavigationObservableTypes;
-  navigation: Navigation;
+  type: NavigationObservableTypes
+  navigation: Navigation
 }
 
 const useNavigationObservable = () => {
-  const navigation = stateManager.useNavigation();
-  const startpoint = navigation.startpoint.value;
-  const endpoint = navigation.endpoint.value;
+  const navigation = stateManager.useNavigation()
+  const startpoint = navigation.startpoint
+  const endpoint = navigation.endpoint
 
-  const prevEndpoint = usePrevious(endpoint.id);
+  const prevEndpoint = usePrevious(endpoint.id)
 
   // 'new' is an event where it triggered when the navigation is new.
   // React.useEffect(() => {
@@ -75,7 +75,7 @@ const useNavigationObservable = () => {
   // TODO: We gonna include other obserable types like 'sameFloor' and 'differentFloors'
   const observable = React.useMemo(
     () =>
-      new Observable<NavigationObservable>((subscriber) => {
+      new Observable<NavigationObservable>(subscriber => {
         try {
           // For new action type
           if (
@@ -83,16 +83,16 @@ const useNavigationObservable = () => {
             (startpoint.id !== '' && endpoint.id !== '') &&
             prevEndpoint !== endpoint.id
           ) {
-            subscriber.next({ type: 'new', navigation });
+            subscriber.next({ type: 'new', navigation })
           }
         } catch (error) {
-          subscriber.error(error);
+          subscriber.error(error)
         }
       }),
-    [endpoint.id, navigation, prevEndpoint, startpoint.id],
-  );
+    [endpoint.id, navigation, prevEndpoint, startpoint.id]
+  )
 
-  return observable;
-};
+  return observable
+}
 
-export default useNavigationObservable;
+export default useNavigationObservable

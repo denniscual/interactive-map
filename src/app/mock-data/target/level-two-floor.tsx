@@ -6,97 +6,97 @@ export const stores = {
     id: 'node_0.97985',
     label: 'Liquor',
     areaID: 'liquor',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.17108': {
     id: 'node_0.17108',
     label: 'Liquor Promotion',
     areaID: 'liquor-promotion',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.102676': {
     id: 'node_0.102676',
     label: 'Madrid Perfume',
     areaID: 'madrid-t1-nsh-perfumeria',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.08419': {
     id: 'node_0.08419',
     label: 'Tobacco',
     areaID: 'tobacco',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.147593': {
     id: 'node_0.147593',
     label: 'Sunglasses',
     areaID: 'sunglasses',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.091099': {
     id: 'node_0.091099',
     label: 'Fashion and Luxury',
     areaID: 'fashion-and-luxury',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.932309': {
     id: 'node_0.932309',
     label: 'Alcoholic Beverages',
     areaID: 'alcoholic-beverages',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.586891': {
     id: 'node_0.586891',
     label: 'Contentainment',
     areaID: 'contentainment',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.954616': {
     id: 'node_0.954616',
     label: 'WOC',
     areaID: 'woc',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.997918': {
     id: 'node_0.997918',
     label: 'Souvenirs',
     areaID: 'souvenirs',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.140509': {
     id: 'node_0.140509',
     label: 'Point of Sale',
     areaID: 'point-of-sale',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.925193': {
     id: 'node_0.925193',
     label: 'Gift Boxes',
     areaID: 'gift-boxes',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.868711': {
     id: 'node_0.868711',
     label: 'Cigarettes',
     areaID: 'cigarettes',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.541345': {
     id: 'node_0.541345',
     label: 'Perfumes and Cosetics Promotion',
     areaID: 'perfumes-and-cosmetics-promotion',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.795777': {
     id: 'node_0.795777',
     label: 'Toys',
     areaID: 'toys',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
   'node_0.864615': {
     id: 'node_0.864615',
     label: 'Alcoholic Beverages Promotion',
     areaID: 'alcoholic-beverages-promotion',
-    floorID: 'levelTwoFloor',
+    floorID: 'levelOneFloor',
   },
 }
 
@@ -110,7 +110,7 @@ export const nodes = (
       data-area-id="liquor"
       data-area-type="store"
       data-direct-nodes={['node_0.492329']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.97985"
       data-label="Liquor"
       fill="red"
@@ -123,7 +123,7 @@ export const nodes = (
       data-area-id="liquor-promotion"
       data-area-type="store"
       data-direct-nodes={['node_0.00824']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.17108"
       data-label="Liquor Promotion"
       fill="red"
@@ -136,7 +136,7 @@ export const nodes = (
       data-area-id="madrid-t1-nsh-perfumeria"
       data-area-type="store"
       data-direct-nodes={['node_0.573594']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.102676"
       data-label="Madrid Perfume"
       fill="red"
@@ -149,7 +149,7 @@ export const nodes = (
       data-area-id="tobacco"
       data-area-type="store"
       data-direct-nodes={['node_0.286866']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.08419"
       data-label="Tobacco"
       fill="red"
@@ -162,7 +162,7 @@ export const nodes = (
       data-area-id="sunglasses"
       data-area-type="store"
       data-direct-nodes={['node_0.070665']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.147593"
       data-label="Sunglasses"
       fill="red"
@@ -175,7 +175,7 @@ export const nodes = (
       data-area-id="fashion-and-luxury"
       data-area-type="store"
       data-direct-nodes={['node_0.062077']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.091099"
       data-label="Fashion and Luxury"
       fill="red"
@@ -188,7 +188,7 @@ export const nodes = (
       data-area-id="alcoholic-beverages"
       data-area-type="store"
       data-direct-nodes={['node_0.895228']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.932309"
       data-label="Alcoholic Beverages"
       fill="red"
@@ -201,7 +201,7 @@ export const nodes = (
       data-area-id="contentainment"
       data-area-type="store"
       data-direct-nodes={[]}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.586891"
       data-label="Contentainment"
       fill="red"
@@ -214,7 +214,7 @@ export const nodes = (
       data-area-id="woc"
       data-area-type="store"
       data-direct-nodes={['node_0.664919']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.954616"
       data-label="WOC"
       fill="red"
@@ -227,7 +227,7 @@ export const nodes = (
       data-area-id="souvenirs"
       data-area-type="store"
       data-direct-nodes={['node_0.140509', 'node_0.536608']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.997918"
       data-label="Souvenirs"
       fill="red"
@@ -240,7 +240,7 @@ export const nodes = (
       data-area-id="point-of-sale"
       data-area-type="store"
       data-direct-nodes={['node_0.997918']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.140509"
       data-label="Point of Sale"
       fill="red"
@@ -253,7 +253,7 @@ export const nodes = (
       data-area-id="gift-boxes"
       data-area-type="store"
       data-direct-nodes={['node_0.061357']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.925193"
       data-label="Gift Boxes"
       fill="red"
@@ -266,7 +266,7 @@ export const nodes = (
       data-area-id="cigarettes"
       data-area-type="store"
       data-direct-nodes={['node_0.708111']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.868711"
       data-label="Cigarettes"
       fill="red"
@@ -279,7 +279,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.826611', 'node_0.573594']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.68538"
       data-label=""
       fill="red"
@@ -292,7 +292,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.664919', 'node_0.331269', 'node_0.834571']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.4177"
       data-label=""
       fill="red"
@@ -305,7 +305,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.68538', 'node_0.191036', 'node_0.108159']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.826611"
       data-label=""
       fill="red"
@@ -318,7 +318,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.191036', 'node_0.954616', 'node_0.4177']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.664919"
       data-label=""
       fill="red"
@@ -331,7 +331,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.102676', 'node_0.68538']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.573594"
       data-label=""
       fill="red"
@@ -344,7 +344,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.4177', 'node_0.00824']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.331269"
       data-label=""
       fill="red"
@@ -357,7 +357,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.331269', 'node_0.17108', 'node_0.654989']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.00824"
       data-label=""
       fill="red"
@@ -370,7 +370,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.668848', 'node_0.037201', 'node_0.108159']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.046148"
       data-label=""
       fill="red"
@@ -383,7 +383,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.838398', 'node_0.046148']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.037201"
       data-label=""
       fill="red"
@@ -396,7 +396,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.037201', 'node_0.541345', 'node_0.55021']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.838398"
       data-label=""
       fill="red"
@@ -409,7 +409,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.046148', 'node_0.975302']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.668848"
       data-label=""
       fill="red"
@@ -422,7 +422,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.55021', 'node_0.975302', 'node_0.84975']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.24069"
       data-label=""
       fill="red"
@@ -435,7 +435,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.826611', 'node_0.586891', 'node_0.046148']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.108159"
       data-label=""
       fill="red"
@@ -448,7 +448,7 @@ export const nodes = (
       data-area-id="perfumes-and-cosmetics-promotion"
       data-area-type="store"
       data-direct-nodes={['node_0.838398']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.541345"
       data-label="Perfumes and Cosetics Promotion"
       fill="red"
@@ -461,7 +461,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.668848', 'node_0.24069', 'node_0.84975']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.975302"
       data-label=""
       fill="red"
@@ -474,7 +474,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.24069', 'node_0.838398']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.55021"
       data-label=""
       fill="red"
@@ -487,7 +487,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.24069', 'node_0.981484', 'node_0.975302']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.84975"
       data-label=""
       fill="red"
@@ -500,7 +500,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.84975', 'node_0.046314']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.981484"
       data-label=""
       fill="red"
@@ -513,7 +513,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.981484', 'node_0.37233']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.046314"
       data-label=""
       fill="red"
@@ -526,7 +526,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.046314', 'node_0.188541']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.37233"
       data-label=""
       fill="red"
@@ -539,7 +539,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.37233', 'node_0.77799']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.188541"
       data-label=""
       fill="red"
@@ -552,7 +552,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.188541', 'node_0.63569']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.77799"
       data-label=""
       fill="red"
@@ -565,7 +565,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.032672', 'node_0.77799']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.63569"
       data-label=""
       fill="red"
@@ -583,7 +583,7 @@ export const nodes = (
         'node_0.985144',
         'node_0.543641',
       ]}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.597546"
       data-label=""
       fill="red"
@@ -596,7 +596,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.63569', 'node_0.597546']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.032672"
       data-label=""
       fill="red"
@@ -615,7 +615,7 @@ export const nodes = (
         'node_0.895228',
         'node_0.989606',
       ]}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.877962"
       data-label=""
       fill="red"
@@ -628,7 +628,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.826611', 'node_0.664919', 'node_0.597546']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.191036"
       data-label=""
       fill="red"
@@ -641,7 +641,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.997918', 'node_0.868193']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.536608"
       data-label=""
       fill="red"
@@ -654,7 +654,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.597546', 'node_0.999383', 'node_0.985144']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.543641"
       data-label=""
       fill="red"
@@ -667,7 +667,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.864615', 'node_0.597546', 'node_0.989606']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.985144"
       data-label=""
       fill="red"
@@ -680,7 +680,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.543641', 'node_0.868193']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.999383"
       data-label=""
       fill="red"
@@ -693,7 +693,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.999383', 'node_0.536608']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.868193"
       data-label=""
       fill="red"
@@ -706,7 +706,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.492329', 'node_0.070665']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.401083"
       data-label=""
       fill="red"
@@ -719,7 +719,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.97985', 'node_0.401083', 'node_0.803251']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.492329"
       data-label=""
       fill="red"
@@ -732,7 +732,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.877962', 'node_0.492329', 'node_0.062077']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.803251"
       data-label=""
       fill="red"
@@ -745,7 +745,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.603879', 'node_0.401083', 'node_0.147593']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.070665"
       data-label=""
       fill="red"
@@ -758,7 +758,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.070665', 'node_0.863183', 'node_0.654989']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.603879"
       data-label=""
       fill="red"
@@ -771,7 +771,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.877962', 'node_0.985144']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.989606"
       data-label=""
       fill="red"
@@ -784,7 +784,7 @@ export const nodes = (
       data-area-id="toys"
       data-area-type="store"
       data-direct-nodes={['node_0.877962']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.795777"
       data-label="Toys"
       fill="red"
@@ -797,7 +797,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.091099', 'node_0.803251']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.062077"
       data-label=""
       fill="red"
@@ -810,7 +810,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.603879', 'node_0.00824', 'node_0.610502']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.654989"
       data-label=""
       fill="red"
@@ -823,7 +823,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.603879', 'node_0.000594']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.863183"
       data-label=""
       fill="red"
@@ -836,7 +836,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.863183', 'node_0.592472']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.000594"
       data-label=""
       fill="red"
@@ -849,7 +849,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.000594', 'node_0.834571']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.592472"
       data-label=""
       fill="red"
@@ -862,7 +862,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.592472', 'node_0.4177']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.834571"
       data-label=""
       fill="red"
@@ -875,7 +875,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.654989', 'node_0.287259']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.610502"
       data-label=""
       fill="red"
@@ -888,7 +888,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.610502', 'node_0.286866']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.287259"
       data-label=""
       fill="red"
@@ -901,7 +901,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.287259', 'node_0.08419', 'node_0.708111']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.286866"
       data-label=""
       fill="red"
@@ -914,7 +914,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.868711', 'node_0.286866']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.708111"
       data-label=""
       fill="red"
@@ -927,7 +927,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.877962', 'node_0.925193']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.061357"
       data-label=""
       fill="red"
@@ -940,7 +940,7 @@ export const nodes = (
       data-area-id=""
       data-area-type=""
       data-direct-nodes={['node_0.061357', 'node_0.877962', 'node_0.932309']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.895228"
       data-label=""
       fill="red"
@@ -953,7 +953,7 @@ export const nodes = (
       data-area-id="alcoholic-beverages-promotion"
       data-area-type="store"
       data-direct-nodes={['node_0.985144']}
-      data-floor-id="levelTwoFloor"
+      data-floor-id="levelOneFloor"
       data-key-id="node_0.864615"
       data-label="Alcoholic Beverages Promotion"
       fill="red"

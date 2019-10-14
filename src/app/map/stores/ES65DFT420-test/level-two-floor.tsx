@@ -1,106 +1,74 @@
-import React from 'react';
-export const directions = [];
+import React from 'react'
+export const directions = []
 
 export const stores = {
   'node_0.97985': {
     id: 'node_0.97985',
-    label: 'Liquor',
-    areaID: 'liquor',
     floorID: 'levelTwoFloor',
   },
   'node_0.17108': {
     id: 'node_0.17108',
-    label: 'Liquor Promotion',
-    areaID: 'liquor-promotion',
     floorID: 'levelTwoFloor',
   },
   'node_0.102676': {
     id: 'node_0.102676',
-    label: 'Madrid Perfume',
-    areaID: 'madrid-t1-nsh-perfumeria',
     floorID: 'levelTwoFloor',
   },
   'node_0.08419': {
     id: 'node_0.08419',
-    label: 'Tobacco',
-    areaID: 'tobacco',
     floorID: 'levelTwoFloor',
   },
   'node_0.147593': {
     id: 'node_0.147593',
-    label: 'Sunglasses',
-    areaID: 'sunglasses',
     floorID: 'levelTwoFloor',
   },
   'node_0.091099': {
     id: 'node_0.091099',
-    label: 'Fashion and Luxury',
-    areaID: 'fashion-and-luxury',
     floorID: 'levelTwoFloor',
   },
   'node_0.932309': {
     id: 'node_0.932309',
-    label: 'Alcoholic Beverages',
-    areaID: 'alcoholic-beverages',
     floorID: 'levelTwoFloor',
   },
   'node_0.586891': {
     id: 'node_0.586891',
-    label: 'Contentainment',
-    areaID: 'contentainment',
     floorID: 'levelTwoFloor',
   },
   'node_0.954616': {
     id: 'node_0.954616',
-    label: 'WOC',
-    areaID: 'woc',
     floorID: 'levelTwoFloor',
   },
   'node_0.997918': {
     id: 'node_0.997918',
-    label: 'Souvenirs',
-    areaID: 'souvenirs',
     floorID: 'levelTwoFloor',
   },
   'node_0.140509': {
     id: 'node_0.140509',
-    label: 'Point of Sale',
-    areaID: 'point-of-sale',
     floorID: 'levelTwoFloor',
   },
   'node_0.925193': {
     id: 'node_0.925193',
-    label: 'Gift Boxes',
-    areaID: 'gift-boxes',
     floorID: 'levelTwoFloor',
   },
   'node_0.868711': {
     id: 'node_0.868711',
-    label: 'Cigarettes',
-    areaID: 'cigarettes',
     floorID: 'levelTwoFloor',
   },
   'node_0.541345': {
     id: 'node_0.541345',
-    label: 'Perfumes and Cosetics Promotion',
-    areaID: 'perfumes-and-cosmetics-promotion',
     floorID: 'levelTwoFloor',
   },
   'node_0.795777': {
     id: 'node_0.795777',
-    label: 'Toys',
-    areaID: 'toys',
     floorID: 'levelTwoFloor',
   },
   'node_0.864615': {
     id: 'node_0.864615',
-    label: 'Alcoholic Beverages Promotion',
-    areaID: 'alcoholic-beverages-promotion',
     floorID: 'levelTwoFloor',
   },
-};
+}
 
-export const portals = {};
+export const portals = {}
 
 export const nodes = (
   <g id="nodes">
@@ -956,4 +924,4 @@ export const nodes = (
       r="15"
     />
   </g>
-);
+)

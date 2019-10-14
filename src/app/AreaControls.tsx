@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { appStateManager } from '../interactive-maps'
-import { storeAreas } from './map'
+import { getStoreAreasArr } from './map'
 
 const { useAppSelector, appSetters, appUtils } = appStateManager
 
@@ -11,8 +11,11 @@ const StyledAreaListItem = styled.li<{ active: boolean }>`
   cursor: pointer;
 `
 
+const storeAreas = getStoreAreasArr()
+
 const createAreas = (activeAreaID: string, floorID: string) => {
   const { activeArea } = appSetters
+  console.log('asdf', storeAreas)
   return Object.values(storeAreas)
     .filter(area => area.floorID === floorID)
     .map(area => {

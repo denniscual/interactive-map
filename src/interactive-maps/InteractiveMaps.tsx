@@ -3,7 +3,6 @@ import { values, curry } from 'ramda'
 import * as maps from './maps'
 import * as floors from './floors'
 import * as nav from './navigation'
-import * as areas from './areas'
 import { appSetters } from './app-state-manager'
 import {
   mapNodesStateManager,
@@ -12,36 +11,6 @@ import {
 import * as utils from './__utils__'
 import { MapNodeDirections } from './map-nodes/types'
 import * as types from './types'
-
-const createAreas: (
-  entities: types.Entity[],
-  areaType: types.AreaTypes
-) => types.AreasObj = (entities, areaType) => {
-  return entities
-    .map(entity => ({
-      label: entity.label,
-      value: {
-        id: entity.id,
-        type: areaType,
-        // assure that the entity.areaID in here is already defined.
-        areaID: entity.areaID as string,
-        floorID: entity.floorID,
-      },
-    }))
-    .reduce(
-      (acc, value) => ({
-        ...acc,
-        [value.value.id]: value,
-      }),
-      {} as types.AreasObj
-    )
-} // Function createArea
-
-const createStoresForFloor = curry((stores: types.Entity[], floorID: string) =>
-  stores
-    .filter(store => store.floorID === floorID)
-    .map(filteredStore => filteredStore.id)
-) // Curried createStoresForFloor
 
 const parseOriginalFloors = (floors: types.OriginalFloor[]): types.Floors =>
   floors.map(floor => ({
@@ -59,30 +28,18 @@ const useDataSourceForInteractiveMap = (
 ): {
   floors: types.EnhancedFloors
   floorsObj: types.EnhancedFloorsObj
-  areas: types.Areas
-  areasObj: types.AreasObj
 } => {
-  const { general, floors: originalFloors, stores, portals } = dataSource
+  const { general, floors: originalFloors } = dataSource
   const { activeArea } = appSetters
 
   const floors = parseOriginalFloors(originalFloors)
 
   return useMemo(() => {
-    const storesArr = values(stores)
-    const portalsArr = values(portals)
-
     // --------- Define Areas --------- //
-    const portalAreasObj: types.AreasObj = createAreas(portalsArr, 'portal')
-    const storeAreasObj: types.AreasObj = createAreas(storesArr, 'store')
-    // general areas
-    const areasObj: types.AreasObj = {
-      ...storeAreasObj,
-      ...portalAreasObj,
-    }
     // Transforming areas object into area array
-    const mapAreas = values(areasObj)
-
-    const createStores = createStoresForFloor(storesArr)
+    const defaultNav = (dataSource.floors.find(
+      floor => floor.id === 'levelOneFloor'
+    ) as types.OriginalFloor).navigation
 
     // --------- Define Floors --------- //
     const enhancedFloors: types.EnhancedFloors = floors.map(floor => {
@@ -92,7 +49,6 @@ const useDataSourceForInteractiveMap = (
       )
       return {
         ...floor,
-        stores: createStores(floor.id),
         Map: maps.createMapComponent(
           // Data use for creating the map
           {
@@ -111,18 +67,7 @@ const useDataSourceForInteractiveMap = (
             voiceDirectionIsEnabled: general.voiceDirectionIsEnabled,
           }
         ),
-        navigation: {
-          startpoint: areasObj[floor.navigation.startpoint],
-          endpoint: {
-            label: '',
-            value: {
-              id: '',
-              type: '',
-              areaID: '',
-              floorID: floor.id,
-            } as types.Node,
-          },
-        },
+        navigation: defaultNav,
         nodes: floor.nodes.props.children,
       }
     })
@@ -142,58 +87,27 @@ const useDataSourceForInteractiveMap = (
     return {
       floors: addedFloors,
       floorsObj,
-      areas: mapAreas,
-      areasObj,
     }
-  }, [stores, portals, floors, activeArea.setID, general])
+  }, [dataSource.floors, floors, activeArea.setID, general])
 } // Function createDataForInteractiveMap
-
-const useDefaultNav = (
-  mapAreas: types.Areas,
-  defaultStartingPoint: string
-): types.Navigation =>
-  React.useMemo(() => {
-    const startpoint = mapAreas.find(
-      area => area.value.id === defaultStartingPoint
-    )
-    if (startpoint) {
-      const endpoint = {
-        label: '',
-        value: {
-          id: '',
-          type: '',
-          areaID: '',
-          floorID: startpoint.value.floorID,
-        } as types.Node,
-      }
-      return {
-        startpoint,
-        endpoint,
-      }
-    }
-    // If startpoint is undefined, throw an error.
-    throw utils.createError(
-      'Failed to create default navigation. Try to check the used syntax for the value of the provided LOCATION environment variable. Syntax should be `id__angle`. Maybe you add more than 2 underscore characters? Make it only 2. If syntax is correct, check the provided `id`. Maybe the `id` is incorrect or have a typo.'
-    )
-  }, [defaultStartingPoint, mapAreas])
 
 const MapsDataSource: React.FC<{
   dataSource: types.InteractiveMapsDataSource
   voiceAssistant?: types.VoiceAssistantModifier
 }> = ({ dataSource, children, voiceAssistant }) => {
   const { defaultStartingPoint, voiceDirectionIsEnabled } = dataSource.general
-  const {
-    floors: enhancedFloors,
-    areas: mapAreas,
-  } = useDataSourceForInteractiveMap(dataSource)
-  const defaultNav = useDefaultNav(mapAreas, defaultStartingPoint)
+  const { floors: enhancedFloors } = useDataSourceForInteractiveMap(dataSource)
+  const defaultNav = enhancedFloors[0].navigation
   const defaultMapNodesObj = React.useMemo(() => {
-    const { floorID } = defaultNav.startpoint.value
-    if (floorID) {
-      return utils.nodes.createMapNodesObj(enhancedFloors, floorID)
+    if (defaultNav.startpoint.floorID) {
+      return utils.nodes.createMapNodesObj(
+        enhancedFloors,
+        defaultNav.startpoint.floorID
+      )
     }
     return {}
-  }, [defaultNav.startpoint.value, enhancedFloors])
+  }, [enhancedFloors, defaultNav.startpoint.floorID])
+
   const nodesDirections = React.useMemo(() => {
     const nodes = enhancedFloors.reduce(
       (acc, floor) => ({ ...acc, ...floor.nodesDirections }),
@@ -201,6 +115,7 @@ const MapsDataSource: React.FC<{
     )
     return new Map(Object.entries(nodes))
   }, [enhancedFloors])
+
   return (
     <mapNodesStateManager.MapNodesProvider mapNodesObj={defaultMapNodesObj}>
       <mapNodesDirectionsStateManager.MapNodesDirectionsProvider
@@ -208,21 +123,19 @@ const MapsDataSource: React.FC<{
       >
         <floors.stateManager.FloorsProvider
           floors={enhancedFloors}
-          defaultActiveFloorID={defaultNav.startpoint.value.floorID as string}
+          defaultActiveFloorID="levelOneFloor"
         >
-          <areas.stateManager.AreasProvider value={mapAreas}>
-            <nav.stateManager.NavigationProvider
-              floors={enhancedFloors}
-              defaultNav={defaultNav}
+          <nav.stateManager.NavigationProvider
+            floors={enhancedFloors}
+            defaultNav={defaultNav}
+          >
+            <maps.Maps
+              voiceDirectionIsEnabled={voiceDirectionIsEnabled}
+              voiceAssistant={voiceAssistant}
             >
-              <maps.Maps
-                voiceDirectionIsEnabled={voiceDirectionIsEnabled}
-                voiceAssistant={voiceAssistant}
-              >
-                {children}
-              </maps.Maps>
-            </nav.stateManager.NavigationProvider>
-          </areas.stateManager.AreasProvider>
+              {children}
+            </maps.Maps>
+          </nav.stateManager.NavigationProvider>
         </floors.stateManager.FloorsProvider>
       </mapNodesDirectionsStateManager.MapNodesDirectionsProvider>
     </mapNodesStateManager.MapNodesProvider>

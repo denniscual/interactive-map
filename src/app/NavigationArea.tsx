@@ -1,16 +1,22 @@
 import React from 'react'
 import Select from 'react-select'
-import { navigation, areas, appStateManager } from '../interactive-maps'
+import { navigation, appStateManager } from '../interactive-maps'
+import { getStoreAreasArr } from './map'
+
+const storeAreasArr = getStoreAreasArr().map(area => ({
+  value: area.id,
+  label: area.label,
+}))
 
 const NavigationArea: React.FC = () => {
   const mapNavigation = navigation.stateManager.useNavigation()
   const dispatch = navigation.stateManager.useNavigationDispatch()
   const startpoint = navigation.stateManager.useStartpoint()
-  const mapAreas = areas.stateManager.useAreas()
+  // const mapAreas = areas.stateManager.useAreas()
   const { activeArea, activeFloor } = appStateManager.appSetters
   const handleStartpointChange = (selectedOption: any) => {
     // update the active floor. switch it to default startpoint floorID
-    activeFloor.setID(startpoint.value.floorID as string)
+    activeFloor.setID(startpoint.floorID as string)
     dispatch({
       type: 'START_POINT',
       payload: selectedOption,
@@ -18,7 +24,7 @@ const NavigationArea: React.FC = () => {
   }
   const handleEndpointChange = (selectedOption: any) => {
     // update the active floor. switch it to default startpoint floorID
-    activeFloor.setID(startpoint.value.floorID as string)
+    activeFloor.setID(startpoint.floorID as string)
     dispatch({
       type: 'END_POINT',
       payload: selectedOption,
@@ -38,9 +44,11 @@ const NavigationArea: React.FC = () => {
           Starting point
         </label>
         <Select
-          value={mapNavigation.startpoint}
+          value={storeAreasArr.find(
+            area => area.value === mapNavigation.startpoint.id
+          )}
           onChange={handleStartpointChange}
-          options={mapAreas}
+          options={storeAreasArr}
         />
       </div>
       <div style={{ marginTop: 10 }}>
@@ -48,9 +56,11 @@ const NavigationArea: React.FC = () => {
           Destination
         </label>
         <Select
-          value={mapNavigation.endpoint}
+          value={storeAreasArr.find(
+            area => area.value === mapNavigation.endpoint.id
+          )}
           onChange={handleEndpointChange}
-          options={mapAreas}
+          options={storeAreasArr}
         />
       </div>
       <div style={{ marginTop: 15 }}>

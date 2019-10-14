@@ -1,5 +1,10 @@
-import React, { createContext, useReducer, useCallback, useContext } from 'react';
-import * as types from '../types';
+import React, {
+  createContext,
+  useReducer,
+  useCallback,
+  useContext,
+} from 'react'
+import * as types from '../types'
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -7,59 +12,68 @@ import * as types from '../types';
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
-type Actions = 'START_POINT' | 'END_POINT' | 'RESET';
+type Actions = 'START_POINT' | 'END_POINT' | 'RESET'
 
 type Action = {
-  type: Actions;
-  payload?: types.Area;
-};
+  type: Actions
+  payload?: types.StoreArea
+}
 
-const NavigationContext = createContext({} as types.Navigation);
-const StartpointContext = createContext<types.Area>({
+const NavigationContext = createContext({} as types.Navigation)
+const StartpointContext = createContext<types.StoreArea>({
+  id: '',
   label: '',
-  value: { id: '', type: '', areaID: '' },
-});
-const NavigationDispatchContext = createContext<React.Dispatch<Action>>(() => {});
+  nodes: [],
+  categories: [],
+  floorID: '',
+  type: types.AreaType.STORE,
+})
+const NavigationDispatchContext = createContext<React.Dispatch<Action>>(
+  () => {}
+)
 
 const useNavigationReducer = (
   floors: types.EnhancedFloors,
-  defaultNav: types.Navigation,
+  defaultNav: types.Navigation
 ) => {
   // Navigation reducer
-  const reducer = (state: types.Navigation, action: Action): types.Navigation => {
-    const { type, payload } = action;
+  const reducer = (
+    state: types.Navigation,
+    action: Action
+  ): types.Navigation => {
+    const { type, payload } = action
     if (payload) {
       switch (type) {
         case 'START_POINT': {
           return {
             ...state,
             startpoint: payload,
-          };
+          }
         }
         case 'END_POINT': {
           return {
             ...state,
             endpoint: payload,
-          };
+          }
         }
       }
     }
     // If no payload or meta
     if (type === 'RESET') {
-      return defaultNav;
+      return defaultNav
     }
     // If the action doesn't recognize by the reducer, return the current state.
-    throw new Error(`Action doesn't recognize by the navigation reducer.`);
-  };
-  const navigationReducer = useCallback(reducer, [floors, defaultNav]);
-  return useReducer(navigationReducer, defaultNav);
-}; // Function useNavigationReducer
+    throw new Error(`Action doesn't recognize by the navigation reducer.`)
+  }
+  const navigationReducer = useCallback(reducer, [floors, defaultNav])
+  return useReducer(navigationReducer, defaultNav)
+} // Function useNavigationReducer
 
 const NavigationProvider: React.FC<{
-  floors: types.EnhancedFloors;
-  defaultNav: types.Navigation;
+  floors: types.EnhancedFloors
+  defaultNav: types.Navigation
 }> = ({ floors, defaultNav, children }) => {
-  const [navigation, dispatch] = useNavigationReducer(floors, defaultNav);
+  const [navigation, dispatch] = useNavigationReducer(floors, defaultNav)
   return (
     <NavigationContext.Provider value={navigation}>
       <NavigationDispatchContext.Provider value={dispatch}>
@@ -68,12 +82,12 @@ const NavigationProvider: React.FC<{
         </StartpointContext.Provider>
       </NavigationDispatchContext.Provider>
     </NavigationContext.Provider>
-  );
-}; // Function NavigationProvider
+  )
+} // Function NavigationProvider
 
-const useNavigation = () => useContext(NavigationContext);
-const useNavigationDispatch = () => useContext(NavigationDispatchContext);
-const useStartpoint = () => useContext(StartpointContext);
+const useNavigation = () => useContext(NavigationContext)
+const useNavigationDispatch = () => useContext(NavigationDispatchContext)
+const useStartpoint = () => useContext(StartpointContext)
 
 export {
   NavigationProvider,
@@ -82,4 +96,4 @@ export {
   useNavigation,
   useNavigationDispatch,
   useStartpoint,
-};
+}

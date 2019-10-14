@@ -1,25 +1,25 @@
-import React from 'react';
-import createStateManager from 'easy-react-state';
-import * as nav from '../navigation';
-import * as types from '../types';
+import React from 'react'
+import createStateManager from 'easy-react-state'
+import * as nav from '../navigation'
+import * as types from '../types'
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 // ShortestPaths
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
-export type ShortestPaths = string[] | null;
+export type ShortestPaths = string[] | null
 
 const createShortestPathsSetters = () => ({
   setShortestPaths(paths: ShortestPaths) {
-    return paths;
+    return paths
   },
-});
+})
 
 const shortestPathsState = {
   initialState: null,
   setters: createShortestPathsSetters,
-};
+}
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -27,28 +27,28 @@ const shortestPathsState = {
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 export type ActiveArea = {
-  id: types.ActiveArea;
-  isVisible: boolean;
-};
+  id: types.ActiveArea
+  isVisible: boolean
+}
 
 const createActiveAreaSetters = (state: ActiveArea) => ({
   setIsVisible(visibility: boolean) {
-    state.isVisible = visibility;
-    return state;
+    state.isVisible = visibility
+    return state
   },
   setID(id: types.ActiveArea) {
     if (typeof id === 'string' && id === 'RESET') {
-      state.id = '';
-      return state;
+      state.id = ''
+      return state
     }
     // Return action if the type of action is a string and not empty or
     // type of action is array.
     if (id !== '') {
-      state.id = id;
-      return state;
+      state.id = id
+      return state
     }
   },
-});
+})
 
 const activeAreaState = {
   initialState: {
@@ -56,7 +56,7 @@ const activeAreaState = {
     isVisible: false,
   },
   setters: createActiveAreaSetters,
-};
+}
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -67,14 +67,14 @@ const activeAreaState = {
 // ----------------------------------------------------------- //
 const createWelcomeSpeechSetters = () => ({
   setStatus(visibility: boolean) {
-    return visibility;
+    return visibility
   },
-});
+})
 
 const welcomeSpeechState = {
   initialState: false,
   setters: createWelcomeSpeechSetters,
-};
+}
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -83,14 +83,14 @@ const welcomeSpeechState = {
 // ----------------------------------------------------------- //
 const createActiveFloorSetters = () => ({
   setID(id: string) {
-    return id;
+    return id
   },
-});
+})
 
 const activeFloorState = {
   initialState: '',
   setters: createActiveFloorSetters,
-};
+}
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -98,23 +98,23 @@ const activeFloorState = {
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 export type AppState = {
-  shortestPaths: ShortestPaths;
-  activeArea: ActiveArea;
-  welcomeSpeech: boolean;
-  activeFloor: string;
-};
+  shortestPaths: ShortestPaths
+  activeArea: ActiveArea
+  welcomeSpeech: boolean
+  activeFloor: string
+}
 
 const configStore = {
   shortestPaths: shortestPathsState,
   activeArea: activeAreaState,
   welcomeSpeech: welcomeSpeechState,
   activeFloor: activeFloorState,
-};
+}
 
 const [useAppSelector, appSetters] = createStateManager(configStore, {
   label: 'App',
   logging: true,
-});
+})
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -123,16 +123,16 @@ const [useAppSelector, appSetters] = createStateManager(configStore, {
 // ----------------------------------------------------------- //
 const appUtils = {
   getApp(state: AppState) {
-    return state;
+    return state
   },
   /**
    * A hook for getting one or more app state by keys.
    */
   useAppGetStateByKeys(keys: (keyof AppState)[]) {
-    const app = useAppSelector(this.getApp);
+    const app = useAppSelector(this.getApp)
     return React.useMemo(() => {
       return keys
-        .map((key) => ({
+        .map(key => ({
           [key]: app[key],
         }))
         .reduce(
@@ -140,38 +140,38 @@ const appUtils = {
             ...acc,
             ...value,
           }),
-          {},
-        );
-    }, [keys, app]);
+          {}
+        )
+    }, [keys, app])
   },
   // ----------- ShortestPaths ------------ //
   getShortestPaths(state: AppState) {
-    return state.shortestPaths;
+    return state.shortestPaths
   },
   // ----------- ActiveArea ------------ //
   getActiveArea(state: AppState) {
-    return state.activeArea;
+    return state.activeArea
   },
   getActiveAreaID(state: AppState) {
-    return state.activeArea.id;
+    return state.activeArea.id
   },
   getActiveAreaIsVisible(state: AppState) {
-    return state.activeArea.isVisible;
+    return state.activeArea.isVisible
   },
   // ----------- WelcomeSpeech ------------ //
   getWelcomeSpeech(state: AppState) {
-    return state.welcomeSpeech;
+    return state.welcomeSpeech
   },
   // ----------- ActiveFloor ------------ //
   getActiveFloor(state: AppState) {
-    return state.activeFloor;
+    return state.activeFloor
   },
   useResetActiveFloor() {
-    const startpoint = nav.stateManager.useStartpoint();
+    const startpoint = nav.stateManager.useStartpoint()
     return React.useCallback(() => {
-      appSetters.activeFloor.setID(startpoint.value.floorID as string);
-    }, [startpoint.value.floorID]);
+      appSetters.activeFloor.setID(startpoint.floorID as string)
+    }, [startpoint.floorID])
   },
-};
+}
 
-export { useAppSelector, appSetters, appUtils };
+export { useAppSelector, appSetters, appUtils }

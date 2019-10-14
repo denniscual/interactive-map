@@ -152,36 +152,46 @@ export type CollectionOfEntity = Record<string, Entity>
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
-// Areas
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-
-export type AreaTypes = 'store' | 'portal' | ''
-export interface Node {
-  id: string
-  type: AreaTypes
-  areaID: string
-  // floorID is optional because some path like portal doesnt have specific floor.
-  floorID?: string
-}
-
-export type Area = Readonly<{
-  label: string
-  value: Node
-}>
-
-export type Areas = ReadonlyArray<Area>
-export type AreasObj = Record<string, Area>
-
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
 // Navigation
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+// Areas
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+export enum AreaType {
+  'STORE' = 'store',
+  'PORTAL' = 'portal',
+}
+
+export interface StoreArea {
+  id: string
+  label: string
+  description?: string
+  /**
+   * Array of node ids
+   */
+  type: AreaType
+  nodes: string[]
+  floorID: string
+  /**
+   * TODO: We need to remove the `categories` property here. DON'T EVER USE CATEGORIES INSIDE
+   * LIBRARY IF POSSIBLE.
+   * We gonna add the original category value from dufry. Without parsing it.
+   */
+  categories: string[]
+}
+
+export interface StoreAreas {
+  [x: string]: StoreArea
+}
+
 export type Navigation = {
-  startpoint: Area
-  endpoint: Area
+  startpoint: StoreArea
+  endpoint: StoreArea
 }
 
 // ----------------------------------------------------------- //
@@ -225,7 +235,7 @@ export interface OriginalFloor {
   // mapCSS?: string // optional css styles for map
   activeAreaCSS?: string
   portals: Portal[]
-  navigation: ChangeTypeOfKeys<Navigation, 'startpoint' | 'endpoint', string>
+  navigation: Navigation
 }
 
 export interface Floor {
@@ -239,7 +249,7 @@ export interface Floor {
   // mapCSS?: string // optional css styles for map
   activeAreaCSS?: string
   portals: Portal[]
-  navigation: ChangeTypeOfKeys<Navigation, 'startpoint' | 'endpoint', string>
+  navigation: {}
 }
 
 export type Floors = Floor[]
@@ -290,7 +300,6 @@ export interface EnhancedFloor {
   nodesDirections: Record<string, Types.MapNodeDirections>
   Map: MapComponent
   portals: Portal[]
-  stores: string[]
   navigation: Navigation
   nodes: MapNodeElement[]
 }
@@ -334,9 +343,6 @@ export interface Modifiers {
 export interface InteractiveMapsDataSource {
   general: Modifiers
   floors: OriginalFloor[]
-  // TODO: We can add the store into floors. Or I think so.
-  stores: CollectionOfEntity
-  portals: CollectionOfEntity
 }
 
 export type VoiceAssistantModifier = {

@@ -1,10 +1,8 @@
-import * as basement from './basement'
-import * as groundFloor from './ground-floor'
-import * as levelOneFloor from './level-one-floor'
 import * as levelTwoFloor from './level-two-floor'
 import * as maps from './maps'
 import nodeDirections from './node-directions'
 import mapCSS from '../map-css'
+import storeAreas from './store-areas'
 import { StoreMapConfig } from '../../types'
 
 // TODO:
@@ -16,27 +14,19 @@ import { StoreMapConfig } from '../../types'
 
 const floors = [
   {
-    id: 'levelTwoFloor',
-    label: 'Level Two',
+    id: 'levelOneFloor',
+    label: 'Level One',
     nodesDirections: nodeDirections,
     nodes: levelTwoFloor.nodes,
     map: maps.levelTwoFloor.map,
     portals: [],
     // Nodes.
     navigation: {
-      startpoint: 'node_0.17108',
-      endpoint: 'node_0.925193',
+      startpoint: storeAreas['point-of-sale'],
+      endpoint: storeAreas['toys'],
     },
   },
 ]
-
-// Response stores data
-const stores = {
-  ...levelTwoFloor.stores,
-}
-
-// Response portals data.
-const portals = {}
 
 const storeMapConfig: StoreMapConfig = {
   id: 'ES65DFT420',
@@ -50,8 +40,6 @@ const storeMapConfig: StoreMapConfig = {
       isNodesVisible: false,
     },
     floors,
-    stores,
-    portals,
   },
 }
 

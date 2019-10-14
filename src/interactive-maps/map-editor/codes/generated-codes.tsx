@@ -40,7 +40,7 @@ const mergeCodes = (...codes: string[]) => {
 
 const groupAreasByType = (
   mapNodes: types.MapNodesProps[],
-  areaType: types.AreaTypes
+  areaType: types.AreaType
 ) => {
   return mapNodes
     .filter(node => node['data-area-type'] === areaType)
@@ -128,7 +128,7 @@ const Nodes: React.FC<{
     const importingReactModuleCode = `import React from 'react'`
 
     // ------- Code for stores -------- //
-    const stores = groupAreasByType(mapNodesByID, 'store')
+    const stores = groupAreasByType(mapNodesByID, types.AreaType.STORE)
     const storesCode = createCodeVariableWithValue(
       'stores',
       JSON.stringify(stores)
@@ -142,7 +142,10 @@ const Nodes: React.FC<{
     )
 
     // ------- Code for portals -------- //
-    const portals = groupAreasByType(mapNodesWhichArePortal, 'portal')
+    const portals = groupAreasByType(
+      mapNodesWhichArePortal,
+      types.AreaType.PORTAL
+    )
     const portalsCode = createCodeVariableWithValue(
       'portals',
       JSON.stringify(portals)

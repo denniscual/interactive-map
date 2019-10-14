@@ -8,6 +8,14 @@ export interface StoreMapConfig {
   dataSource: Types.InteractiveMapsDataSource
 }
 
+export interface Product {
+  id: string | number
+  /**
+   * NOTE: This property name was reference to dufry provider product data type.
+   */
+  category: string[]
+}
+
 /**
  * Client interactive map configuration. We gonna add here all of the stores
  * of the client which has its own store map. It also handle the default

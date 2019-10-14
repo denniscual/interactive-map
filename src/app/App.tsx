@@ -55,13 +55,14 @@ const useMapTransition1 = (
 }
 
 const TestInteractiveMaps: React.FC = () => {
-  const activeFloorID = useAppSelector(appUtils.getActiveFloor)
+  // const activeFloorID = useAppSelector(appUtils.getActiveFloor)
+  const activeFloorID = 'levelOneFloor'
   const maps = useInteractiveMaps()
   const transitionedMaps = useMapTransition1(activeFloorID, maps)
   return (
     <StyledSection>
       <div style={{ display: 'flex' }}>
-        {activeFloorID !== '' && <AreasControls floorID={activeFloorID} />}
+        <AreasControls floorID={activeFloorID} />
         <div style={{ width: '100%' }}>
           <FloorControls />
           <NavigationArea />

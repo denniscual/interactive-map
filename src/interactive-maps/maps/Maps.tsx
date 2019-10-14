@@ -14,8 +14,8 @@ import { voiceAssistant } from '..'
  * involving multiple floors.
  */
 const useRoute = (
-  startpoint: types.Node,
-  endpoint: types.Node,
+  startpoint: types.StoreArea,
+  endpoint: types.StoreArea,
   shortestPortal: types.ShortestPortal
 ): types.Route =>
   useMemo(() => {
@@ -72,8 +72,6 @@ const useMaps = (route: types.Route) => {
   ) as types.Map[]
 }
 
-function foo(a = 5) {}
-
 /**
  * Transitioning to next active area and making the area visible.
  */
@@ -129,8 +127,8 @@ const Maps: React.FC<{
 }> = ({ voiceDirectionIsEnabled, children, voiceAssistant }) => {
   // transition is updated in VoiceDirection
   const navigation = nav.stateManager.useNavigation()
-  const startpoint = navigation.startpoint.value
-  const endpoint = navigation.endpoint.value
+  const startpoint = navigation.startpoint
+  const endpoint = navigation.endpoint
 
   const shortestPortal = usePortalBetween2Areas(startpoint, endpoint)
   const route = useRoute(startpoint, endpoint, shortestPortal)
@@ -148,12 +146,12 @@ const Maps: React.FC<{
   return (
     <>
       {children}
-      <VoiceAssistant
+      {/* <VoiceAssistant
         route={route}
         shortestPortal={shortestPortal}
         voiceDirectionIsEnabled={voiceDirectionIsEnabled}
         options={voiceAssistant}
-      />
+      /> */}
     </>
   )
 } // React.FC Maps
