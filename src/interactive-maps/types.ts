@@ -174,7 +174,7 @@ export interface StoreArea {
   /**
    * Array of node ids
    */
-  type: AreaType
+  type: AreaType | string
   nodes: string[]
   floorID: string
   /**

@@ -1,7 +1,7 @@
 import React from 'react'
 import Select from 'react-select'
 import { navigation, appStateManager } from '../interactive-maps'
-import { getStoreAreasArr } from './map'
+import { getStoreAreasArr, storeAreas } from './map'
 
 const storeAreasArr = getStoreAreasArr().map(area => ({
   value: area.id,
@@ -19,7 +19,7 @@ const NavigationArea: React.FC = () => {
     activeFloor.setID(startpoint.floorID as string)
     dispatch({
       type: 'START_POINT',
-      payload: selectedOption,
+      payload: storeAreas[selectedOption.value],
     })
   }
   const handleEndpointChange = (selectedOption: any) => {
@@ -27,7 +27,7 @@ const NavigationArea: React.FC = () => {
     activeFloor.setID(startpoint.floorID as string)
     dispatch({
       type: 'END_POINT',
-      payload: selectedOption,
+      payload: storeAreas[selectedOption.value],
     })
   }
   const handleResetButton: React.MouseEventHandler<HTMLButtonElement> = e => {

@@ -146,12 +146,12 @@ const Maps: React.FC<{
   return (
     <>
       {children}
-      {/* <VoiceAssistant
+      <VoiceAssistant
         route={route}
         shortestPortal={shortestPortal}
         voiceDirectionIsEnabled={voiceDirectionIsEnabled}
         options={voiceAssistant}
-      /> */}
+      />
     </>
   )
 } // React.FC Maps

@@ -13,27 +13,28 @@ import { Types } from '../../../../interactive-maps'
  * corresponding floor.
  *
  */
+
 const storeAreas: Types.StoreAreas = {
   'point-of-sale': {
     id: 'point-of-sale',
     label: 'Point of Sale',
-    type: Types.AreaType.STORE,
-    nodes: [],
+    type: 'store',
+    nodes: ['node_0.140509'],
     categories: [],
     floorID: 'levelOneFloor',
   },
   woc: {
     id: 'woc',
     label: 'WOC',
-    type: Types.AreaType.STORE,
-    nodes: [],
+    type: 'store',
+    nodes: ['node_0.954616'],
     categories: [],
     floorID: 'levelOneFloor',
   },
   souvenirs: {
     id: 'souvenirs',
     label: 'Souvenirs',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: ['DCIS_0910011', 'DCIS_092'],
     floorID: 'levelOneFloor',
@@ -41,7 +42,7 @@ const storeAreas: Types.StoreAreas = {
   contentainment: {
     id: 'contentainment',
     label: 'Contentainment',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: [],
     floorID: 'levelOneFloor',
@@ -49,8 +50,8 @@ const storeAreas: Types.StoreAreas = {
   toys: {
     id: 'toys',
     label: 'Toys',
-    type: Types.AreaType.STORE,
-    nodes: [],
+    type: 'store',
+    nodes: ['node_0.795777'],
     categories: [
       'DCIS_092002',
       'DCIS_060',
@@ -63,7 +64,7 @@ const storeAreas: Types.StoreAreas = {
   cigarettes: {
     id: 'cigarettes',
     label: 'Cigarettes',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: ['DCIS_010001', 'DCIS_01000116', 'DCIS_010007'],
     floorID: 'levelOneFloor',
@@ -71,7 +72,7 @@ const storeAreas: Types.StoreAreas = {
   tobacco: {
     id: 'tobacco',
     label: 'Tobacco',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: ['DCIS_010004', 'DCIS_0100042', 'DCIS_010005', ''],
     floorID: 'levelOneFloor',
@@ -79,7 +80,7 @@ const storeAreas: Types.StoreAreas = {
   'perfumes-and-cosmetics': {
     id: 'perfumes-and-cosmetics',
     label: 'Perfumes and Cosmetics Promotion',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: ['DCIS_040005'],
     floorID: 'levelOneFloor',
@@ -87,7 +88,7 @@ const storeAreas: Types.StoreAreas = {
   'liquor-promotion': {
     id: 'liquor-promotion',
     label: 'Liquor Promotion',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: [''],
     floorID: 'levelOneFloor',
@@ -95,7 +96,7 @@ const storeAreas: Types.StoreAreas = {
   liquor: {
     id: 'liquor',
     label: 'Liquor',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: ['DCIS_0200052', 'DCIS_020005'],
     floorID: 'levelOneFloor',
@@ -103,7 +104,7 @@ const storeAreas: Types.StoreAreas = {
   'alcoholic-beverages-promotion': {
     id: 'alcoholic-beverages-promotion',
     label: 'Alcoholic Beverages Promotion',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: ['DCIS_020009'],
     floorID: 'levelOneFloor',
@@ -111,7 +112,7 @@ const storeAreas: Types.StoreAreas = {
   'alcoholic-beverages': {
     id: 'alcoholic-beverages',
     label: 'Alcoholic Beverages',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: ['DCIS_0200091', 'DCIS_0200092', 'DCIS_020009'],
     floorID: 'levelOneFloor',
@@ -119,7 +120,7 @@ const storeAreas: Types.StoreAreas = {
   'gift-boxes': {
     id: 'gift-boxes',
     label: 'Gift Boxes',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: [
       'DCIS_0500091',
@@ -138,7 +139,7 @@ const storeAreas: Types.StoreAreas = {
   'madrid-t1-nsh-perfumeria': {
     id: 'madrid-t1-nsh-perfumeria',
     label: 'Madrid Perfume',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: [],
     floorID: 'levelOneFloor',
@@ -146,7 +147,7 @@ const storeAreas: Types.StoreAreas = {
   sunglasses: {
     id: 'sunglasses',
     label: 'Sunglasses',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: [
       'DCIS_01000516',
@@ -159,7 +160,7 @@ const storeAreas: Types.StoreAreas = {
   'fashion-and-luxury': {
     id: 'fashion-and-luxury',
     label: 'Fashion and Luxury',
-    type: Types.AreaType.STORE,
+    type: 'store',
     nodes: [],
     categories: ['DCIS_050'],
     floorID: 'levelOneFloor',
