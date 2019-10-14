@@ -292,7 +292,6 @@ export interface EnhancedFloor {
   portals: Portal[]
   stores: string[]
   navigation: Navigation
-  areasByFloor: IncludedArea[]
   nodes: MapNodeElement[]
 }
 export type EnhancedFloors = EnhancedFloor[]

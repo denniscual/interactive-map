@@ -1,13 +1,13 @@
-import React, { useMemo, useEffect } from 'react';
-import usePortalBetween2Areas from './usePortalBetween2Areas';
-import { useInteractiveMapsDispatch } from './state-manager';
-import * as floors from '../floors';
-import * as nav from '../navigation';
-import * as mapNodes from '../map-nodes';
-import { appSetters, appUtils, useAppSelector } from '../app-state-manager';
-import { VoiceAssistant } from '../voice-assistant';
-import * as types from '../types';
-import { voiceAssistant } from '..';
+import React, { useMemo, useEffect } from 'react'
+import usePortalBetween2Areas from './usePortalBetween2Areas'
+import { useInteractiveMapsDispatch } from './state-manager'
+import * as floors from '../floors'
+import * as nav from '../navigation'
+import * as mapNodes from '../map-nodes'
+import { appSetters, appUtils, useAppSelector } from '../app-state-manager'
+import { VoiceAssistant } from '../voice-assistant'
+import * as types from '../types'
+import { voiceAssistant } from '..'
 
 /**
  * Creating route and also returning the portal type used if the route is
@@ -16,7 +16,7 @@ import { voiceAssistant } from '..';
 const useRoute = (
   startpoint: types.Node,
   endpoint: types.Node,
-  shortestPortal: types.ShortestPortal,
+  shortestPortal: types.ShortestPortal
 ): types.Route =>
   useMemo(() => {
     if (
@@ -30,7 +30,7 @@ const useRoute = (
         endpoint: endpoint.id,
         floorID: startpoint.floorID as string,
         routeInvolvesMultipleFloors: false,
-      };
+      }
     }
     // Handle if the navigation occurs in different floors.
     return {
@@ -40,37 +40,37 @@ const useRoute = (
       // Else, we gonna use startpoint.floorID
       floorID: startpoint.floorID as string,
       routeInvolvesMultipleFloors: true,
-    };
+    }
   }, [
     startpoint.floorID,
     startpoint.id,
     endpoint.floorID,
     endpoint.id,
     shortestPortal.portal,
-  ]);
+  ])
 
 // Hook useRoute
 
 const useMaps = (route: types.Route) => {
-  const maps = floors.stateManager.useFloors();
+  const maps = floors.stateManager.useFloors()
   return React.useMemo(
     () =>
       maps
         // Only include the defined maps. Default floor map is interactive-maps generated map.
         // It is used for providing a default floor nav. In the future, we gonna omit this.
-        .filter((map) => map.id !== 'defaultFloor')
-        .map((map) => {
+        .filter(map => map.id !== 'defaultFloor')
+        .map(map => {
           const InteractiveMap: React.FC<{
-            startpointMarker?: JSX.Element;
-          }> = (props) => <map.Map key={map.id} route={route} {...props} />;
+            startpointMarker?: JSX.Element
+          }> = props => <map.Map key={map.id} route={route} {...props} />
           return {
             id: map.id,
             Component: InteractiveMap,
-          };
+          }
         }),
-    [route, maps],
-  ) as types.Map[];
-};
+    [route, maps]
+  ) as types.Map[]
+}
 
 function foo(a = 5) {}
 
@@ -78,12 +78,12 @@ function foo(a = 5) {}
  * Transitioning to next active area and making the area visible.
  */
 const useNextActiveArea = (endpoint: string, portal: string) => {
-  const { activeArea } = appSetters;
-  const activeFloorID = useAppSelector(appUtils.getActiveFloor);
+  const { activeArea } = appSetters
+  const activeFloorID = useAppSelector(appUtils.getActiveFloor)
   const endpointNode = mapNodes.mapNodesStateManager.useGetMapNodesByKey(
     'id',
-    endpoint,
-  )[0];
+    endpoint
+  )[0]
 
   React.useEffect(
     function settingActiveArea() {
@@ -96,14 +96,14 @@ const useNextActiveArea = (endpoint: string, portal: string) => {
 
       // NOTE: Need to test this new implementation.
       if (endpointNode) {
-        const areaID = endpointNode['data-area-id'];
-        activeArea.setID(areaID);
+        const areaID = endpointNode['data-area-id']
+        activeArea.setID(areaID)
       } else {
-        activeArea.setID('RESET');
+        activeArea.setID('RESET')
       }
     },
-    [endpointNode, activeArea],
-  );
+    [endpointNode, activeArea]
+  )
 
   React.useEffect(
     function settingVisibleActiveArea() {
@@ -114,36 +114,36 @@ const useNextActiveArea = (endpoint: string, portal: string) => {
         (endpointNode['data-area-type'] === 'portal' ||
           endpointNode['data-floor-id'] === activeFloorID)
       ) {
-        activeArea.setIsVisible(true);
+        activeArea.setIsVisible(true)
       } else {
-        activeArea.setIsVisible(false);
+        activeArea.setIsVisible(false)
       }
     },
-    [activeArea, endpointNode, activeFloorID],
-  );
-}; // Hook useNextActiveArea
+    [activeArea, endpointNode, activeFloorID]
+  )
+} // Hook useNextActiveArea
 
 const Maps: React.FC<{
-  voiceDirectionIsEnabled: boolean;
-  voiceAssistant?: types.VoiceAssistantModifier;
+  voiceDirectionIsEnabled: boolean
+  voiceAssistant?: types.VoiceAssistantModifier
 }> = ({ voiceDirectionIsEnabled, children, voiceAssistant }) => {
   // transition is updated in VoiceDirection
-  const navigation = nav.stateManager.useNavigation();
-  const startpoint = navigation.startpoint.value;
-  const endpoint = navigation.endpoint.value;
+  const navigation = nav.stateManager.useNavigation()
+  const startpoint = navigation.startpoint.value
+  const endpoint = navigation.endpoint.value
 
-  const shortestPortal = usePortalBetween2Areas(startpoint, endpoint);
-  const route = useRoute(startpoint, endpoint, shortestPortal);
+  const shortestPortal = usePortalBetween2Areas(startpoint, endpoint)
+  const route = useRoute(startpoint, endpoint, shortestPortal)
 
   // ---------- Creation of the maps ------- //
-  const interactiveMapsDispatch = useInteractiveMapsDispatch();
-  const maps = useMaps(route);
+  const interactiveMapsDispatch = useInteractiveMapsDispatch()
+  const maps = useMaps(route)
   useEffect(() => {
-    interactiveMapsDispatch(maps);
-  }, [interactiveMapsDispatch, maps]);
+    interactiveMapsDispatch(maps)
+  }, [interactiveMapsDispatch, maps])
 
   // ------------------- Active Area ----------------------- //
-  useNextActiveArea(route.endpoint, shortestPortal.portal);
+  useNextActiveArea(route.endpoint, shortestPortal.portal)
 
   return (
     <>
@@ -155,7 +155,7 @@ const Maps: React.FC<{
         options={voiceAssistant}
       />
     </>
-  );
-}; // React.FC Maps
+  )
+} // React.FC Maps
 
-export default Maps;
+export default Maps
