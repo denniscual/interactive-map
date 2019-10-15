@@ -16,7 +16,13 @@ const DataSourceContext = React.createContext<
 
 DataSourceContext.displayName = dataSourceName
 
-const useDataSource = () => useConsumeContext(DataSourceContext, dataSourceName)
+const useDataSource = () =>
+  useConsumeContext(
+    DataSourceContext,
+    dataSourceName
+  ) as types.InteractiveMapsDataSource
+
+const DataSourceProvider = DataSourceContext.Provider
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -24,4 +30,4 @@ const useDataSource = () => useConsumeContext(DataSourceContext, dataSourceName)
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
-export { DataSourceContext, useDataSource }
+export { DataSourceProvider, useDataSource }

@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Wayfinder } from '../wayfinder'
 import { useAppSelector, appUtils, AppState } from '../app-state-manager'
+import { useDataSource } from '../contexts'
 import * as types from '../types'
 
 const StyledMapContainer = styled.svg<{
@@ -36,11 +37,11 @@ const composeActiveAreaCSS = (areas: types.ActiveArea, activeAreaCSS: string) =>
 const CopiedStartpointArea: React.FC<{ startpoint: string }> = ({
   startpoint,
 }) => {
-  // const mapAreas = areas.stateManager.useAreasToObj()
-  // const startpointArea = mapAreas[startpoint]
+  const { storeAreas } = useDataSource()
+  const startpointArea = storeAreas[startpoint]
   return (
     <g id="copied-startpoint-area" className="portal-area">
-      {/* <use href={`#${startpointArea.value.areaID}`} />{' '} */}
+      <use href={`#${startpointArea.id}`} />{' '}
     </g>
   )
 }

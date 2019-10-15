@@ -8,7 +8,7 @@ import {
   mapNodesDirectionsStateManager,
 } from './map-nodes'
 import * as utils from './__utils__'
-import { DataSourceContext, useDataSource } from './contexts'
+import { DataSourceProvider } from './contexts'
 import { MapNodeDirections } from './map-nodes/types'
 import * as types from './types'
 
@@ -151,9 +151,9 @@ const InteractiveMaps: React.FC<{
   dataSource ? (
     // InteractiveMapsProvider is little confusing name for using consuming maps.
     <maps.InteractiveMapsProvider>
-      <DataSourceContext.Provider value={dataSource}>
+      <DataSourceProvider value={dataSource}>
         <MapsDataSource dataSource={dataSource} {...otherProps} />
-      </DataSourceContext.Provider>
+      </DataSourceProvider>
     </maps.InteractiveMapsProvider>
   ) : (
     otherProps.children

@@ -1,5 +1,4 @@
 import React from 'react'
-import { merge } from 'ramda'
 import * as floors from '../floors'
 import * as nav from '../navigation'
 import * as wayfinder from '../wayfinder'
@@ -8,9 +7,9 @@ import * as utils from '../__utils__'
 import * as mapNodes from '../map-nodes'
 import { actionTypeErrorMsg } from '../constants'
 import { appSetters } from '../app-state-manager'
-import { storeAreas, getStoreAreasArr } from '../../app/map'
 import * as types from '../types'
 import { MapNodes, DirectionType } from '../map-nodes/types'
+import { useDataSource } from '../contexts'
 
 const getShortestPathsForRoute = (
   route: types.EnhancedNavigation,
@@ -232,6 +231,7 @@ const useCreateSpeechCollection = ({
 }) => {
   const mapNodesDirections = mapNodes.mapNodesDirectionsStateManager.useMapNodesDirections()
   const mapNodesObj = mapNodes.mapNodesStateManager.useMapNodesObj()
+  const { storeAreas } = useDataSource()
   // The initial speech collection is depending on the type of route.
   return React.useCallback(
     ({
@@ -309,6 +309,7 @@ const useCreateSpeechCollection = ({
       return [...otherSpeeches]
     },
     [
+      storeAreas,
       floorsObj,
       mapNodesDirections,
       mapNodesObj,
@@ -325,16 +326,9 @@ const VoiceAssistant: React.FC<{
   options?: types.VoiceAssistantModifier
   route: types.Route
   shortestPortal: types.ShortestPortal
-  voiceDirectionIsEnabled: boolean
   onAudioPlay?: (phrase?: string) => {}
 }> = React.memo(
-  ({
-    route,
-    shortestPortal,
-    voiceDirectionIsEnabled,
-    onAudioPlay = () => {},
-    options,
-  }) => {
+  ({ route, shortestPortal, onAudioPlay = () => {}, options }) => {
     const [wayfinderDistance, setWayfinderDistance] = React.useState(0)
     const [speechCollection, setSpeechCollection] = React.useState<
       ReadonlyArray<string>
@@ -355,6 +349,10 @@ const VoiceAssistant: React.FC<{
     const navigationObservable = nav.useNavigationObservable()
     const wayfinderObservables = wayfinder.useWayfinderObservables()
     const mapNodesDispatch = mapNodes.mapNodesStateManager.useMapNodesDispatch()
+    const {
+      storeAreas,
+      general: { voiceDirectionIsEnabled },
+    } = useDataSource()
 
     const createSpeechCollection = useCreateSpeechCollection({
       route,
@@ -428,7 +426,8 @@ const VoiceAssistant: React.FC<{
         }
       },
       [
-        activeFloor.label,
+        storeAreas,
+        activeFloor,
         createSpeechCollection,
         endpointID,
         navigationObservable,
@@ -488,6 +487,7 @@ const VoiceAssistant: React.FC<{
         }
       },
       [
+        storeAreas,
         navigationDispatch,
         shortestPortal.nextFloorID,
         shortestPortal.portal,

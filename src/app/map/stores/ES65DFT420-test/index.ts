@@ -16,9 +16,17 @@ const floors = [
     map: maps.levelTwoFloor.map,
     portals: [],
     // Nodes.
+    // Remove this.
     navigation: {
       startpoint: storeAreas['point-of-sale'],
-      endpoint: storeAreas['toys'],
+      endpoint: {
+        id: '',
+        floorID: '',
+        type: '',
+        categories: [],
+        nodes: [],
+        label: '',
+      },
     },
   },
 ]

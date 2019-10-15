@@ -7,7 +7,7 @@ import * as mapNodes from '../map-nodes'
 import { appSetters, appUtils, useAppSelector } from '../app-state-manager'
 import { VoiceAssistant } from '../voice-assistant'
 import * as types from '../types'
-import { voiceAssistant } from '..'
+import { useDataSource } from '../contexts'
 
 /**
  * Creating route and also returning the portal type used if the route is
@@ -74,33 +74,31 @@ const useMaps = (route: types.Route) => {
 
 /**
  * Transitioning to next active area and making the area visible.
+ * Note: We are dealing with `areaID` now, not `nodeID`.
  */
 const useNextActiveArea = (endpoint: string, portal: string) => {
+  const { storeAreas } = useDataSource()
   const { activeArea } = appSetters
   const activeFloorID = useAppSelector(appUtils.getActiveFloor)
-  const endpointNode = mapNodes.mapNodesStateManager.useGetMapNodesByKey(
-    'id',
-    endpoint
-  )[0]
+  const endpointArea = storeAreas[endpoint]
 
   React.useEffect(
     function settingActiveArea() {
-      // if (endpointNode && endpointNode['data-area-type'] !== 'portal') {
-      //   const areaID = endpointNode['data-area-id'];
-      //   activeArea.setID(areaID);
-      // } else {
-      //   activeArea.setID('RESET');
-      // }
-
-      // NOTE: Need to test this new implementation.
-      if (endpointNode) {
-        const areaID = endpointNode['data-area-id']
-        activeArea.setID(areaID)
+      if (endpointArea && endpointArea.type !== 'portal') {
+        activeArea.setID(endpointArea.id)
       } else {
         activeArea.setID('RESET')
       }
+
+      // NOTE: Need to test this new implementation.
+      // if (endpointNode) {
+      //   const areaID = endpointNode['data-area-id']
+      //   activeArea.setID(areaID)
+      // } else {
+      //   activeArea.setID('RESET')
+      // }
     },
-    [endpointNode, activeArea]
+    [endpointArea, activeArea]
   )
 
   React.useEffect(
@@ -108,16 +106,16 @@ const useNextActiveArea = (endpoint: string, portal: string) => {
       // If the portal is empty, it means that the navigation reaches the destination floor where
       // active area should become active.
       if (
-        endpointNode &&
-        (endpointNode['data-area-type'] === 'portal' ||
-          endpointNode['data-floor-id'] === activeFloorID)
+        endpointArea &&
+        (endpointArea.type === 'portal' ||
+          endpointArea.floorID === activeFloorID)
       ) {
         activeArea.setIsVisible(true)
       } else {
         activeArea.setIsVisible(false)
       }
     },
-    [activeArea, endpointNode, activeFloorID]
+    [activeArea, endpointArea, activeFloorID]
   )
 } // Hook useNextActiveArea
 
@@ -149,7 +147,6 @@ const Maps: React.FC<{
       <VoiceAssistant
         route={route}
         shortestPortal={shortestPortal}
-        voiceDirectionIsEnabled={voiceDirectionIsEnabled}
         options={voiceAssistant}
       />
     </>
