@@ -1,5 +1,4 @@
-import React, { useMemo, Children } from 'react'
-import { values, curry } from 'ramda'
+import React, { useMemo } from 'react'
 import * as maps from './maps'
 import * as floors from './floors'
 import * as nav from './navigation'
@@ -9,6 +8,7 @@ import {
   mapNodesDirectionsStateManager,
 } from './map-nodes'
 import * as utils from './__utils__'
+import { DataSourceContext, useDataSource } from './contexts'
 import { MapNodeDirections } from './map-nodes/types'
 import * as types from './types'
 
@@ -149,8 +149,11 @@ const InteractiveMaps: React.FC<{
   children: JSX.Element
 }> = ({ dataSource, ...otherProps }) =>
   dataSource ? (
+    // InteractiveMapsProvider is little confusing name for using consuming maps.
     <maps.InteractiveMapsProvider>
-      <MapsDataSource dataSource={dataSource} {...otherProps} />
+      <DataSourceContext.Provider value={dataSource}>
+        <MapsDataSource dataSource={dataSource} {...otherProps} />
+      </DataSourceContext.Provider>
     </maps.InteractiveMapsProvider>
   ) : (
     otherProps.children

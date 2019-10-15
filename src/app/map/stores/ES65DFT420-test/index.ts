@@ -5,6 +5,8 @@ import mapCSS from '../map-css'
 import storeAreas from './store-areas'
 import { StoreMapConfig } from '../../types'
 
+// TODO: Tidy up
+
 const floors = [
   {
     id: 'levelOneFloor',
@@ -33,6 +35,7 @@ const storeMapConfig: StoreMapConfig = {
       isNodesVisible: false,
     },
     floors,
+    storeAreas,
   },
 }
 

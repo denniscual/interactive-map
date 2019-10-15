@@ -6,7 +6,9 @@ import App from './app'
 import './index.css'
 import * as serviceWorker from './serviceWorker'
 
-const Root: React.FC = () => <App />
+const Root: React.FC = () => {
+  return <App />
+}
 
 ReactDOM.render(<Root />, document.getElementById('root'))
 

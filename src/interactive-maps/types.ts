@@ -343,6 +343,7 @@ export interface Modifiers {
 export interface InteractiveMapsDataSource {
   general: Modifiers
   floors: OriginalFloor[]
+  storeAreas: StoreAreas
 }
 
 export type VoiceAssistantModifier = {

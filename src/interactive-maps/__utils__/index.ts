@@ -40,7 +40,9 @@ const noop = () => {}
 // State Manager Utils
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
+
 const actionTypeErrorMsg = 'The action type is not supported!'
+
 /**
  * A type-safe hook for returning a `dispatch` based in `Context`. If the `dispatch` returned
  * by the `Context` is undefined due to consuming the `Context` outside its `Provider`, then it throws
@@ -59,6 +61,23 @@ const useCreateDispatch: <A>(
     )
   }
   return dispatch
+}
+/**
+ * A type-safe hook for returning a `dispatch` based in `Context`. If the `dispatch` returned
+ * by the `Context` is undefined due to consuming the `Context` outside its `Provider`, then it throws
+ * a `Interactive Maps Error`. Else, it will return the `dispatch`.
+ */
+const useConsumeContext: <T>(
+  Context: React.Context<T>,
+  ProviderName: string
+) => T = (Context, ProviderName) => {
+  const ctx = React.useContext(Context)
+  if (!ctx) {
+    throw createError(
+      `Error caught while consuming a Context. "useConsumeContext" must be used within a ${ProviderName}.`
+    )
+  }
+  return ctx
 }
 
 /**
@@ -202,4 +221,5 @@ export {
   noop,
   actionTypeErrorMsg,
   useCreateDispatch,
+  useConsumeContext,
 }
