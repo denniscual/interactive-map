@@ -10,6 +10,7 @@ import { appSetters } from '../app-state-manager'
 import * as types from '../types'
 import { MapNodes, DirectionType } from '../map-nodes/types'
 import { useDataSource } from '../contexts'
+import { arrayTypeAnnotation } from '@babel/types'
 
 const getShortestPathsForRoute = (
   route: types.EnhancedNavigation,
@@ -322,6 +323,46 @@ const useCreateSpeechCollection = ({
   )
 }
 
+interface ShortestPath {
+  paths: string[]
+  distance: number | 'Infinity'
+}
+
+const getShortestPathBasedOnTheAreas = ({
+  storeAreas,
+  route,
+  mapGraph,
+}: {
+  storeAreas: types.StoreAreas
+  route: types.Route
+  mapGraph: types.MapGraph
+}): ShortestPath => {
+  const startpointAreaNodeID = storeAreas[route.startpoint].nodes[0]
+  const endpointAreaNodes = storeAreas[route.endpoint].nodes
+  return endpointAreaNodes
+    .map(node => {
+      return getShortestPathsForRoute(
+        {
+          ...route,
+          startpoint: startpointAreaNodeID,
+          endpoint: node,
+        },
+        mapGraph
+      ) as ShortestPath
+    })
+    .sort((shortestPath, comparedShortestPath) => {
+      if (
+        shortestPath.distance === 'Infinity' ||
+        comparedShortestPath.distance === 'Infinity'
+      ) {
+        throw utils.createError(
+          'Error caught while creating a wayfinder paths. Make sure that the startpoint and endpoint nodes are included into active map graph.'
+        )
+      }
+      return shortestPath.distance - comparedShortestPath.distance
+    })[0]
+}
+
 const VoiceAssistant: React.FC<{
   options?: types.VoiceAssistantModifier
   route: types.Route
@@ -380,32 +421,15 @@ const VoiceAssistant: React.FC<{
             welcomeSpeech.setStatus(false)
 
             // ----------- Shortest Paths ------------- //
-            // Get the shortest paths for route and use the data for computing the direction.
 
-            // TODO: What we gonna do in here is get the shortest path for given nodes.
-            // Right now, the destination nodes is array because the nodes could be
-            // possibly more than 1. If nodes.length > 1, then we need to get the
-            // the node which has shortest distance. We easily do this through looping and
-            // invoking the getShortestPathsForRoute. So why we are doing this? Because some areas
-            // has many doors. So its good to point to the customer what would be the nearest door
-            // from its location.
-            const { paths, distance } = getShortestPathsForRoute(
-              {
-                ...route,
-                startpoint: storeAreas[route.startpoint].nodes[0],
-                endpoint: storeAreas[route.endpoint].nodes[0],
-              },
-              routeFloor.graphAndNodes.mapGraph
-            ) as { paths: string[]; distance: number | 'Infinity' }
-            // If the distance is Infinity, it means that the graph doesnt include the nodes involve in navigation.
-            if (distance === 'Infinity') {
-              throw utils.createError(
-                'Error caught while creating a wayfinder paths. Make sure that the startpoint and endpoint nodes are included into active map graph.'
-              )
-            }
+            const shortestPath = getShortestPathBasedOnTheAreas({
+              storeAreas,
+              route,
+              mapGraph: routeFloor.graphAndNodes.mapGraph,
+            })
 
             // Update the shortest paths so that we can access the shortest paths inside Wayfinder.
-            appSetters.shortestPaths.setShortestPaths(paths)
+            appSetters.shortestPaths.setShortestPaths(shortestPath.paths)
 
             // ----------- Speech Collection ------------- //
             const endArea = storeAreas[endpointID].label
@@ -413,12 +437,12 @@ const VoiceAssistant: React.FC<{
               activeFloor.label
             }.`
             const speeches = createSpeechCollection({
-              paths,
+              paths: shortestPath.paths,
               introSpeech,
-              distance,
+              distance: shortestPath.distance as number,
             })
             setSpeechCollection(speeches)
-            setWayfinderDistance(distance)
+            setWayfinderDistance(shortestPath.distance as number)
           }
         })
         return function effectCleanup() {
@@ -516,26 +540,25 @@ const VoiceAssistant: React.FC<{
           // We gonna create here the speech collection use for next floor. Map nodes has directions
           // and we gonna use those directions for speech collection
           // Get the shortest paths for route and use the data for computing the direction.
-          const { paths, distance } = getShortestPathsForRoute(
+          const { paths, distance } = getShortestPathBasedOnTheAreas({
+            storeAreas,
             route,
-            routeFloor.graphAndNodes.mapGraph
-          ) as { paths: string[]; distance: number | 'Infinity' }
-          // If the distance is Infinity, it means that the graph doesnt include the nodes involve in navigation.
-          if (distance === 'Infinity') {
-            throw utils.createError(
-              'Error caught while creating a wayfinder paths. Make sure that the startpoint and endpoint nodes are included into active map graph.'
-            )
-          }
+            mapGraph: routeFloor.graphAndNodes.mapGraph,
+          })
           appSetters.shortestPaths.setShortestPaths(paths)
           // ----------- Speech Collection ------------- //
-          const speeches = createSpeechCollection({ paths, distance })
+          const speeches = createSpeechCollection({
+            paths,
+            distance: distance as number,
+          })
           setSpeechCollection(speeches)
-          setWayfinderDistance(distance)
+          setWayfinderDistance(distance as number)
           speechAndWayfinderStatusDispatch('RESET')
         }
       },
       [
         createSpeechCollection,
+        storeAreas,
         route,
         routeFloor.graphAndNodes.mapGraph,
         speechAndWayfinderStatus.speechCollectionAndWayfinderAreFinished,

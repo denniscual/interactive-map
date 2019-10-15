@@ -97,7 +97,7 @@ const storeAreas: Types.StoreAreas = {
     id: 'liquor',
     label: 'Liquor',
     type: 'store',
-    nodes: ['node_0.97985'],
+    nodes: ['node_0.97985', 'node_0.17108'],
     categories: ['DCIS_0200052', 'DCIS_020005'],
     floorID: 'levelOneFloor',
   },
