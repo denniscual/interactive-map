@@ -1,74 +1,6 @@
 import React from 'react'
+
 export const directions = []
-
-export const stores = {
-  'node_0.97985': {
-    id: 'node_0.97985',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.17108': {
-    id: 'node_0.17108',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.102676': {
-    id: 'node_0.102676',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.08419': {
-    id: 'node_0.08419',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.147593': {
-    id: 'node_0.147593',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.091099': {
-    id: 'node_0.091099',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.932309': {
-    id: 'node_0.932309',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.586891': {
-    id: 'node_0.586891',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.954616': {
-    id: 'node_0.954616',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.997918': {
-    id: 'node_0.997918',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.140509': {
-    id: 'node_0.140509',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.925193': {
-    id: 'node_0.925193',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.868711': {
-    id: 'node_0.868711',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.541345': {
-    id: 'node_0.541345',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.795777': {
-    id: 'node_0.795777',
-    floorID: 'levelTwoFloor',
-  },
-  'node_0.864615': {
-    id: 'node_0.864615',
-    floorID: 'levelTwoFloor',
-  },
-}
-
-export const portals = {}
 
 export const nodes = (
   <g id="nodes">
@@ -238,7 +170,7 @@ export const nodes = (
       data-key-id="node_0.868711"
       data-label="Cigarettes"
       fill="red"
-      id="node_0.868711"
+      id="node_0.711"
       r="15"
     />
     <circle
@@ -863,7 +795,7 @@ export const nodes = (
       cy={2211}
       data-area-id=""
       data-area-type=""
-      data-direct-nodes={['node_0.868711', 'node_0.286866']}
+      data-direct-nodes={['node_0.711', 'node_0.286866']}
       data-floor-id="levelTwoFloor"
       data-key-id="node_0.708111"
       data-label=""

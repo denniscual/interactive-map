@@ -55,8 +55,7 @@ const useMapTransition1 = (
 }
 
 const TestInteractiveMaps: React.FC = () => {
-  // const activeFloorID = useAppSelector(appUtils.getActiveFloor)
-  const activeFloorID = 'levelOneFloor'
+  const activeFloorID = useAppSelector(appUtils.getActiveFloor)
   const maps = useInteractiveMaps()
   const transitionedMaps = useMapTransition1(activeFloorID, maps)
   return (

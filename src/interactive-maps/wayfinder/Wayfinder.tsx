@@ -120,7 +120,7 @@ const Wayfinder: React.FC<{
 }> = ({ route }) => {
   const { floorID, endpoint } = route
   const { mapNodes } = floors.stateManager.useGetFloorByID(
-    'levelOneFloor'
+    floorID
   ).graphAndNodes
   const paths = useAppSelector(appUtils.getShortestPaths)
   if (endpoint === '' || paths === null) {

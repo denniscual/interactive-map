@@ -1,3 +1,5 @@
+import * as basement from './basement'
+import * as groundFloor from './ground-floor'
 import * as levelTwoFloor from './level-two-floor'
 import * as maps from './maps'
 import nodeDirections from './node-directions'
@@ -9,14 +11,53 @@ import { StoreMapConfig } from '../../types'
 
 const floors = [
   {
+    id: 'basementFloor',
+    label: 'Basement',
+    nodesDirections: nodeDirections,
+    nodes: basement.nodes,
+    map: maps.basement.map,
+    portals: [],
+    // TODO: Remove this.
+    navigation: {
+      startpoint: storeAreas['mens-plus-sizes'],
+      endpoint: {
+        id: '',
+        floorID: '',
+        type: '',
+        categories: [],
+        nodes: [],
+        label: '',
+      },
+    },
+  },
+  {
+    id: 'groundFloor',
+    label: 'Ground Floor',
+    nodesDirections: nodeDirections,
+    nodes: groundFloor.nodes,
+    map: maps.groundFloor.map,
+    portals: [],
+    // TODO: Remove this.
+    navigation: {
+      startpoint: storeAreas['womens-casual-bottoms'],
+      endpoint: {
+        id: '',
+        floorID: '',
+        type: '',
+        categories: [],
+        nodes: [],
+        label: '',
+      },
+    },
+  },
+  {
     id: 'levelOneFloor',
     label: 'Level One',
     nodesDirections: nodeDirections,
     nodes: levelTwoFloor.nodes,
     map: maps.levelTwoFloor.map,
     portals: [],
-    // Nodes.
-    // Remove this.
+    // TODO: Remove this.
     navigation: {
       startpoint: storeAreas['point-of-sale'],
       endpoint: {

@@ -13,6 +13,8 @@ const getShortestPaths = require('./get-shortest-paths').default
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
+// TODO: We need to use the `error stack` of the thrower function
+// so that we can simplified the error stack and much cleaner.
 const createError = (
   description: string,
   name: string = 'Interactive Maps Error'

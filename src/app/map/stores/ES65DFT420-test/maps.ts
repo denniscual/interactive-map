@@ -248,13 +248,11 @@ const basement = {
             data-categories="W180981 W133028 W181029 W181027 W1102622 W1099258 W923638 W1332447 W1332490 W1332550 W216979 W216979 W216982 W1105928 W216987 W216984"
            className="area store-area" data-child="mens-top mens-bottom">
             <polygon
-              id="mens-top"
               className="area"
               data-label="Mens Tops"
               points="1398.33 374.94 1860.45 373.94 1860.45 521.74 1980.33 521.58 1980.33 785.63 1398.33 785.63 1398.33 374.94"
             />
             <polygon
-              id="mens-bottom"
               className="area"
               data-label="Mens Bottoms"
               points="2038.33 524.24 2313.97 524.24 2313.97 571.24 2201.82 571.24 2201.82 833.78 2038.33 833.78 2038.33 524.24"

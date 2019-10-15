@@ -15,7 +15,6 @@ const storeAreas = getStoreAreasArr()
 
 const createAreas = (activeAreaID: string, floorID: string) => {
   const { activeArea } = appSetters
-  console.log('asdf', storeAreas)
   return Object.values(storeAreas)
     .filter(area => area.floorID === floorID)
     .map(area => {

@@ -120,9 +120,8 @@ const useNextActiveArea = (endpoint: string, portal: string) => {
 } // Hook useNextActiveArea
 
 const Maps: React.FC<{
-  voiceDirectionIsEnabled: boolean
   voiceAssistant?: types.VoiceAssistantModifier
-}> = ({ voiceDirectionIsEnabled, children, voiceAssistant }) => {
+}> = ({ children, voiceAssistant }) => {
   // transition is updated in VoiceDirection
   const navigation = nav.stateManager.useNavigation()
   const startpoint = navigation.startpoint

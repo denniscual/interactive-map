@@ -42,35 +42,38 @@ const useDataSourceForInteractiveMap = (
     ) as types.OriginalFloor).navigation
 
     // --------- Define Floors --------- //
-    const enhancedFloors: types.EnhancedFloors = floors.map(floor => {
-      const areasJSXElements = utils.mapElements.parseToReactElements(
-        floor.map,
-        activeArea.setID
-      )
-      return {
-        ...floor,
-        Map: maps.createMapComponent(
-          // Data use for creating the map
-          {
-            elements: areasJSXElements,
-            nodes: floor.nodes,
-            props: utils.mapElements.getSVGRootProps(floor.map),
-            // If the floor map has its own css styles, use it. Else, use the general
-            // map css
-            css: floor.mapCSS || general.mapCSS,
-            floorID: floor.id,
-          },
-          // Modifiers, use for enabling or disabling map features like map-editor.
-          {
-            nodesVisible: general.isNodesVisible,
-            mapEditorVisible: general.isMapEditorVisible,
-            voiceDirectionIsEnabled: general.voiceDirectionIsEnabled,
-          }
-        ),
-        navigation: defaultNav,
-        nodes: floor.nodes.props.children,
+    const enhancedFloors: types.EnhancedFloors = floors.map(
+      (floor, floorIdx) => {
+        const areasJSXElements = utils.mapElements.parseToReactElements(
+          floor.map,
+          activeArea.setID
+        )
+        return {
+          ...floor,
+          Map: maps.createMapComponent(
+            // Data use for creating the map
+            {
+              elements: areasJSXElements,
+              nodes: floor.nodes,
+              props: utils.mapElements.getSVGRootProps(floor.map),
+              // If the floor map has its own css styles, use it. Else, use the general
+              // map css
+              css: floor.mapCSS || general.mapCSS,
+              floorID: floor.id,
+            },
+            // Modifiers, use for enabling or disabling map features like map-editor.
+            {
+              nodesVisible: general.isNodesVisible,
+              mapEditorVisible: general.isMapEditorVisible,
+              voiceDirectionIsEnabled: general.voiceDirectionIsEnabled,
+            }
+          ),
+          // TODO: Little bit hacky, needs to clean a little bit.
+          navigation: originalFloors[floorIdx].navigation,
+          nodes: floor.nodes.props.children,
+        }
       }
-    })
+    )
     const addedFloors = enhancedFloors.concat({
       ...enhancedFloors[0],
       id: 'defaultFloor',
@@ -88,7 +91,7 @@ const useDataSourceForInteractiveMap = (
       floors: addedFloors,
       floorsObj,
     }
-  }, [dataSource.floors, floors, activeArea.setID, general])
+  }, [dataSource.floors, floors, activeArea.setID, general, originalFloors])
 } // Function createDataForInteractiveMap
 
 const MapsDataSource: React.FC<{
@@ -97,6 +100,7 @@ const MapsDataSource: React.FC<{
 }> = ({ dataSource, children, voiceAssistant }) => {
   const { defaultStartingPoint, voiceDirectionIsEnabled } = dataSource.general
   const { floors: enhancedFloors } = useDataSourceForInteractiveMap(dataSource)
+  const defaultFloor = enhancedFloors[0].id
   const defaultNav = enhancedFloors[0].navigation
   const defaultMapNodesObj = React.useMemo(() => {
     if (defaultNav.startpoint.floorID) {
@@ -123,18 +127,13 @@ const MapsDataSource: React.FC<{
       >
         <floors.stateManager.FloorsProvider
           floors={enhancedFloors}
-          defaultActiveFloorID="levelOneFloor"
+          defaultActiveFloorID={defaultFloor}
         >
           <nav.stateManager.NavigationProvider
             floors={enhancedFloors}
             defaultNav={defaultNav}
           >
-            <maps.Maps
-              voiceDirectionIsEnabled={voiceDirectionIsEnabled}
-              voiceAssistant={voiceAssistant}
-            >
-              {children}
-            </maps.Maps>
+            <maps.Maps voiceAssistant={voiceAssistant}>{children}</maps.Maps>
           </nav.stateManager.NavigationProvider>
         </floors.stateManager.FloorsProvider>
       </mapNodesDirectionsStateManager.MapNodesDirectionsProvider>
