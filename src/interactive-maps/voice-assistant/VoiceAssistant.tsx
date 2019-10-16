@@ -337,7 +337,21 @@ const getShortestPathBasedOnTheAreas = ({
   mapGraph: types.MapGraph
 }): ShortestPath => {
   const startpointAreaNodeID = storeAreas[route.startpoint].nodes[0]
-  const endpointAreaNodes = storeAreas[route.endpoint].nodes
+  const { nodes: endpointAreaNodes, type: endpointAreaType } = storeAreas[
+    route.endpoint
+  ]
+  if (endpointAreaType === 'portal') {
+    // portal area type must only assign 1 node same
+    // in device node.
+    return getShortestPathsForRoute(
+      {
+        ...route,
+        startpoint: startpointAreaNodeID,
+        endpoint: endpointAreaNodes[0],
+      },
+      mapGraph
+    ) as ShortestPath
+  }
   return endpointAreaNodes
     .map(node => {
       return getShortestPathsForRoute(
@@ -362,6 +376,7 @@ const getShortestPathBasedOnTheAreas = ({
       }
       return shortestPath.distance - comparedShortestPath.distance
     })[0]
+  // Else if portal
 }
 
 const VoiceAssistant: React.FC<{

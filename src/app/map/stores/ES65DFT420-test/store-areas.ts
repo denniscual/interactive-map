@@ -433,6 +433,30 @@ const storeAreas: Types.StoreAreas = {
     categories: ['DCIS_050'],
     floorID: 'groundFloor',
   },
+  'elevator-1': {
+    id: 'elevator-1',
+    label: 'Elevator 1',
+    type: 'portal',
+    nodes: ['node_elevator-1'],
+    categories: [],
+    floorID: '',
+  },
+  'escalator-basement': {
+    id: 'escalator-basement',
+    label: 'Escalator (to Basement)',
+    type: 'portal',
+    nodes: ['node_escalator-to-basement'],
+    categories: [],
+    floorID: '',
+  },
+  'escalator-1-ground-level': {
+    id: 'escalator-1-ground-level',
+    label: 'Escalator 1 (to Ground Level)',
+    type: 'portal',
+    nodes: ['node_escalator-to-ground-level'],
+    categories: [],
+    floorID: '',
+  },
 }
 
 export default storeAreas
