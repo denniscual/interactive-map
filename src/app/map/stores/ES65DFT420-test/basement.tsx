@@ -241,7 +241,7 @@ export const directions = [
   },
 ]
 
-export const nodes = (
+const nodeElements = (
   <g id="nodes">
     <circle
       cx={2074.503}
@@ -702,3 +702,9 @@ export const nodes = (
     />
   </g>
 )
+
+const nodesArr = React.Children.toArray(nodeElements.props.children)
+
+export const nodes = nodesArr.map(node => ({
+  ...node.props,
+}))

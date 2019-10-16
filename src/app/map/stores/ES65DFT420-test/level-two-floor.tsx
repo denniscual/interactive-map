@@ -2,7 +2,7 @@ import React from 'react'
 
 export const directions = []
 
-export const nodes = (
+const nodeElements = (
   <g id="nodes">
     <circle
       cx={975}
@@ -857,3 +857,9 @@ export const nodes = (
     />
   </g>
 )
+
+const nodesArr = React.Children.toArray(nodeElements.props.children)
+
+export const nodes = nodesArr.map(node => ({
+  ...node.props,
+}))

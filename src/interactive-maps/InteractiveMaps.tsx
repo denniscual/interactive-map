@@ -15,7 +15,7 @@ import * as types from './types'
 const parseOriginalFloors = (floors: types.OriginalFloor[]): types.Floors =>
   floors.map(floor => ({
     ...floor,
-    graphAndNodes: utils.createMapGraphAndMapNodes(floor.nodes.props.children),
+    graphAndNodes: utils.createMapGraphAndMapNodes(floor.nodes),
     nodesDirections: utils.createNodesDirections(floor.nodesDirections),
   }))
 
@@ -47,7 +47,7 @@ const useDataSourceForInteractiveMap = (
             // Data use for creating the map
             {
               elements: areasJSXElements,
-              nodes: floor.nodes,
+              nodes: originalFloors[floorIdx].nodes,
               props: utils.mapElements.getSVGRootProps(floor.map),
               // If the floor map has its own css styles, use it. Else, use the general
               // map css
@@ -61,7 +61,10 @@ const useDataSourceForInteractiveMap = (
               voiceDirectionIsEnabled: general.voiceDirectionIsEnabled,
             }
           ),
-          nodes: floor.nodes.props.children,
+          // Pass the original nodes because it holds the area and node data which
+          // we can use for running and debugging.
+          graphAndNodes: floor.graphAndNodes,
+          nodes: originalFloors[floorIdx].nodes,
         }
       }
     )
@@ -82,7 +85,7 @@ const useDataSourceForInteractiveMap = (
       floors: addedFloors,
       floorsObj,
     }
-  }, [floors, activeArea.setID, general])
+  }, [floors, activeArea.setID, general, originalFloors])
 }
 
 const initStoreArea: types.StoreArea = {
@@ -121,7 +124,10 @@ const MapsDataSource: React.FC<{
   const defaultFloor = enhancedFloors.find(
     floor => floor.id === startingpointArea.floorID
   )
-  if (!defaultFloor) {
+  const originalDefaultFloor = dataSource.floors.find(
+    floor => floor.id === startingpointArea.floorID
+  )
+  if (!defaultFloor || !originalDefaultFloor) {
     throw utils.createError(
       new Error(
         `Floor ID '${
@@ -140,11 +146,11 @@ const MapsDataSource: React.FC<{
     if (defaultNav.startpoint.floorID) {
       return utils.nodes.createMapNodesObj(
         enhancedFloors,
-        defaultNav.startpoint.floorID
+        startingpointArea.floorID
       )
     }
     return {}
-  }, [enhancedFloors, defaultNav.startpoint.floorID])
+  }, [defaultNav.startpoint.floorID, enhancedFloors, startingpointArea.floorID])
 
   const nodesDirections = React.useMemo(() => {
     const nodes = enhancedFloors.reduce(

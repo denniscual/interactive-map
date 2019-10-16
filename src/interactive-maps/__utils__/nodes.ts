@@ -115,19 +115,19 @@ export const transformElementsToObject: <T extends object>(
 
 export const createMapNodesObj = (
   floors: types.EnhancedFloors,
-  floorID: string
+  activeFloorID: string
 ) => {
-  const mapNodeElements = floors
-    .filter(floor => floor.id === floorID)
-    .map(floor => floor.nodes)[0]
-  const mapNodes = transformElementsToArray(mapNodeElements)
+  const activeFloor = floors.find(floor => floor.id === activeFloorID)
   // Return empty because sometimes are maps doesn't have associated nodes.
-  if (!mapNodes) {
+  if (!activeFloor) {
     return {}
   }
-  const enhancedMapNodes = mapNodes.map(mapNode => ({
+  const enhancedMapNodes = activeFloor.nodes.map(mapNode => ({
     ...mapNode,
-    'data-direct-nodes': createDirectNodesWithValueKeyID(mapNodes, mapNode),
+    'data-direct-nodes': createDirectNodesWithValueKeyID(
+      activeFloor.nodes,
+      mapNode
+    ),
   }))
   return transformArrayToObject(enhancedMapNodes, 'id')
 }

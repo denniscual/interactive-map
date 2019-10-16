@@ -64,11 +64,14 @@ const CopiedEndpointArea: React.FC = () => {
 
 type MapComponent = {
   elements: JSX.Element
-  nodes: JSX.Element
+  nodes: types.MapNodesProps[]
   props: React.SVGAttributes<SVGElement>
   css: types.MapCSS // optional css styles for map
   floorID: string
 }
+
+const createNodeElements = (nodes: types.MapNodesProps[]) =>
+  nodes.map(node => <circle key={node.id} {...node} />)
 
 type Modifiers = {
   nodesVisible: boolean
@@ -121,6 +124,8 @@ const createMapComponent = (map: MapComponent, modifiers: Modifiers) => {
     //   )
     // }
 
+    console.log(createNodeElements(nodes))
+
     return (
       <StyledMapContainer
         {...props}
@@ -128,7 +133,7 @@ const createMapComponent = (map: MapComponent, modifiers: Modifiers) => {
         activeAreaCSS={activeAreaCSS}
       >
         {mapElements}
-        {nodesVisible && nodes}
+        {/* {nodesVisible && createNodeElements(nodes)} */}
         {/* If voiceDirectionIsEnabled, we need to show the Wayfinder in delay manner
         through waiting the welcomeSpeech becomes true */}
         {voiceDirectionIsEnabled ? (
@@ -145,6 +150,6 @@ const createMapComponent = (map: MapComponent, modifiers: Modifiers) => {
   }
 
   return Map
-} // Function createMapComponent
+}
 
 export default createMapComponent

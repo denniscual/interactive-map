@@ -139,29 +139,30 @@ const transformMapCirclesToNodes = (mapCircles: types.MapCircle[]) => {
 }
 
 export const createMapGraphAndMapNodes = (
-  mapCircles: types.MapCircle[]
+  mapNodes: types.MapNodesProps[]
 ): types.MapGraphAndMapNodes => {
-  if (!mapCircles) {
+  if (!nodes) {
     return { mapNodes: {}, mapGraph: {} }
   }
-  const mapNodes = transformMapCirclesToNodes(mapCircles)
-  const mapGraph = Object.keys(mapNodes)
+  const mapGraph = mapNodes
     // Iterate to each node and create an array of nodes which has a weighted direct nodes assign.
-    .map(key => {
-      const baseNode = mapNodes[key]
-      if (!baseNode) {
-        throw NotFoundNodeError(key)
-      }
-      const { directNodes } = baseNode
+    .map(baseNode => {
+      const { 'data-direct-nodes': directNodes } = baseNode
       // Assigned a weighted, distance value, to all direct nodes of a base node.
       const weightedDirectNodesArr = directNodes.map(path => {
-        const givenDirectNode = mapNodes[path]
+        const givenDirectNode = mapNodes.find(node => node.id === path)
         if (!givenDirectNode) {
           throw NotFoundNodeError(path)
         }
         const distance = getDistanceBetweenNodes(
-          baseNode.coordinates,
-          givenDirectNode.coordinates
+          {
+            x: baseNode.cx,
+            y: baseNode.cy,
+          },
+          {
+            x: givenDirectNode.cx,
+            y: givenDirectNode.cy,
+          }
         )
         return {
           [givenDirectNode.id]: distance,
@@ -187,8 +188,22 @@ export const createMapGraphAndMapNodes = (
       }),
       {}
     )
+  const newMapNodes: types.MapNodes = mapNodes.reduce(
+    (acc, node) => ({
+      ...acc,
+      [node.id]: {
+        id: node.id,
+        coordinates: {
+          x: node.cx,
+          y: node.cy,
+        },
+        directNodes: node['data-direct-nodes'],
+      },
+    }),
+    {}
+  )
   return {
-    mapNodes,
+    mapNodes: newMapNodes,
     mapGraph,
   }
 }

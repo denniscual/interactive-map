@@ -49,6 +49,10 @@ export type ExcludeKeys<T extends object, K extends keyof T> = Pick<
 // Graph and Nodes
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
+
+/**
+ * TODO: Rename to `MapNode`
+ */
 export interface MapNodesProps {
   id: string
   cx: number
@@ -224,7 +228,7 @@ export interface OriginalFloor {
     id: string
     directions: (string | string[])[][]
   }[]
-  nodes: JSX.Element // svg nodes or points
+  nodes: MapNodesProps[] // svg nodes or points
   map: string // svg map => wrap into a string
   mapCSS?: MapCSS
   // mapCSS?: string // optional css styles for map
@@ -237,7 +241,7 @@ export interface Floor {
   label: string
   graphAndNodes: MapGraphAndMapNodes // react elements parse into map graph and nodes nodes: JSX.Element
   nodesDirections: Record<string, Types.MapNodeDirections>
-  nodes: JSX.Element // svg nodes or points
+  nodes: MapNodesProps[] // svg nodes or points
   map: string // svg map => wrap into a string
   mapCSS?: MapCSS
   // mapCSS?: string // optional css styles for map
@@ -293,7 +297,7 @@ export interface EnhancedFloor {
   nodesDirections: Record<string, Types.MapNodeDirections>
   Map: MapComponent
   portals: Portal[]
-  nodes: MapNodeElement[]
+  nodes: MapNodesProps[]
 }
 export type EnhancedFloors = EnhancedFloor[]
 export type EnhancedFloorsObj = Record<string, EnhancedFloor>
