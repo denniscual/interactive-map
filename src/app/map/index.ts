@@ -119,33 +119,6 @@ const getProductWithAreas = (
  */
 const getCategorieWithAreas = () => {}
 
-// console.log('Test Suite: getProductsWithAreas')
-
-// const storeProducts: Products = [
-//   {
-//     id: 'prod1',
-//     categories: ['001_001'],
-//   },
-//   {
-//     id: 'prod2',
-//     categories: ['010_001_16'],
-//   },
-//   {
-//     id: 'prod3',
-//     categories: ['010_001_14'],
-//   },
-// ]
-
-// const productsWithAreas = getProductsWithAreas(
-//   storeAreas,
-//   storeProducts,
-//   (areaCatID: string, productCatID: string) => {
-//     const parsedCat = parseCategory(areaCatID)
-//     return productCatID.startsWith(parsedCat)
-//   },
-// )
-// // console.log(productsWithAreas)
-
 const areCategoriesEqual = (areaCatID: string, productCatID: string) => {
   const parsedCat = parseCategory(areaCatID)
   return productCatID.startsWith(parsedCat)
@@ -158,7 +131,35 @@ const getMapDataSource = (storeID: string) => {
   }
 }
 
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+// Store Areas
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
 const getStoreAreasArr = () => Object.values(storeAreas)
+
+const getStoreAreasByFloorID = (floorID: string) =>
+  getStoreAreasArr().filter(area => area.floorID === floorID)
+
+const getStoreArea = (
+  id: string,
+  areas: Types.StoreAreas | Types.StoreArea[] = storeAreas
+) => {
+  let storeArea
+  if (Array.isArray(areas)) {
+    storeArea = areas.find(area => area.id === id)
+    if (!storeArea) {
+      throw new Error(`Area ID'${id}' was not found in store areas collection.`)
+    }
+  } else {
+    storeArea = storeAreas[id]
+    if (!storeArea) {
+      throw new Error(`Area ID'${id}' was not found in store areas collection.`)
+    }
+  }
+  return storeArea
+}
 
 export {
   getMapDataSource,
@@ -167,4 +168,6 @@ export {
   getCategorieWithAreas,
   storeAreas,
   getStoreAreasArr,
+  getStoreArea,
+  getStoreAreasByFloorID,
 }

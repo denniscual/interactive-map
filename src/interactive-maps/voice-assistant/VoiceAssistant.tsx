@@ -5,12 +5,11 @@ import * as wayfinder from '../wayfinder'
 import { TextToSpeech } from '../speech'
 import * as utils from '../__utils__'
 import * as mapNodes from '../map-nodes'
-import { actionTypeErrorMsg } from '../constants'
+import { ACTION_ERROR_TYPE } from '../constants'
 import { appSetters } from '../app-state-manager'
 import * as types from '../types'
 import { MapNodes, DirectionType } from '../map-nodes/types'
 import { useDataSource } from '../contexts'
-import { arrayTypeAnnotation } from '@babel/types'
 
 const getShortestPathsForRoute = (
   route: types.EnhancedNavigation,
@@ -198,7 +197,7 @@ const speechAndWayfinderStatusReducer = (
       return initStatusState
     }
     default: {
-      throw new Error(actionTypeErrorMsg)
+      throw new Error(ACTION_ERROR_TYPE)
     }
   }
 }
@@ -356,7 +355,9 @@ const getShortestPathBasedOnTheAreas = ({
         comparedShortestPath.distance === 'Infinity'
       ) {
         throw utils.createError(
-          'Error caught while creating a wayfinder paths. Make sure that the startpoint and endpoint nodes are included into active map graph.'
+          new Error(
+            'Error caught while creating a wayfinder paths. Make sure that the startpoint and endpoint nodes are included into active map graph.'
+          )
         )
       }
       return shortestPath.distance - comparedShortestPath.distance

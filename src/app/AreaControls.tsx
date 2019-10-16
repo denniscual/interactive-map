@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { appStateManager } from '../interactive-maps'
-import { getStoreAreasArr } from './map'
+import { appStateManager, navigation, Types } from '../interactive-maps'
+import { getStoreAreasArr, getStoreAreasByFloorID, getStoreArea } from './map'
 
 const { useAppSelector, appSetters, appUtils } = appStateManager
 
@@ -11,36 +11,35 @@ const StyledAreaListItem = styled.li<{ active: boolean }>`
   cursor: pointer;
 `
 
-const storeAreas = getStoreAreasArr()
-
-const createAreas = (activeAreaID: string, floorID: string) => {
+const useAreaItems = (activeAreaID: Types.ActiveArea, floorID: string) => {
+  const mapDispatch = navigation.stateManager.useNavigationDispatch()
   const { activeArea } = appSetters
-  return Object.values(storeAreas)
-    .filter(area => area.floorID === floorID)
-    .map(area => {
-      return (
-        <StyledAreaListItem
-          key={area.id}
-          active={area.id === activeAreaID}
-          onClick={() => {
-            activeArea.setID(area.id)
-          }}
-        >
-          {area.label}
-        </StyledAreaListItem>
-      )
-    })
+  return React.useMemo(
+    () =>
+      getStoreAreasByFloorID(floorID).map(area => {
+        return (
+          <StyledAreaListItem
+            key={area.id}
+            active={area.id === activeAreaID}
+            onClick={() => {
+              activeArea.setID(area.id)
+              const storeArea = getStoreArea(area.id)
+              mapDispatch({ type: 'END_POINT', payload: storeArea })
+            }}
+          >
+            {area.label}
+          </StyledAreaListItem>
+        )
+      }),
+    [activeAreaID, floorID, activeArea, mapDispatch]
+  )
 }
 
 const AreasControls: React.FC<{
   floorID: string
 }> = ({ floorID }) => {
   const activeAreaID = useAppSelector(appUtils.getActiveAreaID)
-
-  const areaList = React.useMemo(
-    () => createAreas(activeAreaID as string, floorID),
-    [activeAreaID, floorID]
-  )
+  const areaList = useAreaItems(activeAreaID, floorID)
 
   return (
     <div>

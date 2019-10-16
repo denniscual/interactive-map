@@ -2,6 +2,7 @@ import React from 'react'
 import * as svg from './svg'
 import * as nodes from './nodes'
 import * as mapElements from './map-elements'
+import { GENERAL_ERROR_TYPE } from '../constants'
 import { MapNodeDirections, DirectionType } from '../map-nodes/types'
 import * as types from '../types'
 
@@ -13,19 +14,17 @@ const getShortestPaths = require('./get-shortest-paths').default
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
-// TODO: We need to use the `error stack` of the thrower function
-// so that we can simplified the error stack and much cleaner.
-const createError = (
-  description: string,
-  name: string = 'Interactive Maps Error'
-) => {
-  const error = new Error(description)
-  error.name = name
+const createError = (error: Error) => {
+  const newError = new Error(error.message)
+  newError.name = GENERAL_ERROR_TYPE
+  newError.stack = error.stack
   return error
 }
 
-const NotFoundNodeError = (path: string) =>
-  createError(`path '${path}' was not found in map nodes collection.`)
+const NotFoundNodeError = (path: string) => {
+  const err = new Error(`path '${path}' was not found in map nodes collection.`)
+  return createError(err)
+}
 
 const usePrevious: <T>(value: T) => T | null = value => {
   const prev = React.useRef<(typeof value) | null>(null)
@@ -59,7 +58,9 @@ const useCreateDispatch: <A>(
   if (!dispatch) {
     const _dispatchName = dispatchName || 'useDispatch'
     throw createError(
-      `Error caught while consuming a Dispatch Context. ${_dispatchName} must be used within a ${ProviderName}.`
+      new Error(
+        `Error caught while consuming a Dispatch Context. ${_dispatchName} must be used within a ${ProviderName}.`
+      )
     )
   }
   return dispatch
@@ -76,7 +77,9 @@ const useConsumeContext: <T>(
   const ctx = React.useContext(Context)
   if (!ctx) {
     throw createError(
-      `Error caught while consuming a Context. "useConsumeContext" must be used within a ${ProviderName}.`
+      new Error(
+        `Error caught while consuming a Context. "useConsumeContext" must be used within a ${ProviderName}.`
+      )
     )
   }
   return ctx
