@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { appStateManager, navigation, Types } from '../interactive-maps'
-import { getStoreAreasArr, getStoreAreasByFloorID, getStoreArea } from './map'
+import { appStateManager, Types, utils } from '../interactive-maps'
+import { getStoreAreasByFloorID, getStoreArea } from './map'
 
-const { useAppSelector, appSetters, appUtils } = appStateManager
+const { useAppSelector, appUtils } = appStateManager
 
 const StyledAreaListItem = styled.li<{ active: boolean }>`
   color: ${({ active }) => (active ? 'red' : 'black')};
@@ -12,8 +12,7 @@ const StyledAreaListItem = styled.li<{ active: boolean }>`
 `
 
 const useAreaItems = (activeAreaID: Types.ActiveArea, floorID: string) => {
-  const mapDispatch = navigation.stateManager.useNavigationDispatch()
-  const { activeArea } = appSetters
+  const wayfinder = utils.useWayfinder()
   return React.useMemo(
     () =>
       getStoreAreasByFloorID(floorID).map(area => {
@@ -22,16 +21,15 @@ const useAreaItems = (activeAreaID: Types.ActiveArea, floorID: string) => {
             key={area.id}
             active={area.id === activeAreaID}
             onClick={() => {
-              activeArea.setID(area.id)
               const storeArea = getStoreArea(area.id)
-              mapDispatch({ type: 'END_POINT', payload: storeArea })
+              wayfinder(storeArea)
             }}
           >
             {area.label}
           </StyledAreaListItem>
         )
       }),
-    [activeAreaID, floorID, activeArea, mapDispatch]
+    [activeAreaID, floorID, wayfinder]
   )
 }
 

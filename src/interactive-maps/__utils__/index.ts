@@ -66,26 +66,6 @@ const useCreateDispatch: <A>(
   return dispatch
 }
 /**
- * A type-safe hook for returning a `dispatch` based in `Context`. If the `dispatch` returned
- * by the `Context` is undefined due to consuming the `Context` outside its `Provider`, then it throws
- * a `Interactive Maps Error`. Else, it will return the `dispatch`.
- */
-const useConsumeContext: <T>(
-  Context: React.Context<T>,
-  ProviderName: string
-) => T = (Context, ProviderName) => {
-  const ctx = React.useContext(Context)
-  if (!ctx) {
-    throw createError(
-      new Error(
-        `Error caught while consuming a Context. "useConsumeContext" must be used within a ${ProviderName}.`
-      )
-    )
-  }
-  return ctx
-}
-
-/**
  * Creating a nodes directions of type Map. This is reverse tool to transform back
  * the nodes directions into Map coming from stringified version.
  */
@@ -226,5 +206,4 @@ export {
   noop,
   actionTypeErrorMsg,
   useCreateDispatch,
-  useConsumeContext,
 }

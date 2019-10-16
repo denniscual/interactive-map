@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useTransition, animated } from 'react-spring'
 import AreasControls from './AreaControls'
 import FloorControls from './FloorControls'
-import NavigationArea from './NavigationArea'
 import InteractiveMaps, {
   appStateManager,
   useInteractiveMaps,
@@ -64,7 +63,6 @@ const TestInteractiveMaps: React.FC = () => {
         <AreasControls floorID={activeFloorID} />
         <div style={{ width: '100%' }}>
           <FloorControls />
-          <NavigationArea />
           {transitionedMaps}
         </div>
       </div>

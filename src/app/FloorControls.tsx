@@ -1,37 +1,23 @@
 import React, { useMemo } from 'react'
-import { floors, navigation, appStateManager } from '../interactive-maps'
+import { floors, utils } from '../interactive-maps'
 
-// FIXME: Fix the issue when going to different, excluding the default floor, floor and do
-// navigation. It incorrectly behaves because this Component doesn't adopt
-// the new navigation logic.
-const FloorControls: React.FC = ({ children }) => {
-  const mapFloors = floors.stateManager.useFloors()
-  const { activeArea, activeFloor } = appStateManager.appSetters
-  const navigationDispatch = navigation.stateManager.useNavigationDispatch()
+const FloorControls: React.FC = () => {
+  const mapFloors = floors.stateManager.useStoreFloors()
+  const switchFloor = utils.useSwitchFloor()
 
   const switchers = useMemo(() => {
-    return mapFloors
-      .filter(map => map.id !== 'defaultFloor')
-      .map(map => {
-        const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
-          // update the active floor
-          activeFloor.setID(map.id)
-          // reset the navigation
-          navigationDispatch({ type: 'RESET' })
-          // clear the active area when switching floor
-          activeArea.setID('RESET')
-        }
-        return (
-          <button
-            key={map.id}
-            style={{ fontSize: 14, marginRight: 8 }}
-            onClick={handleClick}
-          >
-            {map.label}
-          </button>
-        )
-      })
-  }, [mapFloors, activeFloor, navigationDispatch, activeArea])
+    return mapFloors.map(map => {
+      return (
+        <button
+          key={map.id}
+          style={{ fontSize: 14, marginRight: 8 }}
+          onClick={() => switchFloor(map.id)}
+        >
+          {map.label}
+        </button>
+      )
+    })
+  }, [mapFloors, switchFloor])
 
   return (
     <div>

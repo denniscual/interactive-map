@@ -1,6 +1,9 @@
 import React, { createContext, useContext } from 'react'
 import ActiveFloor from './ActiveFloor'
+import { useConsumeContext } from '../contexts'
 import * as types from '../types'
+
+const floorsName = 'FloorsProvider'
 
 const FloorsContext = createContext<types.EnhancedFloors>([])
 
@@ -15,7 +18,14 @@ const FloorsProvider: React.FC<{
   )
 }
 
+FloorsContext.displayName = floorsName
+
 const useFloors = () => useContext(FloorsContext) as types.EnhancedFloors
+
+const useStoreFloors = () => {
+  const storeFloors = useConsumeContext(FloorsContext, floorsName)
+  return storeFloors.filter(floor => floor.id !== 'defaultFloor')
+}
 
 const useFloorsToObj = () => {
   const floors = useFloors()
@@ -44,4 +54,5 @@ export {
   useFloors,
   useFloorsToObj,
   useGetFloorByID,
+  useStoreFloors,
 }
