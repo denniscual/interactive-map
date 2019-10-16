@@ -322,6 +322,8 @@ const useCreateSpeechCollection = ({
   )
 }
 
+// TODO: Need to think if this would be the great name for this
+// because this name is already used.
 interface ShortestPath {
   paths: string[]
   distance: number | 'Infinity'
@@ -337,21 +339,7 @@ const getShortestPathBasedOnTheAreas = ({
   mapGraph: types.MapGraph
 }): ShortestPath => {
   const startpointAreaNodeID = storeAreas[route.startpoint].nodes[0]
-  const { nodes: endpointAreaNodes, type: endpointAreaType } = storeAreas[
-    route.endpoint
-  ]
-  if (endpointAreaType === 'portal') {
-    // portal area type must only assign 1 node same
-    // in device node.
-    return getShortestPathsForRoute(
-      {
-        ...route,
-        startpoint: startpointAreaNodeID,
-        endpoint: endpointAreaNodes[0],
-      },
-      mapGraph
-    ) as ShortestPath
-  }
+  const { nodes: endpointAreaNodes } = storeAreas[route.endpoint]
   return endpointAreaNodes
     .map(node => {
       return getShortestPathsForRoute(
@@ -376,7 +364,6 @@ const getShortestPathBasedOnTheAreas = ({
       }
       return shortestPath.distance - comparedShortestPath.distance
     })[0]
-  // Else if portal
 }
 
 const VoiceAssistant: React.FC<{

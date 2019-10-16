@@ -16,15 +16,15 @@ const floors = [
     map: maps.basement.map,
     // NOTE: The id value is an areaID.
     portals: [
-      // {
-      //   id: 'elevator-1',
-      //   type: 'twoWay',
-      // } as const,
       {
-        id: 'escalator-1-ground-level',
-        type: 'oneWay',
-        directionPoint: 'ENTRY',
+        id: 'elevator-1',
+        type: 'twoWay',
       } as const,
+      // {
+      //   id: 'escalator-1-ground-level',
+      //   type: 'oneWay',
+      //   directionPoint: 'ENTRY',
+      // } as const,
       {
         id: 'escalator-basement',
         type: 'oneWay',
@@ -50,14 +50,11 @@ const floors = [
     nodesDirections: nodeDirections,
     nodes: groundFloor.nodes,
     map: maps.groundFloor.map,
-    // TODO: We need to check the new implementation.
-    // TODO: We need to review how our algorithm will get
-    // the portal area based on the given navigation.
     portals: [
-      // {
-      //   id: 'elevator-1',
-      //   type: 'twoWay',
-      // } as const,
+      {
+        id: 'elevator-1',
+        type: 'twoWay',
+      } as const,
       {
         id: 'escalator-1-ground-level',
         type: 'oneWay',
@@ -107,7 +104,7 @@ const storeMapConfig: StoreMapConfig = {
   id: 'ES65DFT420',
   dataSource: {
     general: {
-      defaultStartingPoint: process.env.DEVICE_LOCATION || 'node_0.17108',
+      defaultStartingPoint: process.env.DEVICE_LOCATION || 'node_0.135',
       deviceAngle: parseInt(process.env.DEVICE_LOCATION || '180'),
       voiceDirectionIsEnabled: false,
       mapCSS,

@@ -438,7 +438,6 @@ const storeAreas: Types.StoreAreas = {
     label: 'Elevator 1',
     type: 'portal',
     nodes: ['node_elevator-1'],
-    categories: [],
     floorID: '',
   },
   'escalator-basement': {
@@ -446,7 +445,6 @@ const storeAreas: Types.StoreAreas = {
     label: 'Escalator (to Basement)',
     type: 'portal',
     nodes: ['node_escalator-to-basement'],
-    categories: [],
     floorID: '',
   },
   'escalator-1-ground-level': {
@@ -454,7 +452,6 @@ const storeAreas: Types.StoreAreas = {
     label: 'Escalator 1 (to Ground Level)',
     type: 'portal',
     nodes: ['node_escalator-to-ground-level'],
-    categories: [],
     floorID: '',
   },
 }

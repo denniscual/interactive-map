@@ -98,7 +98,7 @@ const MapsDataSource: React.FC<{
   dataSource: types.InteractiveMapsDataSource
   voiceAssistant?: types.VoiceAssistantModifier
 }> = ({ dataSource, children, voiceAssistant }) => {
-  const { defaultStartingPoint, voiceDirectionIsEnabled } = dataSource.general
+  const { defaultStartingPoint } = dataSource.general
   const { floors: enhancedFloors } = useDataSourceForInteractiveMap(dataSource)
   const defaultFloor = enhancedFloors[0].id
   const defaultNav = enhancedFloors[0].navigation

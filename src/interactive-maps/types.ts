@@ -177,12 +177,7 @@ export interface StoreArea {
   type: AreaType | string
   nodes: string[]
   floorID: string
-  /**
-   * TODO: We need to remove the `categories` property here. DON'T EVER USE CATEGORIES INSIDE
-   * LIBRARY IF POSSIBLE.
-   * We gonna add the original category value from dufry. Without parsing it.
-   */
-  categories: string[]
+  categories?: string[]
 }
 
 export interface StoreAreas {

@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
 import { sort } from 'ramda'
 import * as floors from '../floors'
-import { getShortestPaths } from '../__utils__'
+import { getShortestPaths, createError } from '../__utils__'
 import * as types from '../types'
+import { useDataSource } from '../contexts'
 
 /**
  * Getting the next floor ID. It is used if no direct portal, e.g elevator, is used
@@ -37,6 +38,7 @@ const getNextFloorIDAndPortalDirection = (
 
 /**
  * Getting the same portal in both startpoint and endpoint floors.
+ * Portal is returning an `areaID` not `nodeID`.
  */
 const getSamePortals = ({
   startpointFloorID,
@@ -73,22 +75,26 @@ const getSamePortals = ({
 
 /**
  * A recursive function which creates shortest portal given the startpoint and endpoint.
+ * TODO: We need to handle some internals data to prevent the `recursive error`.
+ * Instead of leaving the possibility of the error, we will just throw an error.
  */
 const createShortestPortal = ({
-  startpointPath,
+  startpointArea,
   startpointFloorID,
   endpointFloorID,
   mapFloorsObj,
   mapFloorsArr,
   mapGraph,
+  storeAreas,
 }: {
-  startpointPath: string
+  startpointArea: string
   startpointFloorID: string
   endpointFloorID: string
   mapFloorsObj: types.EnhancedFloorsObj
   mapFloorsArr: types.EnhancedFloors
   mapGraph: any // FIXME: Fix this type. Don't use any type.
   portalDirection?: 'UP' | 'DOWN'
+  storeAreas: types.StoreAreas
 }): types.ShortestPortal => {
   if (startpointFloorID && endpointFloorID) {
     const { portalDirection, nextFloorID } = getNextFloorIDAndPortalDirection(
@@ -96,6 +102,8 @@ const createShortestPortal = ({
       startpointFloorID,
       endpointFloorID
     )
+    // TODO: getSamePortals will also returned the `nodeID`. Right now,
+    // it only returned the `areaID`.
     const samePortals = getSamePortals({
       startpointFloorID,
       endpointFloorID,
@@ -104,26 +112,44 @@ const createShortestPortal = ({
     // Check if the samePortals is not empty. If not empty, there is portal used either elevator
     // or escalator.
     if (samePortals.length > 0) {
-      // Loop to portals to create an array where each portal has equivalent distance based in
+      // Loop to portals to create an array where each portal has distance based in
       // startpoint
       const enhancedPortals = samePortals.map(portal => {
+        // Portal area must only have 1 node.
+        // This should be a `device` or another `portal` area which only have
+        // 1 node.
+        const startpointNode = storeAreas[startpointArea].nodes[0]
+        const portalAreaNode = storeAreas[portal.id].nodes[0]
         // Getting the short route path from startpoint.path to portal
         const { distance } = getShortestPaths(
           mapGraph,
-          startpointPath,
-          portal.id
-        )
+          startpointNode,
+          portalAreaNode
+        ) as {
+          paths: string[]
+          distance: number | 'Infinity'
+        }
         return {
           id: portal.id,
           type: portal.type,
-          distance: distance as number,
+          distance: distance as number | 'Infinity',
         }
       })
+
       // Sort the portals based in distance in ascending order (small to big)
-      const portalsByShortestDistance = sort(
-        (portal, comparedPortal) => portal.distance - comparedPortal.distance,
-        enhancedPortals
-      )
+      const portalsByShortestDistance = sort((portal, comparedPortal) => {
+        if (
+          portal.distance === 'Infinity' ||
+          comparedPortal.distance === 'Infinity'
+        ) {
+          throw createError(
+            new Error(
+              'Error caught while creating a wayfinder paths. Make sure that the startpoint and endpoint nodes are included into active map graph.'
+            )
+          )
+        }
+        return portal.distance - comparedPortal.distance
+      }, enhancedPortals)
       // get the head to get the portal with shortest distance
       // Firstly, we gonna check if there is portal
       if (portalsByShortestDistance[0]) {
@@ -142,13 +168,14 @@ const createShortestPortal = ({
       // other floors just to go to the destination floor.
       // In creating indirect routing, we need to know the next floor to be used.
       return createShortestPortal({
-        startpointPath,
+        startpointArea,
         startpointFloorID,
         endpointFloorID: nextFloorID,
         mapFloorsArr,
         mapFloorsObj,
         mapGraph,
         portalDirection,
+        storeAreas,
       })
     }
   }
@@ -161,9 +188,8 @@ const createShortestPortal = ({
 }
 
 /**
- * Getting the shortest route portal between 2 areas.
+ * Getting the shortest route portal area between 2 areas.
  */
-
 const usePortalBetween2Areas = (
   startpoint: types.StoreArea,
   endpoint: types.StoreArea
@@ -173,6 +199,7 @@ const usePortalBetween2Areas = (
   const mapFloorsArr = floors.stateManager.useFloors()
   const mapFloors = floors.stateManager.useFloorsToObj()
   const givenFloor = mapFloors[startpoint.floorID as string]
+  const { storeAreas } = useDataSource()
   // If givenFloor is defined, we gonna assign its nodes.
   const startpointFloorNodes = givenFloor
     ? givenFloor.graphAndNodes
@@ -182,20 +209,22 @@ const usePortalBetween2Areas = (
   const { mapGraph } = startpointFloorNodes
   return useMemo(() => {
     if (
-      startpoint.floorID !== endpoint.floorID && // when the floor is not the same.
-      (startpoint.floorID && endpoint.floorID) // startpoint and endpoint floorID is defined.
+      startpoint.floorID &&
+      endpoint.floorID &&
+      startpoint.floorID !== endpoint.floorID // when the floor is not the same.
+      // startpoint and endpoint floorID is defined.
     ) {
       // creating shortest portal
       return createShortestPortal({
-        startpointPath: startpoint.id,
+        startpointArea: startpoint.id,
         startpointFloorID: startpoint.floorID,
         endpointFloorID: endpoint.floorID,
         mapFloorsObj: mapFloors,
         mapFloorsArr,
         mapGraph,
+        storeAreas,
       })
     }
-
     return {
       portal: '',
       portalDirection: '',
@@ -209,6 +238,7 @@ const usePortalBetween2Areas = (
     mapFloors,
     mapFloorsArr,
     mapGraph,
+    storeAreas,
   ])
 }
 

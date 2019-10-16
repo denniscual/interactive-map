@@ -79,24 +79,26 @@ const getProductsWithAreas = <T extends Product>(
       for (const key in areas) {
         const area = areas[key]
 
-        const foundProductCategory = area.categories.find(areaCat =>
-          equalityFn(areaCat, prodCat)
-        )
+        if (area.categories) {
+          const foundProductCategory = area.categories.find(areaCat =>
+            equalityFn(areaCat, prodCat)
+          )
 
-        if (foundProductCategory) {
-          // We need to this because product could be assigned in multiple
-          // areas. We need to check if the product is already given. If
-          // yes, we need to update the areas. Or else, we need to
-          // add it to the product collection.
-          const currentProduct = productsWithAreas[prod.id]
-          if (currentProduct) {
-            // update the current areas
-            currentProduct.areas.push(area)
-          } else {
-            // create a new product with areas
-            productsWithAreas[prod.id] = {
-              id: prod.id as string,
-              areas: [area],
+          if (foundProductCategory) {
+            // We need to this because product could be assigned in multiple
+            // areas. We need to check if the product is already given. If
+            // yes, we need to update the areas. Or else, we need to
+            // add it to the product collection.
+            const currentProduct = productsWithAreas[prod.id]
+            if (currentProduct) {
+              // update the current areas
+              currentProduct.areas.push(area)
+            } else {
+              // create a new product with areas
+              productsWithAreas[prod.id] = {
+                id: prod.id as string,
+                areas: [area],
+              }
             }
           }
         }

@@ -946,7 +946,6 @@ export const nodes = (
     <circle
       cx={1714}
       cy="1354"
-      data-area-id="escalator-basement"
       data-area-type="portal"
       data-direct-nodes={['node_0.5262']}
       data-floor-id="groundFloor"
