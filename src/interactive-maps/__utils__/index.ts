@@ -15,9 +15,7 @@ const getShortestPaths = require('./get-shortest-paths').default
 // ----------------------------------------------------------- //
 
 const createError = (error: Error) => {
-  const newError = new Error(error.message)
-  newError.name = GENERAL_ERROR_TYPE
-  newError.stack = error.stack
+  error.name = GENERAL_ERROR_TYPE
   return error
 }
 

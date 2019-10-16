@@ -230,7 +230,6 @@ export interface OriginalFloor {
   // mapCSS?: string // optional css styles for map
   activeAreaCSS?: string
   portals: Portal[]
-  navigation: Navigation
 }
 
 export interface Floor {
@@ -244,7 +243,6 @@ export interface Floor {
   // mapCSS?: string // optional css styles for map
   activeAreaCSS?: string
   portals: Portal[]
-  navigation: {}
 }
 
 export type Floors = Floor[]
@@ -295,7 +293,6 @@ export interface EnhancedFloor {
   nodesDirections: Record<string, Types.MapNodeDirections>
   Map: MapComponent
   portals: Portal[]
-  navigation: Navigation
   nodes: MapNodeElement[]
 }
 export type EnhancedFloors = EnhancedFloor[]
@@ -314,7 +311,9 @@ export type EnhancedFloorsObj = Record<string, EnhancedFloor>
 // for customising the look and feel of Interactive map
 // and other defaults.
 export interface Modifiers {
-  // Default startingPoint for navigation
+  /**
+   * Default startingPoint for navigation. Pass an `areaID` in here.
+   */
   defaultStartingPoint: string
   // Angle of the device
   deviceAngle: number

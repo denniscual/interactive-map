@@ -35,13 +35,6 @@ const useDataSourceForInteractiveMap = (
   const floors = parseOriginalFloors(originalFloors)
 
   return useMemo(() => {
-    // --------- Define Areas --------- //
-    // Transforming areas object into area array
-    const defaultNav = (dataSource.floors.find(
-      floor => floor.id === 'levelOneFloor'
-    ) as types.OriginalFloor).navigation
-
-    // --------- Define Floors --------- //
     const enhancedFloors: types.EnhancedFloors = floors.map(
       (floor, floorIdx) => {
         const areasJSXElements = utils.mapElements.parseToReactElements(
@@ -68,8 +61,6 @@ const useDataSourceForInteractiveMap = (
               voiceDirectionIsEnabled: general.voiceDirectionIsEnabled,
             }
           ),
-          // TODO: Little bit hacky, needs to clean a little bit.
-          navigation: originalFloors[floorIdx].navigation,
           nodes: floor.nodes.props.children,
         }
       }
@@ -91,17 +82,60 @@ const useDataSourceForInteractiveMap = (
       floors: addedFloors,
       floorsObj,
     }
-  }, [dataSource.floors, floors, activeArea.setID, general, originalFloors])
-} // Function createDataForInteractiveMap
+  }, [floors, activeArea.setID, general])
+}
+
+const initStoreArea: types.StoreArea = {
+  id: '',
+  label: '',
+  floorID: '',
+  nodes: [],
+  type: '',
+}
 
 const MapsDataSource: React.FC<{
   dataSource: types.InteractiveMapsDataSource
   voiceAssistant?: types.VoiceAssistantModifier
 }> = ({ dataSource, children, voiceAssistant }) => {
-  const { defaultStartingPoint } = dataSource.general
+  const {
+    storeAreas,
+    general: { defaultStartingPoint },
+  } = dataSource
   const { floors: enhancedFloors } = useDataSourceForInteractiveMap(dataSource)
-  const defaultFloor = enhancedFloors[0].id
-  const defaultNav = enhancedFloors[0].navigation
+  const startingpointArea = storeAreas[defaultStartingPoint]
+  if (!startingpointArea) {
+    throw utils.createError(
+      new Error(
+        `Area ID '${defaultStartingPoint}' was not found in store areas collection.`
+      )
+    )
+  }
+  if (!startingpointArea.floorID || startingpointArea.floorID === '') {
+    throw utils.createError(
+      new Error(
+        `Area ID '${defaultStartingPoint}' was not a "store" area type. Change the provided value
+        to a "store" type.`
+      )
+    )
+  }
+  const defaultFloor = enhancedFloors.find(
+    floor => floor.id === startingpointArea.floorID
+  )
+  if (!defaultFloor) {
+    throw utils.createError(
+      new Error(
+        `Floor ID '${
+          startingpointArea.floorID
+        }' was not found in floor collection.`
+      )
+    )
+  }
+
+  const defaultNav = {
+    startpoint: startingpointArea,
+    endpoint: initStoreArea,
+  }
+
   const defaultMapNodesObj = React.useMemo(() => {
     if (defaultNav.startpoint.floorID) {
       return utils.nodes.createMapNodesObj(
@@ -127,7 +161,7 @@ const MapsDataSource: React.FC<{
       >
         <floors.stateManager.FloorsProvider
           floors={enhancedFloors}
-          defaultActiveFloorID={defaultFloor}
+          defaultActiveFloorID={defaultFloor.id}
         >
           <nav.stateManager.NavigationProvider
             floors={enhancedFloors}
@@ -145,7 +179,7 @@ const InteractiveMaps: React.FC<{
   dataSource?: types.InteractiveMapsDataSource
   voiceAssistant?: types.VoiceAssistantModifier
   children: JSX.Element
-}> = ({ dataSource, ...otherProps }) =>
+}> = React.memo(({ dataSource, ...otherProps }) =>
   dataSource ? (
     // InteractiveMapsProvider is little confusing name for using consuming maps.
     <maps.InteractiveMapsProvider>
@@ -156,5 +190,6 @@ const InteractiveMaps: React.FC<{
   ) : (
     otherProps.children
   )
+)
 
 export default InteractiveMaps

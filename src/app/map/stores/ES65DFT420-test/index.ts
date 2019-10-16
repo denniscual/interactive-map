@@ -20,29 +20,17 @@ const floors = [
         id: 'elevator-1',
         type: 'twoWay',
       } as const,
-      // {
-      //   id: 'escalator-1-ground-level',
-      //   type: 'oneWay',
-      //   directionPoint: 'ENTRY',
-      // } as const,
+      {
+        id: 'escalator-1-ground-level',
+        type: 'oneWay',
+        directionPoint: 'ENTRY',
+      } as const,
       {
         id: 'escalator-basement',
         type: 'oneWay',
         directionPoint: 'EXIT',
       } as const,
     ],
-    // TODO: Remove this.
-    navigation: {
-      startpoint: storeAreas['mens-plus-sizes'],
-      endpoint: {
-        id: '',
-        floorID: '',
-        type: '',
-        categories: [],
-        nodes: [],
-        label: '',
-      },
-    },
   },
   {
     id: 'groundFloor',
@@ -66,18 +54,6 @@ const floors = [
         directionPoint: 'ENTRY',
       } as const,
     ],
-    // TODO: Remove this.
-    navigation: {
-      startpoint: storeAreas['womens-casual-bottoms'],
-      endpoint: {
-        id: '',
-        floorID: '',
-        type: '',
-        categories: [],
-        nodes: [],
-        label: '',
-      },
-    },
   },
   {
     id: 'levelOneFloor',
@@ -86,17 +62,6 @@ const floors = [
     nodes: levelTwoFloor.nodes,
     map: maps.levelTwoFloor.map,
     portals: [],
-    navigation: {
-      startpoint: storeAreas['point-of-sale'],
-      endpoint: {
-        id: '',
-        floorID: '',
-        type: '',
-        categories: [],
-        nodes: [],
-        label: '',
-      },
-    },
   },
 ]
 
@@ -104,7 +69,7 @@ const storeMapConfig: StoreMapConfig = {
   id: 'ES65DFT420',
   dataSource: {
     general: {
-      defaultStartingPoint: process.env.DEVICE_LOCATION || 'node_0.135',
+      defaultStartingPoint: process.env.DEVICE_LOCATION || 'mens-plus-sizes',
       deviceAngle: parseInt(process.env.DEVICE_LOCATION || '180'),
       voiceDirectionIsEnabled: false,
       mapCSS,

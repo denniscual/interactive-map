@@ -7,7 +7,6 @@ import * as appStateManager from './app-state-manager'
 import * as layouts from './layouts'
 import { useDataSource } from './contexts'
 import * as Types from './types'
-import { createError } from './__utils__'
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
