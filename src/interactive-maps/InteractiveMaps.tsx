@@ -141,7 +141,6 @@ const MapsDataSource: React.FC<{
   )
 }
 
-// TODO: We can make the voiceAssistant as a Context so that we can avoid props drilling
 const InteractiveMaps: React.FC<{
   dataSource?: types.InteractiveMapsDataSource
   voiceAssistant?: types.VoiceAssistantModifier

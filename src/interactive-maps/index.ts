@@ -7,6 +7,7 @@ import * as appStateManager from './app-state-manager'
 import * as layouts from './layouts'
 import { useDataSource } from './contexts'
 import * as Types from './types'
+import { createError } from './__utils__'
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -128,6 +129,27 @@ const useResetNavigation = () => {
   }, [navigationDispatch, resetActiveFloor])
 }
 
+/**
+ * This is useful when creating `DeviceMarker` wherein the returned data is
+ * coming from the set `startingPoint`.
+ */
+const useDeviceLocation = (): { x: number; y: number; angle: number } => {
+  const {
+    general: { defaultStartingPoint, deviceAngle },
+    storeAreas,
+  } = useDataSource()
+  const storeArea = storeAreas[defaultStartingPoint]
+  // device location area must only hold 1 node.
+  const {
+    graphAndNodes: { mapNodes },
+  } = floors.stateManager.useGetFloorByID(storeArea.floorID)
+  const deviceNode = mapNodes[storeArea.nodes[0]]
+  return {
+    ...deviceNode.coordinates,
+    angle: deviceAngle,
+  }
+}
+
 const utils = {
   useSwitchFloor,
   useWayfinder,
@@ -136,14 +158,7 @@ const utils = {
   useFloorItems,
   useMapItems,
   useResetNavigation,
+  useDeviceLocation,
 }
 
-export {
-  InteractiveMaps as default,
-  useInteractiveMaps,
-  floors,
-  appStateManager,
-  layouts,
-  utils,
-  Types,
-}
+export { InteractiveMaps as default, layouts, utils, Types }
