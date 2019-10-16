@@ -1,23 +1,26 @@
 import React, { useMemo } from 'react'
-import { floors, utils } from '../interactive-maps'
+import { utils } from '../interactive-maps'
 
-const FloorControls: React.FC = () => {
-  const mapFloors = floors.stateManager.useStoreFloors()
-  const switchFloor = utils.useSwitchFloor()
+const FloorControls = () => {
+  const floorItems = utils.useFloorItems()
 
   const switchers = useMemo(() => {
-    return mapFloors.map(map => {
-      return (
+    return floorItems.map(floor => {
+      return floor.isActive ? (
+        <span key={floor.id} style={{ fontSize: 14, marginRight: 8 }}>
+          {floor.label}
+        </span>
+      ) : (
         <button
-          key={map.id}
+          key={floor.id}
           style={{ fontSize: 14, marginRight: 8 }}
-          onClick={() => switchFloor(map.id)}
+          onClick={floor.onClick}
         >
-          {map.label}
+          {floor.label}
         </button>
       )
     })
-  }, [mapFloors, switchFloor])
+  }, [floorItems])
 
   return (
     <div>

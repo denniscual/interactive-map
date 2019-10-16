@@ -1,9 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { appStateManager, Types, utils } from '../interactive-maps'
-import { getStoreAreasByFloorID, getStoreArea } from './map'
-
-const { useAppSelector, appUtils } = appStateManager
+import { utils } from '../interactive-maps'
 
 const StyledAreaListItem = styled.li<{ active: boolean }>`
   color: ${({ active }) => (active ? 'red' : 'black')};
@@ -11,37 +8,26 @@ const StyledAreaListItem = styled.li<{ active: boolean }>`
   cursor: pointer;
 `
 
-const useAreaItems = (activeAreaID: Types.ActiveArea, floorID: string) => {
-  const wayfinder = utils.useWayfinder()
-  return React.useMemo(
+const AreasControls: React.FC<{}> = () => {
+  const areaItems = utils.useAreaItemsByFloor()
+  const areaElements = React.useMemo(
     () =>
-      getStoreAreasByFloorID(floorID).map(area => {
+      areaItems.map(area => {
         return (
           <StyledAreaListItem
             key={area.id}
-            active={area.id === activeAreaID}
-            onClick={() => {
-              const storeArea = getStoreArea(area.id)
-              wayfinder(storeArea)
-            }}
+            active={area.isActive}
+            onClick={area.onClick}
           >
             {area.label}
           </StyledAreaListItem>
         )
       }),
-    [activeAreaID, floorID, wayfinder]
+    [areaItems]
   )
-}
-
-const AreasControls: React.FC<{
-  floorID: string
-}> = ({ floorID }) => {
-  const activeAreaID = useAppSelector(appUtils.getActiveAreaID)
-  const areaList = useAreaItems(activeAreaID, floorID)
-
   return (
     <div>
-      <ul style={{ textAlign: 'left' }}>{areaList}</ul>
+      <ul style={{ textAlign: 'left' }}>{areaElements}</ul>
     </div>
   )
 }

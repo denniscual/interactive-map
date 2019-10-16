@@ -3,14 +3,8 @@ import styled from 'styled-components'
 import { useTransition, animated } from 'react-spring'
 import AreasControls from './AreaControls'
 import FloorControls from './FloorControls'
-import InteractiveMaps, {
-  appStateManager,
-  useInteractiveMaps,
-  Types,
-} from '../interactive-maps'
+import InteractiveMaps, { utils } from '../interactive-maps'
 import { getMapDataSource } from './map'
-
-const { useAppSelector, appUtils } = appStateManager
 
 const getStoreId = () => {
   const storeIdEnv = (process.env.STORE_ID || '').toUpperCase()
@@ -30,19 +24,18 @@ const StyledSection = styled.section`
 /**
  * Creating a transition effect between maps using react-spring
  */
-const useMapTransition1 = (
-  activeFloorID: string,
-  maps: Types.InteractiveMaps
-) => {
+const useMapTransition1 = () => {
+  const mapItems = utils.useMapItems()
+  const activeFloor = mapItems.find(map => map.isActive) || { id: '' }
   // create transition effect
-  const transitions = useTransition(activeFloorID, null, {
+  const transitions = useTransition(activeFloor.id, null, {
     from: { position: 'relative', opacity: 0, height: '100%' },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
   })
   return React.useMemo(() => {
     const transitionedMaps = transitions.map(({ item, key, props }) => {
-      const activeMap = maps.find(map => map.id === activeFloorID)
+      const activeMap = mapItems.find(map => map.isActive)
       return (
         <animated.div key={key} style={props}>
           {activeMap && <activeMap.Component />}
@@ -50,17 +43,15 @@ const useMapTransition1 = (
       )
     })
     return transitionedMaps
-  }, [activeFloorID, maps, transitions])
+  }, [mapItems, transitions])
 }
 
 const TestInteractiveMaps: React.FC = () => {
-  const activeFloorID = useAppSelector(appUtils.getActiveFloor)
-  const maps = useInteractiveMaps()
-  const transitionedMaps = useMapTransition1(activeFloorID, maps)
+  const transitionedMaps = useMapTransition1()
   return (
     <StyledSection>
       <div style={{ display: 'flex' }}>
-        <AreasControls floorID={activeFloorID} />
+        <AreasControls />
         <div style={{ width: '100%' }}>
           <FloorControls />
           {transitionedMaps}
