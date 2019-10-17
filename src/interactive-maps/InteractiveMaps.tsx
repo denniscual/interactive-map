@@ -12,13 +12,6 @@ import { DataSourceProvider } from './contexts'
 import { MapNodeDirections } from './map-nodes/types'
 import * as types from './types'
 
-const parseOriginalFloors = (floors: types.OriginalFloor[]): types.Floors =>
-  floors.map(floor => ({
-    ...floor,
-    graphAndNodes: utils.createMapGraphAndMapNodes(floor.nodes),
-    nodesDirections: utils.createNodesDirections(floor.nodesDirections),
-  }))
-
 /**
  * Creating interactive map based in given floors, stores, and portals.*
  * These data are passed by the CMS in the future.
@@ -29,45 +22,40 @@ const useDataSourceForInteractiveMap = (
   floors: types.EnhancedFloors
   floorsObj: types.EnhancedFloorsObj
 } => {
-  const { general, floors: originalFloors } = dataSource
+  const { general, floors } = dataSource
   const { activeArea } = appSetters
 
-  const floors = parseOriginalFloors(originalFloors)
-
   return useMemo(() => {
-    const enhancedFloors: types.EnhancedFloors = floors.map(
-      (floor, floorIdx) => {
-        const areasJSXElements = utils.mapElements.parseToReactElements(
-          floor.map,
-          activeArea.setID
-        )
-        return {
-          ...floor,
-          Map: maps.createMapComponent(
-            // Data use for creating the map
-            {
-              elements: areasJSXElements,
-              nodes: originalFloors[floorIdx].nodes,
-              props: utils.mapElements.getSVGRootProps(floor.map),
-              // If the floor map has its own css styles, use it. Else, use the general
-              // map css
-              css: floor.mapCSS || general.mapCSS,
-              floorID: floor.id,
-            },
-            // Modifiers, use for enabling or disabling map features like map-editor.
-            {
-              nodesVisible: general.isNodesVisible,
-              mapEditorVisible: general.isMapEditorVisible,
-              voiceDirectionIsEnabled: general.voiceDirectionIsEnabled,
-            }
-          ),
-          // Pass the original nodes because it holds the area and node data which
-          // we can use for running and debugging.
-          graphAndNodes: floor.graphAndNodes,
-          nodes: originalFloors[floorIdx].nodes,
-        }
+    const enhancedFloors: types.EnhancedFloors = floors.map(floor => {
+      const areasJSXElements = utils.mapElements.parseToReactElements(
+        floor.map,
+        activeArea.setID
+      )
+      return {
+        ...floor,
+        Map: maps.createMapComponent(
+          // Data use for creating the map
+          {
+            elements: areasJSXElements,
+            nodes: floor.nodes,
+            props: utils.mapElements.getSVGRootProps(floor.map),
+            // If the floor map has its own css styles, use it. Else, use the general
+            // map css
+            css: floor.mapCSS || general.mapCSS,
+            floorID: floor.id,
+          },
+          // Modifiers, use for enabling or disabling map features like map-editor.
+          {
+            nodesVisible: general.isNodesVisible,
+            mapEditorVisible: general.isMapEditorVisible,
+            voiceDirectionIsEnabled: general.voiceDirectionIsEnabled,
+          }
+        ),
+        graphAndNodes: utils.createMapGraphAndMapNodes(floor.nodes),
+        nodesDirections: utils.createNodesDirections(floor.nodesDirections),
+        nodes: floor.nodes,
       }
-    )
+    })
     const addedFloors = enhancedFloors.concat({
       ...enhancedFloors[0],
       id: 'defaultFloor',
@@ -85,7 +73,7 @@ const useDataSourceForInteractiveMap = (
       floors: addedFloors,
       floorsObj,
     }
-  }, [floors, activeArea.setID, general, originalFloors])
+  }, [floors, activeArea.setID, general])
 }
 
 const initStoreArea: types.StoreArea = {
@@ -121,13 +109,11 @@ const MapsDataSource: React.FC<{
       )
     )
   }
+
   const defaultFloor = enhancedFloors.find(
     floor => floor.id === startingpointArea.floorID
   )
-  const originalDefaultFloor = dataSource.floors.find(
-    floor => floor.id === startingpointArea.floorID
-  )
-  if (!defaultFloor || !originalDefaultFloor) {
+  if (!defaultFloor) {
     throw utils.createError(
       new Error(
         `Floor ID '${

@@ -221,9 +221,10 @@ export interface MapCSS {
   activeArea: string
 }
 
-export interface OriginalFloor {
+export interface Floor {
   id: string
   label: string
+  graphAndNodes: MapGraphAndMapNodes
   nodesDirections: {
     id: string
     directions: (string | string[])[][]
@@ -236,29 +237,10 @@ export interface OriginalFloor {
   portals: Portal[]
 }
 
-export interface Floor {
-  id: string
-  label: string
-  graphAndNodes: MapGraphAndMapNodes // react elements parse into map graph and nodes nodes: JSX.Element
-  nodesDirections: Record<string, Types.MapNodeDirections>
-  nodes: MapNodesProps[] // svg nodes or points
-  map: string // svg map => wrap into a string
-  mapCSS?: MapCSS
-  // mapCSS?: string // optional css styles for map
-  activeAreaCSS?: string
-  portals: Portal[]
-}
-
 export type Floors = Floor[]
 
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-// Enhanced Floors
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-
 // FIXME: We need to review the type name for this because the name has collision
-// to other type. Means, there is also a type declared in here where the name is
+// to other type. Default in typescript. Means, there is also a type declared in here where the name is
 // the same on this name.
 export interface Map {
   Component: React.FC
@@ -340,7 +322,7 @@ export interface Modifiers {
 // ----------------------------------------------------------- //
 export interface InteractiveMapsDataSource {
   general: Modifiers
-  floors: OriginalFloor[]
+  floors: Omit<Floor, 'graphAndNodes'>[]
   storeAreas: StoreAreas
 }
 
