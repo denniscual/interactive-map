@@ -34,23 +34,24 @@ const useSwitchFloor = () => {
 
 const useWayfinder = () => {
   const { activeArea, activeFloor } = appStateManager.appSetters
-  const mapNavigation = navigation.stateManager.useNavigation()
+  const { storeAreas, general } = useDataSource()
   const navigationDispatch = navigation.stateManager.useNavigationDispatch()
   return React.useCallback(
     (area: Types.StoreArea) => {
-      const { startpoint } = mapNavigation
-      if (!startpoint) {
-        throw new Error(
-          'No navigation startpoint. Make sure that the startpoint is properly set'
-        )
-      }
+      const startpointArea = storeAreas[general.defaultStartingPoint]
       // FIXME: THis should point to default floor ID not on the
       // current floor id
-      activeFloor.setID(startpoint.floorID)
+      activeFloor.setID(startpointArea.floorID)
       activeArea.setID('RESET')
       navigationDispatch({ type: 'RESET', payload: { endpoint: area } })
     },
-    [activeArea, navigationDispatch, activeFloor, mapNavigation]
+    [
+      activeArea,
+      navigationDispatch,
+      activeFloor,
+      storeAreas,
+      general.defaultStartingPoint,
+    ]
   )
 }
 

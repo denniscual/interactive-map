@@ -80,7 +80,7 @@ const useNavigationReducer: (
       }
     }
     if (type === 'RESET') {
-      return state
+      return defaultNav
     }
     // If the action doesn't recognize by the reducer, return the current state.
     throw new Error(`Action doesn't recognize by the navigation reducer.`)
