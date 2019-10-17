@@ -107,12 +107,11 @@ const MapFieldArray: React.FC<{
   )
 }
 
-const StoreAreaInspector = () => {
-  const { storeAreas, activeAreaID, activeFloorID } = useAppSelector(state => ({
-    storeAreas: state.storeAreas,
-    activeAreaID: state.activeArea.id,
-    activeFloorID: state.activeFloor,
-  }))
+const StoreAreaInspector: React.FC<{
+  storeAreas: types.StoreAreas
+  activeFloorID: string
+}> = ({ storeAreas, activeFloorID }) => {
+  const activeAreaID = useAppSelector(appUtils.getActiveAreaID) as string
   let storeArea = omit(
     ['floorID', 'description'],
     storeAreas[activeAreaID] || initStoreArea
@@ -865,7 +864,10 @@ const InternalMapEditor: React.FC<MapEditorProps> = ({
   floorID,
   children,
 }) => {
-  const activeFloorID = useAppSelector(appUtils.getActiveFloor)
+  const { activeFloorID, storeAreas } = useAppSelector(state => ({
+    activeFloorID: state.activeFloor,
+    storeAreas: state.storeAreas,
+  }))
   const [activeMapNode, setActiveMapNode] = React.useState('')
   const [activeTool, activeToolDispatch] = React.useReducer(
     activeToolReducer,
@@ -973,7 +975,10 @@ const InternalMapEditor: React.FC<MapEditorProps> = ({
             />
           </tools.ToolboxItem>
           <tools.ToolboxItem title="Area Inspector">
-            <StoreAreaInspector />
+            <StoreAreaInspector
+              activeFloorID={activeFloorID}
+              storeAreas={storeAreas}
+            />
           </tools.ToolboxItem>
         </div>
         <MapNodesPanel
@@ -990,8 +995,6 @@ const InternalMapEditor: React.FC<MapEditorProps> = ({
           activeTool={activeTool}
           onClick={addingMapNodes}
         >
-          {/* <g {...mapZoom}>
-          </g> */}
           {children}
           <DirectNodesPaths activeMapNodeID={activeMapNode} />
           <MapNodeDirectionPaths activeMapNodeID={activeMapNode} />
@@ -1002,8 +1005,10 @@ const InternalMapEditor: React.FC<MapEditorProps> = ({
       <generatedCodes.Nodes
         activeFloorID={activeFloorID}
         mapNodeElements={mapNodeElements}
+        storeAreas={storeAreas}
       />
       <generatedCodes.Directions />
+      <generatedCodes.Portals storeAreas={storeAreas} />
     </DnD.DroppableMap>
   )
 }

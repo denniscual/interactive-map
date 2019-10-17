@@ -1,7 +1,6 @@
 import React from 'react'
 import FileSaver from 'file-saver'
 import SyntaxHighlighter from './SyntaxHighlighter'
-import reactElementToJSXString from 'react-element-to-jsx-string'
 import prettier from 'prettier/standalone'
 import prettierTS from 'prettier/parser-typescript'
 import * as rootMapNodes from '../../map-nodes'
@@ -88,30 +87,44 @@ const GeneratedCodes: React.FC<{
   )
 })
 
+const filterStoreAreas: (
+  storeAreas: types.StoreAreas,
+  predicateFn: (area: types.StoreArea, idx?: number) => boolean
+) => types.StoreAreas = (storeAreas: types.StoreAreas, predicateFn) =>
+  Object.values(storeAreas)
+    .filter(predicateFn)
+    .reduce(
+      (acc, value) => ({
+        ...acc,
+        [value.id]: value,
+      }),
+      {}
+    )
+
 const Nodes: React.FC<{
   mapNodeElements: types.MapNodeElement[]
   activeFloorID: string
-}> = ({ mapNodeElements, activeFloorID }) => {
-  const mapNodesByID = rootMapNodes.mapNodesStateManager.useGetMapNodesByKey(
-    'data-floor-id',
-    activeFloorID
-  )
-
+  storeAreas: types.StoreAreas
+}> = ({ mapNodeElements, activeFloorID, storeAreas }) => {
   const mapCodes = React.useMemo(() => {
     const importingReactModuleCode = `import React from 'react'`
-
-    // // ------- Code for stores -------- //
-    // const stores = groupAreasByType(mapNodesByID, types.AreaType.STORE)
-    // const storesCode = createCodeVariableWithValue(
-    //   'stores',
-    //   JSON.stringify(stores)
-    // )
 
     // ------- Code for directions -------- //
     // NOTE: This is just dummy
     const directionsCode = createCodeVariableWithValue(
       'directions',
       JSON.stringify([])
+    )
+
+    // ------- Code for store areas -------- //
+    const filteredStoreAreas = filterStoreAreas(
+      storeAreas,
+      (area: types.StoreArea) => area.floorID === activeFloorID
+    )
+
+    const storeAreasCode = createCodeVariableWithValue(
+      'storeAreas',
+      JSON.stringify(filteredStoreAreas)
     )
 
     // ------- Code for nodes -------- //
@@ -137,8 +150,8 @@ const Nodes: React.FC<{
       JSON.stringify(newMapNodes)
     )
 
-    return [importingReactModuleCode, directionsCode, nodesCode]
-  }, [activeFloorID, mapNodeElements])
+    return [importingReactModuleCode, directionsCode, storeAreasCode, nodesCode]
+  }, [activeFloorID, mapNodeElements, storeAreas])
 
   return <GeneratedCodes title="Nodes" mapCodes={mapCodes} />
 }
@@ -146,7 +159,6 @@ const Nodes: React.FC<{
 const Directions = () => {
   const mapNodesDirectionsArray = rootMapNodes.mapNodesDirectionsStateManager.useMapNodesDirectionsArray()
   const mapCodes = React.useMemo(() => {
-    // ------- Code for directions -------- //
     const directionsCode = createCodeVariableWithValue(
       'directions',
       JSON.stringify(mapNodesDirectionsArray)
@@ -156,4 +168,21 @@ const Directions = () => {
   return <GeneratedCodes title="Node Directions" mapCodes={mapCodes} />
 }
 
-export { Nodes, Directions }
+const Portals: React.FC<{ storeAreas: types.StoreAreas }> = ({
+  storeAreas,
+}) => {
+  const mapCodes = React.useMemo(() => {
+    const filteredPortalAreas = filterStoreAreas(
+      storeAreas,
+      (area: types.StoreArea) => area.type === 'portal'
+    )
+    const portalCode = createCodeVariableWithValue(
+      'portals',
+      JSON.stringify(filteredPortalAreas)
+    )
+    return [portalCode]
+  }, [storeAreas])
+  return <GeneratedCodes title="Portal Areas" mapCodes={mapCodes} />
+}
+
+export { Nodes, Portals, Directions }

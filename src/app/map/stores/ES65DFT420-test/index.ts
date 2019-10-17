@@ -69,7 +69,7 @@ const storeMapConfig: StoreMapConfig = {
   id: 'ES65DFT420',
   dataSource: {
     general: {
-      defaultStartingPoint: process.env.DEVICE_LOCATION || 'mens-plus-sizes',
+      defaultStartingPoint: process.env.DEVICE_LOCATION || 'fashion-and-luxury',
       deviceAngle: parseInt(process.env.DEVICE_LOCATION || '180'),
       voiceDirectionIsEnabled: false,
       mapCSS,
