@@ -68,7 +68,6 @@ export interface MapNodesProps {
 }
 
 export type MapNodeElement = React.ReactElement<MapNodesProps>
-export type MapCircle = React.ReactElement<MapNodesProps>
 export type MapNodesObj = Record<string, MapNodesProps>
 export type MapNodesDispatch = React.Dispatch<MapNodesAction>
 

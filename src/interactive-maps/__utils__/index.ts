@@ -112,32 +112,6 @@ const getDistanceBetweenNodes = (
   return Math.sqrt(xs + ys)
 }
 
-const transformMapCirclesToNodes = (mapCircles: types.MapCircle[]) => {
-  const nodeArr = React.Children.map(mapCircles, circle => {
-    const { id, cx, cy } = circle.props
-    const directNodes = circle.props['data-direct-nodes']
-    // We gonna define a node based on the circle element.
-    const node: types.MapNode = {
-      id,
-      coordinates: {
-        x: cx,
-        y: cy,
-      },
-      directNodes,
-    }
-    return node
-  })
-  // We need to create nodes here which is of type Nodes.
-  const nodes: types.MapNodes = nodeArr.reduce(
-    (acc, node) => ({
-      ...acc,
-      [node.id]: node,
-    }),
-    {}
-  )
-  return nodes
-}
-
 export const createMapGraphAndMapNodes = (
   mapNodes: types.MapNodesProps[]
 ): types.MapGraphAndMapNodes => {
