@@ -44,9 +44,11 @@ const useWayfinder = () => {
           'No navigation startpoint. Make sure that the startpoint is properly set'
         )
       }
+      // FIXME: THis should point to default floor ID not on the
+      // current floor id
       activeFloor.setID(startpoint.floorID)
       activeArea.setID('RESET')
-      navigationDispatch({ type: 'END_POINT', payload: area })
+      navigationDispatch({ type: 'RESET', payload: { endpoint: area } })
     },
     [activeArea, navigationDispatch, activeFloor, mapNavigation]
   )
