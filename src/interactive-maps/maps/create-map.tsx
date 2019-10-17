@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import MapEditor from '../map-editor'
 import { Wayfinder } from '../wayfinder'
 import { useAppSelector, appUtils, AppState } from '../app-state-manager'
 import { useDataSource } from '../contexts'
@@ -37,7 +38,7 @@ const composeActiveAreaCSS = (areas: types.ActiveArea, activeAreaCSS: string) =>
 const CopiedStartpointArea: React.FC<{ startpoint: string }> = ({
   startpoint,
 }) => {
-  const { storeAreas } = useDataSource()
+  const storeAreas = useAppSelector(appUtils.getStoreAreas)
   const startpointArea = storeAreas[startpoint]
   return (
     <g id="copied-startpoint-area" className="portal-area">
@@ -97,34 +98,34 @@ const createMapComponent = (map: MapComponent, modifiers: Modifiers) => {
     // ------ Modify the styles of MapContainer ------------- //
     const activeAreaCSS = composeActiveAreaCSS(activeAreaID, css.activeArea)
 
-    // TODO: Reduce the duplication in here.
-    // if (mapEditorVisible) {
-    //   return (
-    //     <MapEditor
-    //       svgProps={props}
-    //       mapCSS={css.map}
-    //       activeAreaCSS={activeAreaCSS}
-    //       mapNodesElements={nodes.props.children}
-    //       floorID={floorID}
-    //     >
-    //       {mapElements}
-    //       {nodesVisible && nodes}
-    //       {/* If voiceDirectionIsEnabled, we need to show the Wayfinder in delay manner
-    //     through waiting the welcomeSpeech becomes true */}
-    //       {voiceDirectionIsEnabled ? (
-    //         welcomeSpeech && <Wayfinder route={route} />
-    //       ) : (
-    //         <Wayfinder route={route} />
-    //       )}
-    //       <CopiedStartpointArea startpoint={route.startpoint} />
-    //       <CopiedEndpointArea />
-    //       {children}
-    //       {startpointMarker}
-    //     </MapEditor>
-    //   )
-    // }
+    const nodeElements = React.useMemo(() => createNodeElements(nodes), [])
 
-    console.log(createNodeElements(nodes))
+    // TODO: Reduce the duplication in here.
+    if (mapEditorVisible) {
+      return (
+        <MapEditor
+          svgProps={props}
+          mapCSS={css.map}
+          activeAreaCSS={activeAreaCSS}
+          mapNodesElements={nodeElements}
+          floorID={floorID}
+        >
+          {mapElements}
+          {nodesVisible && nodeElements}
+          {/* If voiceDirectionIsEnabled, we need to show the Wayfinder in delay manner
+        through waiting the welcomeSpeech becomes true */}
+          {voiceDirectionIsEnabled ? (
+            welcomeSpeech && <Wayfinder route={route} />
+          ) : (
+            <Wayfinder route={route} />
+          )}
+          <CopiedStartpointArea startpoint={route.startpoint} />
+          <CopiedEndpointArea />
+          {children}
+          {startpointMarker}
+        </MapEditor>
+      )
+    }
 
     return (
       <StyledMapContainer
@@ -133,7 +134,7 @@ const createMapComponent = (map: MapComponent, modifiers: Modifiers) => {
         activeAreaCSS={activeAreaCSS}
       >
         {mapElements}
-        {/* {nodesVisible && createNodeElements(nodes)} */}
+        {nodesVisible && nodeElements}
         {/* If voiceDirectionIsEnabled, we need to show the Wayfinder in delay manner
         through waiting the welcomeSpeech becomes true */}
         {voiceDirectionIsEnabled ? (

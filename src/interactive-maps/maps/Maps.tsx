@@ -76,9 +76,11 @@ const useMaps = (route: types.Route) => {
  * Note: We are dealing with `areaID` now, not `nodeID`.
  */
 const useNextActiveArea = (endpoint: string, portal: string) => {
-  const { storeAreas } = useDataSource()
+  const { activeFloorID, storeAreas } = useAppSelector(state => ({
+    activeFloorID: state.activeFloor,
+    storeAreas: state.storeAreas,
+  }))
   const { activeArea } = appSetters
-  const activeFloorID = useAppSelector(appUtils.getActiveFloor)
   const endpointArea = storeAreas[endpoint]
 
   React.useEffect(

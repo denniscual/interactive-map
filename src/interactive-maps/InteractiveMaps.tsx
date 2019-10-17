@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { omit } from 'ramda'
 import * as maps from './maps'
 import * as floors from './floors'
 import * as nav from './navigation'
@@ -11,6 +12,7 @@ import * as utils from './__utils__'
 import { DataSourceProvider } from './contexts'
 import { MapNodeDirections } from './map-nodes/types'
 import * as types from './types'
+import { DnD } from './map-editor'
 
 /**
  * Creating interactive map based in given floors, stores, and portals.*
@@ -146,6 +148,17 @@ const MapsDataSource: React.FC<{
     return new Map(Object.entries(nodes))
   }, [enhancedFloors])
 
+  // Init store areas
+  React.useEffect(
+    function setStoreAreas() {
+      if (!storeAreas) {
+        throw utils.createError(new Error(`Store areas is undefined.`))
+      }
+      appSetters.storeAreas.setAreas(storeAreas)
+    },
+    [storeAreas]
+  )
+
   return (
     <mapNodesStateManager.MapNodesProvider mapNodesObj={defaultMapNodesObj}>
       <mapNodesDirectionsStateManager.MapNodesDirectionsProvider
@@ -159,7 +172,9 @@ const MapsDataSource: React.FC<{
             floors={enhancedFloors}
             defaultNav={defaultNav}
           >
-            <maps.Maps voiceAssistant={voiceAssistant}>{children}</maps.Maps>
+            <DnD.MapDragDropProvider>
+              <maps.Maps voiceAssistant={voiceAssistant}>{children}</maps.Maps>
+            </DnD.MapDragDropProvider>
           </nav.stateManager.NavigationProvider>
         </floors.stateManager.FloorsProvider>
       </mapNodesDirectionsStateManager.MapNodesDirectionsProvider>
@@ -171,17 +186,24 @@ const InteractiveMaps: React.FC<{
   dataSource?: types.InteractiveMapsDataSource
   voiceAssistant?: types.VoiceAssistantModifier
   children: JSX.Element
-}> = React.memo(({ dataSource, ...otherProps }) =>
-  dataSource ? (
+}> = React.memo(({ dataSource, ...otherProps }) => {
+  return dataSource ? (
     // InteractiveMapsProvider is little confusing name for using consuming maps.
     <maps.InteractiveMapsProvider>
-      <DataSourceProvider value={dataSource}>
+      <DataSourceProvider
+        value={
+          omit(['storeAreas'], dataSource) as Omit<
+            types.InteractiveMapsDataSource,
+            'storeAreas'
+          >
+        }
+      >
         <MapsDataSource dataSource={dataSource} {...otherProps} />
       </DataSourceProvider>
     </maps.InteractiveMapsProvider>
   ) : (
     otherProps.children
   )
-)
+})
 
 export default InteractiveMaps

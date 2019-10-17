@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { sort } from 'ramda'
 import * as floors from '../floors'
 import { getShortestPaths, createError } from '../__utils__'
+import { useAppSelector, appUtils } from '../app-state-manager'
 import * as types from '../types'
 import { useDataSource } from '../contexts'
 
@@ -199,7 +200,7 @@ const usePortalBetween2Areas = (
   const mapFloorsArr = floors.stateManager.useFloors()
   const mapFloors = floors.stateManager.useFloorsToObj()
   const givenFloor = mapFloors[startpoint.floorID as string]
-  const { storeAreas } = useDataSource()
+  const storeAreas = useAppSelector(appUtils.getStoreAreas)
   // If givenFloor is defined, we gonna assign its nodes.
   const startpointFloorNodes = givenFloor
     ? givenFloor.graphAndNodes

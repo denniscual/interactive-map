@@ -38,29 +38,6 @@ const mergeCodes = (...codes: string[]) => {
   return codes.reduce((acc, value) => acc.concat(value).concat('\n'), '')
 }
 
-const groupAreasByType = (
-  mapNodes: types.MapNodesProps[],
-  areaType: types.AreaType
-) => {
-  return mapNodes
-    .filter(node => node['data-area-type'] === areaType)
-    .map(node => ({
-      id: node.id,
-      label: node['data-label'],
-      areaID: node['data-area-id'],
-      // only add floorID property if the `areaType` is store.
-      floorID:
-        node['data-area-type'] === 'store' ? node['data-floor-id'] : undefined,
-    }))
-    .reduce(
-      (acc, value) => ({
-        ...acc,
-        [value.id]: value,
-      }),
-      {}
-    ) as types.CollectionOfEntity
-}
-
 const generatedCodesCSS = `
   margin-bottom: 4em;
   max-height: 1000px;
@@ -119,20 +96,16 @@ const Nodes: React.FC<{
     'data-floor-id',
     activeFloorID
   )
-  const mapNodesWhichArePortal = rootMapNodes.mapNodesStateManager.useGetMapNodesByKey(
-    'data-area-type',
-    'portal'
-  )
 
   const mapCodes = React.useMemo(() => {
     const importingReactModuleCode = `import React from 'react'`
 
-    // ------- Code for stores -------- //
-    const stores = groupAreasByType(mapNodesByID, types.AreaType.STORE)
-    const storesCode = createCodeVariableWithValue(
-      'stores',
-      JSON.stringify(stores)
-    )
+    // // ------- Code for stores -------- //
+    // const stores = groupAreasByType(mapNodesByID, types.AreaType.STORE)
+    // const storesCode = createCodeVariableWithValue(
+    //   'stores',
+    //   JSON.stringify(stores)
+    // )
 
     // ------- Code for directions -------- //
     // NOTE: This is just dummy
@@ -141,54 +114,31 @@ const Nodes: React.FC<{
       JSON.stringify([])
     )
 
-    // ------- Code for portals -------- //
-    const portals = groupAreasByType(
-      mapNodesWhichArePortal,
-      types.AreaType.PORTAL
-    )
-    const portalsCode = createCodeVariableWithValue(
-      'portals',
-      JSON.stringify(portals)
-    )
-
     // ------- Code for nodes -------- //
-    const newMapNodeElements = React.Children.map(
-      mapNodeElements,
+    const newMapNodes = React.Children.toArray(mapNodeElements).map(
       nodeElement => {
         const { props } = nodeElement
-        const { id, fill, r, cx, cy } = props
         if (props['data-floor-id'] === activeFloorID) {
-          return (
-            <circle
-              id={id}
-              fill={fill}
-              r={r}
-              cx={cx}
-              cy={cy}
-              data-key-id={props['data-key-id']}
-              data-label={props['data-label']}
-              data-direct-nodes={props['data-direct-nodes']}
-              data-area-type={props['data-area-type']}
-              data-area-id={props['data-area-id']}
-              data-floor-id={props['data-floor-id']}
-            />
-          )
+          const value: types.MapNodesProps = {
+            id: props.id,
+            cx: props.cx,
+            cy: props.cy,
+            'data-direct-nodes': props['data-direct-nodes'],
+            'data-floor-id': props['data-floor-id'],
+            'data-key-id': props['data-key-id'],
+          }
+          return value
         }
       }
     )
-    const stringifyElements: string = reactElementToJSXString(
-      <g id="nodes">{newMapNodeElements}</g>
-    )
-    const nodesCode = createCodeVariableWithValue('nodes', stringifyElements)
 
-    return [
-      importingReactModuleCode,
-      directionsCode,
-      storesCode,
-      portalsCode,
-      nodesCode,
-    ]
-  }, [activeFloorID, mapNodeElements, mapNodesByID, mapNodesWhichArePortal])
+    const nodesCode = createCodeVariableWithValue(
+      'nodes',
+      JSON.stringify(newMapNodes)
+    )
+
+    return [importingReactModuleCode, directionsCode, nodesCode]
+  }, [activeFloorID, mapNodeElements])
 
   return <GeneratedCodes title="Nodes" mapCodes={mapCodes} />
 }

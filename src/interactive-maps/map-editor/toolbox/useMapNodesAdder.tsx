@@ -35,15 +35,15 @@ const useMapNodesAdder = ({
         const id = `node_${parseFloat(Math.random().toFixed(6))}`
         const node: types.MapNodesProps = {
           id,
-          fill: 'red',
-          r: '15',
+          // fill: 'red',
+          // r: '15',
           cx: Math.round(circlePoint.x),
           cy: Math.round(circlePoint.y),
           'data-key-id': id,
-          'data-label': '',
+          // 'data-label': '',
           'data-direct-nodes': [],
-          'data-area-type': '',
-          'data-area-id': '',
+          // 'data-area-type': '',
+          // 'data-area-id': '',
           'data-floor-id': activeFloorID,
         }
         mapNodesDispatch({ type: 'ADD_NODE', payload: node })

@@ -6,7 +6,7 @@ import { TextToSpeech } from '../speech'
 import * as utils from '../__utils__'
 import * as mapNodes from '../map-nodes'
 import { ACTION_ERROR_TYPE } from '../constants'
-import { appSetters } from '../app-state-manager'
+import { appSetters, useAppSelector, appUtils } from '../app-state-manager'
 import * as types from '../types'
 import { MapNodes, DirectionType } from '../map-nodes/types'
 import { useDataSource } from '../contexts'
@@ -221,17 +221,18 @@ const getMeasurementByDistance = (distance: number) => {
 }
 
 const useCreateSpeechCollection = ({
+  storeAreas,
   route,
   shortestPortal,
   floorsObj,
 }: {
+  storeAreas: types.StoreAreas
   route: types.Route
   shortestPortal: types.ShortestPortal
   floorsObj: Record<string, types.EnhancedFloor>
 }) => {
   const mapNodesDirections = mapNodes.mapNodesDirectionsStateManager.useMapNodesDirections()
   const mapNodesObj = mapNodes.mapNodesStateManager.useMapNodesObj()
-  const { storeAreas } = useDataSource()
   // The initial speech collection is depending on the type of route.
   return React.useCallback(
     ({
@@ -394,11 +395,12 @@ const VoiceAssistant: React.FC<{
     const wayfinderObservables = wayfinder.useWayfinderObservables()
     const mapNodesDispatch = mapNodes.mapNodesStateManager.useMapNodesDispatch()
     const {
-      storeAreas,
       general: { voiceDirectionIsEnabled },
     } = useDataSource()
+    const storeAreas = useAppSelector(appUtils.getStoreAreas)
 
     const createSpeechCollection = useCreateSpeechCollection({
+      storeAreas,
       route,
       shortestPortal,
       floorsObj,

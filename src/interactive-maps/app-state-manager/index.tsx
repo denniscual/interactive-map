@@ -5,6 +5,36 @@ import * as types from '../types'
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
+// Store Areas
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+const storeAreasState = {
+  initialState: {} as types.StoreAreas,
+  setters(state: types.StoreAreas) {
+    return {
+      setAreas(areas: types.StoreAreas) {
+        return {
+          ...state,
+          ...areas,
+        }
+      },
+      /**
+       * This will add if the area is not exist or update the information.
+       */
+      setArea(area: types.StoreArea) {
+        state[area.id] = area
+        return state
+      },
+      deleteArea(id: string) {
+        delete state[id]
+        return state
+      },
+    }
+  },
+}
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
 // ShortestPaths
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -102,9 +132,11 @@ export type AppState = {
   activeArea: ActiveArea
   welcomeSpeech: boolean
   activeFloor: string
+  storeAreas: types.StoreAreas
 }
 
 const configStore = {
+  storeAreas: storeAreasState,
   shortestPaths: shortestPathsState,
   activeArea: activeAreaState,
   welcomeSpeech: welcomeSpeechState,
@@ -143,6 +175,10 @@ const appUtils = {
           {}
         )
     }, [keys, app])
+  },
+  // ----------- ShortestPaths ------------ //
+  getStoreAreas(state: AppState) {
+    return state.storeAreas
   },
   // ----------- ShortestPaths ------------ //
   getShortestPaths(state: AppState) {

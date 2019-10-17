@@ -36,16 +36,16 @@ const useConsumeContext: <T>(
 const dataSourceName = 'DataSourceProvider'
 
 const DataSourceContext = React.createContext<
-  types.InteractiveMapsDataSource | undefined
+  Omit<types.InteractiveMapsDataSource, 'storeAreas'> | undefined
 >(undefined)
 
 DataSourceContext.displayName = dataSourceName
 
 const useDataSource = () =>
-  useConsumeContext(
-    DataSourceContext,
-    dataSourceName
-  ) as types.InteractiveMapsDataSource
+  useConsumeContext(DataSourceContext, dataSourceName) as Omit<
+    types.InteractiveMapsDataSource,
+    'storeAreas'
+  >
 
 const DataSourceProvider = DataSourceContext.Provider
 

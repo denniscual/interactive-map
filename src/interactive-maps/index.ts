@@ -34,13 +34,12 @@ const useSwitchFloor = () => {
 
 const useWayfinder = () => {
   const { activeArea, activeFloor } = appStateManager.appSetters
-  const { storeAreas, general } = useDataSource()
+  const { general } = useDataSource()
+  const storeAreas = useAppSelector(appUtils.getStoreAreas)
   const navigationDispatch = navigation.stateManager.useNavigationDispatch()
   return React.useCallback(
     (area: Types.StoreArea) => {
       const startpointArea = storeAreas[general.defaultStartingPoint]
-      // FIXME: THis should point to default floor ID not on the
-      // current floor id
       activeFloor.setID(startpointArea.floorID)
       activeArea.setID('RESET')
       navigationDispatch({ type: 'RESET', payload: { endpoint: area } })
@@ -72,7 +71,7 @@ interface UIProps {
   onClick?: () => void
 }
 const useAreaItemsByFloor = (): (Types.StoreArea & UIProps)[] => {
-  const { storeAreas } = useDataSource()
+  const storeAreas = useAppSelector(appUtils.getStoreAreas)
   const { activeFloorID, activeAreaID } = useAppSelector(state => ({
     activeFloorID: state.activeFloor,
     activeAreaID: state.activeArea.id,
@@ -138,8 +137,8 @@ const useResetNavigation = () => {
 const useDeviceLocation = (): { x: number; y: number; angle: number } => {
   const {
     general: { defaultStartingPoint, deviceAngle },
-    storeAreas,
   } = useDataSource()
+  const storeAreas = useAppSelector(appUtils.getStoreAreas)
   const storeArea = storeAreas[defaultStartingPoint]
   // device location area must only hold 1 node.
   const {

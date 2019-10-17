@@ -53,8 +53,6 @@ const dragSourceCollect: DnD.DragSourceCollector<{}, types.MapNodesProps> = (
 
 const DNDMapNode: React.FC<DNDMapNodeProps> = ({
   connectDragSource,
-  r,
-  fill,
   id,
   cx,
   cy,
@@ -74,8 +72,8 @@ const DNDMapNode: React.FC<DNDMapNodeProps> = ({
       onMouseEnter={onMouseEnter}
       className={className}
       id={id}
-      r={r}
-      fill={fill}
+      r={15}
+      fill="red"
       cx={cx}
       cy={cy}
       {...otherProps}

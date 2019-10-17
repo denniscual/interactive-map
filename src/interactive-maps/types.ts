@@ -57,13 +57,13 @@ export interface MapNodesProps {
   id: string
   cx: number
   cy: number
-  fill: string
-  r: string
+  // fill: string
+  // r: string
   'data-key-id': string
-  'data-label': string
+  // 'data-label': string
   'data-direct-nodes': string[]
-  'data-area-type': string
-  'data-area-id': string
+  // 'data-area-type': string
+  // 'data-area-id': string
   'data-floor-id': string
 }
 

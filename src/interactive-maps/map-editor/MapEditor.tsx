@@ -12,6 +12,18 @@ import { useAppSelector, appUtils } from '../app-state-manager'
 import { MapNodes } from '../map-nodes/types'
 import { css } from 'emotion'
 import * as types from '../types'
+import { useDataSource } from '../contexts'
+
+// TODO:
+// - we need to have an `AreaInspector just like for nodes.
+// - pass the store areas to `CodeGenerator`.
+// - collocate the floor map data
+
+const StoreAreaInspector: React.FC<{ floorID: string }> = ({ floorID }) => {
+  const storeAreas = useAppSelector(appUtils.getStoreAreas)
+  // React.use
+  return <div />
+}
 
 // TODO: activeTool could handle a string or array type.
 const activeToolReducer = (
@@ -218,15 +230,7 @@ const useNodeDirections = (
 
 type TempMapNodeProps = Pick<
   types.MapNodesProps,
-  | 'id'
-  | 'cx'
-  | 'cy'
-  | 'data-label'
-  | 'data-direct-nodes'
-  | 'data-area-type'
-  | 'data-area-id'
-  | 'data-floor-id'
-  | 'data-key-id'
+  'id' | 'cx' | 'cy' | 'data-direct-nodes' | 'data-floor-id' | 'data-key-id'
 >
 
 const MapNodeInput: React.FC<{
@@ -307,13 +311,16 @@ const MapNodeInspector: React.FC<{
     }
     // If valid
     else {
-      const updatedMapNode =
-        tempMapNode['data-area-type'] === 'store'
-          ? assoc('data-floor-id', floorID, tempMapNode)
-          : tempMapNode
+      // const updatedMapNode = tempMapNode['data-area-type'] === 'store'
+      //     ?
+      //     : tempMapNode
       mapNodeDispatch({
         type: 'UPDATE_NODE',
-        payload: Object.assign({}, activeMapNode, updatedMapNode),
+        payload: Object.assign(
+          {},
+          activeMapNode,
+          assoc('data-floor-id', floorID, tempMapNode)
+        ),
         meta: { oldMapNodeID: activeMapNodeID },
       })
       setActiveMapNodeID(tempMapNode.id)
@@ -372,16 +379,17 @@ const MapNodeInspector: React.FC<{
   return (
     <div onBlur={handleClearErrorFields}>
       <form onSubmit={handleNodeUpdate}>
-        <div className={nodeFieldGroupCSS}>
+        {/* <div className={nodeFieldGroupCSS}>
           <label>Node Key ID</label>
           <input type="text" value={tempMapNode['data-key-id']} disabled />
-        </div>
+        </div> */}
         <div className={nodeFieldGroupCSS}>
           <label>Node ID</label>
           <MapNodeInput
             field="id"
             tempMapNode={tempMapNode.id}
             setTempMapNode={setTempMapNode}
+            disabled
           />
           {fieldErrors.length > 0 && fieldErrors.includes('id') && (
             <div>
@@ -393,14 +401,14 @@ const MapNodeInspector: React.FC<{
           <label>Node Directions</label>
           <ul className={nodeDirectionsCSS}>{nodeDirections}</ul>
         </div>
-        <div className={nodeFieldGroupCSS}>
+        {/* <div className={nodeFieldGroupCSS}>
           <label>Node Label</label>
           <MapNodeInput
             field="data-label"
             tempMapNode={tempMapNode['data-label']}
             setTempMapNode={setTempMapNode}
           />
-        </div>
+        </div> */}
         <div className={nodeFieldGroupCSS}>
           <label>CX Coordinate</label>
           <MapNodeInput
@@ -417,26 +425,26 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        <div className={nodeFieldGroupCSS}>
+        {/* <div className={nodeFieldGroupCSS}>
           <label>Area Type</label>
           <MapNodeInput
             field="data-area-type"
             tempMapNode={tempMapNode['data-area-type']}
             setTempMapNode={setTempMapNode}
           />
-        </div>
-        <div className={nodeFieldGroupCSS}>
+        </div> */}
+        {/* <div className={nodeFieldGroupCSS}>
           <label>Area ID</label>
           <MapNodeInput
             field="data-area-id"
             tempMapNode={tempMapNode['data-area-id']}
             setTempMapNode={setTempMapNode}
           />
-        </div>
-        <div className={nodeFieldGroupCSS}>
+        </div> */}
+        {/* <div className={nodeFieldGroupCSS}>
           <label>Floor ID</label>
           <input type="text" value={tempMapNode['data-floor-id']} disabled />
-        </div>
+        </div> */}
         <div className={nodeFieldGroupCSS}>
           <label>Direct Nodes</label>
           <ul className={directNodesCSS}>{directNodes}</ul>
@@ -679,15 +687,12 @@ const useMapNodeElements = ({
           activeTool={activeTool.activeTool}
           key={node['data-key-id']}
           id={node.id}
-          r={node.r}
-          fill={node.fill}
+          r={15}
+          fill="red"
           cx={node.cx}
           cy={node.cy}
           data-key-id={node['data-key-id']}
-          data-label={node['data-label']}
           data-direct-nodes={nodeUtils.createNewDirectNodes(mapNodes, node)}
-          data-area-type={node['data-area-type']}
-          data-area-id={node['data-area-id']}
           data-floor-id={node['data-floor-id']}
         />
       )
