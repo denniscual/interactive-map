@@ -1,6 +1,5 @@
 import ES65DFT420 from './stores/ES65DFT420-test'
 import * as R from 'ramda'
-import storeAreas from './stores/ES65DFT420-test/store-areas'
 import { Types } from '../../interactive-maps'
 import { Product } from './types'
 
@@ -139,14 +138,14 @@ const getMapDataSource = (storeID: string) => {
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
-const getStoreAreasArr = () => Object.values(storeAreas)
+const getStoreAreasArr = () => Object.values(ES65DFT420.dataSource.storeAreas)
 
 const getStoreAreasByFloorID = (floorID: string) =>
   getStoreAreasArr().filter(area => area.floorID === floorID)
 
 const getStoreArea = (
   id: string,
-  areas: Types.StoreAreas | Types.StoreArea[] = storeAreas
+  areas: Types.StoreAreas | Types.StoreArea[] = ES65DFT420.dataSource.storeAreas
 ) => {
   let storeArea
   if (Array.isArray(areas)) {
@@ -155,13 +154,15 @@ const getStoreArea = (
       throw new Error(`Area ID'${id}' was not found in store areas collection.`)
     }
   } else {
-    storeArea = storeAreas[id]
+    storeArea = ES65DFT420.dataSource.storeAreas[id]
     if (!storeArea) {
       throw new Error(`Area ID'${id}' was not found in store areas collection.`)
     }
   }
   return storeArea
 }
+
+const storeAreas = ES65DFT420.dataSource.storeAreas
 
 export {
   getMapDataSource,

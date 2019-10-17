@@ -1,19 +1,19 @@
 import * as basement from './basement'
 import * as groundFloor from './ground-floor'
-import * as levelTwoFloor from './level-two-floor'
-import * as maps from './maps'
-import nodeDirections from './node-directions'
+import * as levelOneFloor from './level-one-floor'
+import nodeDirections from './general-directions'
+import portalAreas from './general-portals'
 import mapCSS from '../map-css'
-import storeAreas from './store-areas'
 import { StoreMapConfig } from '../../types'
+import { Types } from '../../../../interactive-maps'
 
 const floors = [
   {
     id: 'basementFloor',
     label: 'Basement',
     nodesDirections: nodeDirections,
-    nodes: basement.nodes,
-    map: maps.basement.map,
+    nodes: basement.areasAndNodes.nodes as Types.MapNodesProps[],
+    map: basement.map,
     // NOTE: The id value is an areaID.
     portals: [
       {
@@ -36,8 +36,8 @@ const floors = [
     id: 'groundFloor',
     label: 'Ground Floor',
     nodesDirections: nodeDirections,
-    nodes: groundFloor.nodes,
-    map: maps.groundFloor.map,
+    nodes: groundFloor.areasAndNodes.nodes as Types.MapNodesProps[],
+    map: groundFloor.map,
     portals: [
       {
         id: 'elevator-1',
@@ -59,11 +59,18 @@ const floors = [
     id: 'levelOneFloor',
     label: 'Level One',
     nodesDirections: nodeDirections,
-    nodes: levelTwoFloor.nodes,
-    map: maps.levelTwoFloor.map,
+    nodes: levelOneFloor.areasAndNodes.nodes as Types.MapNodesProps[],
+    map: levelOneFloor.map,
     portals: [],
   },
 ]
+
+const storeAreas = {
+  ...basement.areasAndNodes.storeAreas,
+  ...groundFloor.areasAndNodes.storeAreas,
+  ...levelOneFloor.areasAndNodes.storeAreas,
+  ...portalAreas,
+}
 
 const storeMapConfig: StoreMapConfig = {
   id: 'ES65DFT420',

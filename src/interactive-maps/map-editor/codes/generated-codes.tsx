@@ -3,6 +3,7 @@ import FileSaver from 'file-saver'
 import SyntaxHighlighter from './SyntaxHighlighter'
 import prettier from 'prettier/standalone'
 import prettierTS from 'prettier/parser-typescript'
+import Clipboard from 'clipboard'
 import * as rootMapNodes from '../../map-nodes'
 import * as types from '../../types'
 
@@ -30,6 +31,13 @@ const createCodeVariableWithValue = (variableName: string, value: string) => {
   return formatCode(code)
 }
 
+const createExportedCodeWithValue = (value: string) => {
+  const code = `
+    export default ${value}
+  `
+  return formatCode(code)
+}
+
 /**
  * Merging the stringify codes.
  */
@@ -42,6 +50,12 @@ const generatedCodesCSS = `
   max-height: 1000px;
 `
 
+new Clipboard('#header-code-clipboard')
+
+/**
+ * TODO: We need to add the `copyCode` button outside the `code editor`.
+ * So that we don't need to toggle the editor to get the codes.
+ */
 const GeneratedCodes: React.FC<{
   title: string
   mapCodes: string[]
@@ -49,9 +63,9 @@ const GeneratedCodes: React.FC<{
   const [isCodeBlockVisible, setIsCodeBlockVisible] = React.useState(false)
   let codeBlock = <div />
 
+  const codes = mergeCodes(...mapCodes)
+
   if (isCodeBlockVisible) {
-    // compose codes
-    const codes = mergeCodes(...mapCodes)
     codeBlock = (
       <SyntaxHighlighter language="javascript">{codes}</SyntaxHighlighter>
     )
@@ -81,6 +95,9 @@ const GeneratedCodes: React.FC<{
       <button onClick={() => setIsCodeBlockVisible(toggle => !toggle)}>
         Toggle Codes
       </button>
+      <button id="header-code-clipboard" data-clipboard-text={codes}>
+        Copy code
+      </button>
       <button onClick={handleMapDownload}>Download Codes</button>
       {codeBlock}
     </div>
@@ -107,15 +124,6 @@ const Nodes: React.FC<{
   storeAreas: types.StoreAreas
 }> = ({ mapNodeElements, activeFloorID, storeAreas }) => {
   const mapCodes = React.useMemo(() => {
-    const importingReactModuleCode = `import React from 'react'`
-
-    // ------- Code for directions -------- //
-    // NOTE: This is just dummy
-    const directionsCode = createCodeVariableWithValue(
-      'directions',
-      JSON.stringify([])
-    )
-
     // ------- Code for store areas -------- //
     const filteredStoreAreas = filterStoreAreas(
       storeAreas,
@@ -150,17 +158,16 @@ const Nodes: React.FC<{
       JSON.stringify(newMapNodes)
     )
 
-    return [importingReactModuleCode, directionsCode, storeAreasCode, nodesCode]
+    return [storeAreasCode, nodesCode]
   }, [activeFloorID, mapNodeElements, storeAreas])
 
-  return <GeneratedCodes title="Nodes" mapCodes={mapCodes} />
+  return <GeneratedCodes title="Areas and Nodes" mapCodes={mapCodes} />
 }
 
 const Directions = () => {
   const mapNodesDirectionsArray = rootMapNodes.mapNodesDirectionsStateManager.useMapNodesDirectionsArray()
   const mapCodes = React.useMemo(() => {
-    const directionsCode = createCodeVariableWithValue(
-      'directions',
+    const directionsCode = createExportedCodeWithValue(
       JSON.stringify(mapNodesDirectionsArray)
     )
     return [directionsCode]
@@ -176,8 +183,7 @@ const Portals: React.FC<{ storeAreas: types.StoreAreas }> = ({
       storeAreas,
       (area: types.StoreArea) => area.type === 'portal'
     )
-    const portalCode = createCodeVariableWithValue(
-      'portals',
+    const portalCode = createExportedCodeWithValue(
       JSON.stringify(filteredPortalAreas)
     )
     return [portalCode]
