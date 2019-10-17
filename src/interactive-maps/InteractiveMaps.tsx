@@ -190,6 +190,7 @@ const InteractiveMaps: React.FC<{
   return dataSource ? (
     // InteractiveMapsProvider is little confusing name for using consuming maps.
     <maps.InteractiveMapsProvider>
+      {/* passing the dataSource with omitted `storeAreas` */}
       <DataSourceProvider
         value={
           omit(['storeAreas'], dataSource) as Omit<

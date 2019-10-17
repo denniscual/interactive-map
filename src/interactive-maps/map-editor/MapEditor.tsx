@@ -48,11 +48,6 @@ const formButtonCSS = css`
   margin-right: 0.5em;
 `
 
-// TODO:
-// - we need to have an `AreaInspector just like for nodes.
-// - pass the store areas to `CodeGenerator`.
-// - collocate the floor map data
-
 type StoreAreaInput = Omit<types.StoreArea, 'floorID' | 'description'>
 const initStoreArea: StoreAreaInput = {
   id: '',
@@ -518,10 +513,6 @@ const MapNodeInspector: React.FC<{
   return (
     <div onBlur={handleClearErrorFields}>
       <form onSubmit={handleNodeUpdate}>
-        {/* <div className={fieldGroupCSS}>
-          <label>Node Key ID</label>
-          <input type="text" value={tempMapNode['data-key-id']} disabled />
-        </div> */}
         <div className={fieldGroupCSS}>
           <label>Node ID</label>
           <MapNodeInput
@@ -540,14 +531,6 @@ const MapNodeInspector: React.FC<{
           <label>Node Directions</label>
           <ul className={fieldArrayCSS}>{nodeDirections}</ul>
         </div>
-        {/* <div className={fieldGroupCSS}>
-          <label>Node Label</label>
-          <MapNodeInput
-            field="data-label"
-            tempMapNode={tempMapNode['data-label']}
-            setTempMapNode={setTempMapNode}
-          />
-        </div> */}
         <div className={fieldGroupCSS}>
           <label>CX Coordinate</label>
           <MapNodeInput
@@ -564,26 +547,6 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        {/* <div className={fieldGroupCSS}>
-          <label>Area Type</label>
-          <MapNodeInput
-            field="data-area-type"
-            tempMapNode={tempMapNode['data-area-type']}
-            setTempMapNode={setTempMapNode}
-          />
-        </div> */}
-        {/* <div className={fieldGroupCSS}>
-          <label>Area ID</label>
-          <MapNodeInput
-            field="data-area-id"
-            tempMapNode={tempMapNode['data-area-id']}
-            setTempMapNode={setTempMapNode}
-          />
-        </div> */}
-        {/* <div className={fieldGroupCSS}>
-          <label>Floor ID</label>
-          <input type="text" value={tempMapNode['data-floor-id']} disabled />
-        </div> */}
         <div className={fieldGroupCSS}>
           <label>Direct Nodes</label>
           <ul className={directNodesCSS}>{directNodes}</ul>
