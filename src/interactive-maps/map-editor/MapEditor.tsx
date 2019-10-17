@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { assoc } from 'ramda'
+import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik'
+import { assoc, omit } from 'ramda'
 import * as tools from './toolbox'
 import * as rootMapNodes from '../map-nodes'
 import * as DnD from './drag-and-drop'
@@ -8,21 +9,191 @@ import * as utils from './__utils__'
 import * as messageBoxCoordinates from './message-box-coordinates'
 import { generatedCodes } from './codes'
 import { nodes as nodeUtils, svg } from '../__utils__'
-import { useAppSelector, appUtils } from '../app-state-manager'
+import { useAppSelector, appUtils, appSetters } from '../app-state-manager'
 import { MapNodes } from '../map-nodes/types'
 import { css } from 'emotion'
 import * as types from '../types'
-import { useDataSource } from '../contexts'
+
+const fieldGroupCSS = css`
+  margin-bottom: 1em;
+
+  label {
+    display: block;
+    margin-bottom: 0.5em;
+  }
+
+  input {
+    font-size: 0.9rem;
+    padding: 0.3em;
+  }
+`
+
+const fieldArrayCSS = css`
+  list-style-type: none;
+  padding: 0;
+  border: 1px solid #bbbbbb;
+  padding: 0.5em;
+
+  > li {
+    border-bottom: 1px solid #bbbbbb;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+`
+
+const formButtonCSS = css`
+  font-size: 0.9rem;
+  margin-right: 0.5em;
+`
 
 // TODO:
 // - we need to have an `AreaInspector just like for nodes.
 // - pass the store areas to `CodeGenerator`.
 // - collocate the floor map data
 
-const StoreAreaInspector: React.FC<{ floorID: string }> = ({ floorID }) => {
-  const storeAreas = useAppSelector(appUtils.getStoreAreas)
-  // React.use
-  return <div />
+type StoreAreaInput = Omit<types.StoreArea, 'floorID' | 'description'>
+const initStoreArea: StoreAreaInput = {
+  id: '',
+  label: '',
+  type: 'store',
+  categories: [],
+  nodes: [],
+}
+
+const MapFieldArray: React.FC<{
+  values: StoreAreaInput
+  name: keyof StoreAreaInput
+}> = ({ values, name }) => {
+  const arrValue = values[name]
+  return (
+    <FieldArray
+      name={name}
+      render={helpers => (
+        <ul className={fieldArrayCSS}>
+          {arrValue && Array.isArray(arrValue) && arrValue.length > 0 ? (
+            arrValue.map((_, idx) => (
+              <li key={idx}>
+                <label>{name} ID</label>
+                <Field name={`${name}.${idx}`} />
+                <button
+                  type="button"
+                  onClick={() => helpers.remove(idx)} // remove a friend from the list
+                >
+                  -
+                </button>
+                <button
+                  className={formButtonCSS}
+                  type="button"
+                  onClick={() => helpers.insert(idx, '')} // insert an empty string at a position
+                >
+                  +
+                </button>
+              </li>
+            ))
+          ) : (
+            <button
+              className={formButtonCSS}
+              type="button"
+              onClick={() => helpers.push('')}
+            >
+              Add a {name}
+            </button>
+          )}
+        </ul>
+      )}
+    />
+  )
+}
+
+const StoreAreaInspector = () => {
+  const { storeAreas, activeAreaID, activeFloorID } = useAppSelector(state => ({
+    storeAreas: state.storeAreas,
+    activeAreaID: state.activeArea.id,
+    activeFloorID: state.activeFloor,
+  }))
+  let storeArea = omit(
+    ['floorID', 'description'],
+    storeAreas[activeAreaID] || initStoreArea
+  ) as StoreAreaInput
+
+  return (
+    <Formik
+      initialValues={storeArea}
+      validate={values => {
+        let errors: Partial<{
+          id: string
+          label: string
+        }> = {}
+
+        if (!values.id) {
+          errors.id = 'Required'
+        } else if (!values.label) {
+          errors.label = 'Required'
+        }
+        return errors
+      }}
+      onSubmit={(values, { resetForm }) => {
+        const existingArea = storeAreas[values.id]
+        if (existingArea) {
+          appSetters.storeAreas.setArea({
+            ...existingArea,
+            ...values,
+          })
+        } else {
+          appSetters.storeAreas.setArea({
+            ...values,
+            floorID: activeFloorID,
+          })
+        }
+        resetForm()
+      }}
+      enableReinitialize
+    >
+      {({ isSubmitting, values, resetForm }) => (
+        <Form>
+          <div className={fieldGroupCSS}>
+            <label>Area ID</label>
+            <Field type="id" name="id" />
+            <ErrorMessage name="id" component="div" />
+          </div>
+          <div className={fieldGroupCSS}>
+            <label>Label</label>
+            <Field type="label" name="label" />
+            <ErrorMessage name="label" component="div" />
+          </div>
+          <div className={fieldGroupCSS}>
+            <label>Area Type</label>
+            <Field type="type" name="type" />
+            <ErrorMessage name="type" component="div" />
+          </div>
+          <div className={fieldGroupCSS}>
+            <label>Area Nodes</label>
+            <MapFieldArray name="nodes" values={values} />
+          </div>
+          <div className={fieldGroupCSS}>
+            <label>Area Categories</label>
+            <MapFieldArray name="categories" values={values} />
+          </div>
+          <button
+            className={formButtonCSS}
+            type="submit"
+            disabled={isSubmitting}
+          >
+            Submit
+          </button>
+          <button
+            className={formButtonCSS}
+            type="button"
+            onClick={() => resetForm()}
+          >
+            Reset
+          </button>
+        </Form>
+      )}
+    </Formik>
+  )
 }
 
 // TODO: activeTool could handle a string or array type.
@@ -118,23 +289,6 @@ const MapNodesPanel: React.FC<{
   )
 }
 
-const nodeFieldGroupCSS = css`
-  margin-bottom: 1em;
-
-  label {
-    display: block;
-    margin-bottom: 0.5em;
-  }
-
-  input {
-    font-size: 0.9rem;
-  }
-
-  & + button {
-    font-size: 0.9rem;
-  }
-`
-
 const directNodesCSS = css`
   display: flex;
   flex-direction: row;
@@ -176,20 +330,6 @@ const directNodesCSS = css`
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
-const nodeDirectionsCSS = css`
-  list-style-type: none;
-  padding: 0;
-  border: 1px solid #bbbbbb;
-  padding: 0 0.5em;
-
-  > li {
-    border-bottom: 1px solid #bbbbbb;
-
-    &:last-child {
-      border-bottom: 0;
-    }
-  }
-`
 const useNodeDirections = (
   tempMapNode: TempMapNodeProps,
   mapNodesDirections: MapNodes
@@ -379,11 +519,11 @@ const MapNodeInspector: React.FC<{
   return (
     <div onBlur={handleClearErrorFields}>
       <form onSubmit={handleNodeUpdate}>
-        {/* <div className={nodeFieldGroupCSS}>
+        {/* <div className={fieldGroupCSS}>
           <label>Node Key ID</label>
           <input type="text" value={tempMapNode['data-key-id']} disabled />
         </div> */}
-        <div className={nodeFieldGroupCSS}>
+        <div className={fieldGroupCSS}>
           <label>Node ID</label>
           <MapNodeInput
             field="id"
@@ -397,11 +537,11 @@ const MapNodeInspector: React.FC<{
             </div>
           )}
         </div>
-        <div className={nodeFieldGroupCSS}>
+        <div className={fieldGroupCSS}>
           <label>Node Directions</label>
-          <ul className={nodeDirectionsCSS}>{nodeDirections}</ul>
+          <ul className={fieldArrayCSS}>{nodeDirections}</ul>
         </div>
-        {/* <div className={nodeFieldGroupCSS}>
+        {/* <div className={fieldGroupCSS}>
           <label>Node Label</label>
           <MapNodeInput
             field="data-label"
@@ -409,7 +549,7 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div> */}
-        <div className={nodeFieldGroupCSS}>
+        <div className={fieldGroupCSS}>
           <label>CX Coordinate</label>
           <MapNodeInput
             field="cx"
@@ -417,7 +557,7 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        <div className={nodeFieldGroupCSS}>
+        <div className={fieldGroupCSS}>
           <label>CY Coordinate</label>
           <MapNodeInput
             field="cy"
@@ -425,7 +565,7 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div>
-        {/* <div className={nodeFieldGroupCSS}>
+        {/* <div className={fieldGroupCSS}>
           <label>Area Type</label>
           <MapNodeInput
             field="data-area-type"
@@ -433,7 +573,7 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div> */}
-        {/* <div className={nodeFieldGroupCSS}>
+        {/* <div className={fieldGroupCSS}>
           <label>Area ID</label>
           <MapNodeInput
             field="data-area-id"
@@ -441,11 +581,11 @@ const MapNodeInspector: React.FC<{
             setTempMapNode={setTempMapNode}
           />
         </div> */}
-        {/* <div className={nodeFieldGroupCSS}>
+        {/* <div className={fieldGroupCSS}>
           <label>Floor ID</label>
           <input type="text" value={tempMapNode['data-floor-id']} disabled />
         </div> */}
-        <div className={nodeFieldGroupCSS}>
+        <div className={fieldGroupCSS}>
           <label>Direct Nodes</label>
           <ul className={directNodesCSS}>{directNodes}</ul>
         </div>
@@ -831,6 +971,9 @@ const InternalMapEditor: React.FC<MapEditorProps> = ({
               setActiveMapNodeID={setActiveMapNode}
               floorID={floorID}
             />
+          </tools.ToolboxItem>
+          <tools.ToolboxItem title="Area Inspector">
+            <StoreAreaInspector />
           </tools.ToolboxItem>
         </div>
         <MapNodesPanel

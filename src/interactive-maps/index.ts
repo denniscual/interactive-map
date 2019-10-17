@@ -41,6 +41,8 @@ const useWayfinder = () => {
     (area: Types.StoreArea) => {
       const startpointArea = storeAreas[general.defaultStartingPoint]
       activeFloor.setID(startpointArea.floorID)
+      // TODO: Revert the code
+      // activeArea.setID(area.id)
       activeArea.setID('RESET')
       navigationDispatch({ type: 'RESET', payload: { endpoint: area } })
     },
