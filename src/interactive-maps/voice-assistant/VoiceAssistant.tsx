@@ -468,11 +468,19 @@ const VoiceAssistant: React.FC<{
 
     React.useEffect(
       function subscribeToWayfinder() {
-        const endSubscription = wayfinderObservables.end.subscribe(() => {
+        const endSubscription = wayfinderObservables.end.subscribe(e => {
+          const srcElement = e.srcElement as {
+            id?: string
+          } | null
           // We only need to tell the interactive-maps that the wayfinder is already
           // finished if and only if we don't yet reach the destination floor.
           // If we already reach the destination floor, no need to tell it.
-          if (endpoint.floorID !== route.floorID) {
+          if (
+            srcElement &&
+            srcElement.id &&
+            srcElement.id === 'wayfinder' &&
+            endpoint.floorID !== route.floorID
+          ) {
             speechAndWayfinderStatusDispatch('WAYFINDER_FINISHED')
           }
         })

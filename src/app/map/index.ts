@@ -164,7 +164,18 @@ const getStoreArea = (
 
 const storeAreas = ES65DFT420.dataSource.storeAreas
 
+/**
+ * Toggling Map feature in store-assistant.
+ */
+const toggleMap = (storeID: string) => {
+  const envMap = process.env.TOGGLE_MAP || 'false'
+  if (envMap === 'true') {
+    return getMapDataSource(storeID)
+  }
+}
+
 export {
+  toggleMap,
   getMapDataSource,
   getProductsWithAreas,
   areCategoriesEqual,
