@@ -36,6 +36,7 @@ const floors = [
     id: 'groundFloor',
     label: 'Ground Floor',
     nodesDirections: nodeDirections,
+    // FIXME: We need to remove this "escape hatch".
     nodes: groundFloor.areasAndNodes.nodes as Types.MapNodesProps[],
     map: groundFloor.map,
     portals: [
@@ -76,7 +77,7 @@ const storeMapConfig: StoreMapConfig = {
   id: 'ES65DFT420',
   dataSource: {
     general: {
-      defaultStartingPoint: process.env.DEVICE_LOCATION || 'fashion-and-luxury',
+      defaultStartingPoint: process.env.DEVICE_LOCATION || 'men-plus-sizes',
       deviceAngle: parseInt(process.env.DEVICE_LOCATION || '180'),
       voiceDirectionIsEnabled: false,
       mapCSS,
