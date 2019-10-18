@@ -1,6 +1,8 @@
 import React, { createContext, useContext } from 'react'
-import ActiveFloor from './ActiveFloor'
+import { nodes } from '../__utils__'
+import { useAppSelector, appSetters, appUtils } from '../app-state-manager'
 import { useConsumeContext } from '../contexts'
+import * as mapNodes from '../map-nodes'
 import * as types from '../types'
 
 const floorsName = 'FloorsProvider'
@@ -11,10 +13,27 @@ const FloorsProvider: React.FC<{
   floors: types.EnhancedFloors
   defaultActiveFloorID: string
 }> = ({ floors, defaultActiveFloorID, children }) => {
+  const activeFloorID = useAppSelector(appUtils.getActiveFloor)
+  const mapNodesDispatch = mapNodes.mapNodesStateManager.useMapNodesDispatch()
+
+  React.useEffect(
+    function settingActiveFloor() {
+      appSetters.activeFloor.setID(defaultActiveFloorID)
+    },
+    [defaultActiveFloorID]
+  )
+
+  React.useEffect(
+    function settingMapNodesByActiveFloorID() {
+      if (activeFloorID !== '') {
+        const mapNodesObj = nodes.createMapNodesObj(floors, activeFloorID)
+        mapNodesDispatch({ type: 'ADD_NODES', payload: mapNodesObj })
+      }
+    },
+    [activeFloorID, floors, mapNodesDispatch]
+  )
   return (
-    <ActiveFloor floors={floors} defaultActiveFloorID={defaultActiveFloorID}>
-      <FloorsContext.Provider value={floors}>{children}</FloorsContext.Provider>
-    </ActiveFloor>
+    <FloorsContext.Provider value={floors}>{children}</FloorsContext.Provider>
   )
 }
 
