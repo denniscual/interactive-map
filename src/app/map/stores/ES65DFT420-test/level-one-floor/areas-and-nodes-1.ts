@@ -138,6 +138,16 @@ export const storeAreas = {
     },
     floorID: 'levelOneFloor',
   },
+  'madrid-t1-nsh-perfumeria': {
+    id: 'madrid-t1-nsh-perfumeria',
+    label: 'Madrid Perfume',
+    type: 'store',
+    nodes: ['node_0.366104', 'node_0.821097', 'node_0.824478', 'node_0.472891'],
+    mapping: {
+      categories: [],
+    },
+    floorID: 'levelOneFloor',
+  },
   sunglasses: {
     id: 'sunglasses',
     label: 'Sunglasses',
@@ -160,186 +170,6 @@ export const storeAreas = {
     nodes: ['node_0.091099'],
     mapping: {
       categories: ['DCIS_050'],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-mac-cosmetics': {
-    id: 'perfumes-mac-cosmetics',
-    label: 'Perfumes Mac Cosmetics',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-chanel': {
-    id: 'perfumes-chanel',
-    label: 'Perfumes Chanel',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-estee-lauder': {
-    id: 'perfumes-estee-lauder',
-    label: 'Perfumes Estee Lauder',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-kiehls': {
-    id: 'perfumes-kiehls',
-    label: 'Perfumes Kiehls',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-clarins': {
-    id: 'perfumes-clarins',
-    label: 'Perfumes Clarins',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-guerlain': {
-    id: 'perfumes-guerlain',
-    label: 'Perfumes Guerlain',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-ysl': {
-    id: 'perfumes-ysl',
-    label: 'Perfumes Ysl',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-dior': {
-    id: 'perfumes-dior',
-    label: 'Perfumes Dior',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-lancome': {
-    id: 'perfumes-lancome',
-    label: 'Perfumes Lancome',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-loreal': {
-    id: 'perfumes-loreal',
-    label: 'Perfumes Loreal',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-jo-malone': {
-    id: 'perfumes-jo-malone',
-    label: 'Perfumes JO Malone',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-arden': {
-    id: 'perfumes-arden',
-    label: 'Perfumes Arden',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-shiseido': {
-    id: 'perfumes-shiseido',
-    label: 'Perfumes Shiseido',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-la-mer': {
-    id: 'perfumes-la-mer',
-    label: 'Perfumes La Mer',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-la-prairie': {
-    id: 'perfumes-la-prairie',
-    label: 'Perfumes La Prairie',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-biotherm': {
-    id: 'perfumes-biotherm',
-    label: 'Perfumes Biotherm',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-clinique': {
-    id: 'perfumes-clinique',
-    label: 'Perfumes Clinique',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
-    },
-    floorID: 'levelOneFloor',
-  },
-  'perfumes-other': {
-    id: 'perfumes-other',
-    label: 'Perfumes Others',
-    type: 'store',
-    nodes: [],
-    mapping: {
-      categories: [],
     },
     floorID: 'levelOneFloor',
   },

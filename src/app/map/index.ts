@@ -1,7 +1,7 @@
 import ES65DFT420 from './stores/ES65DFT420-test'
 import * as R from 'ramda'
 import {
-  Product,
+  DufryProduct,
   DufryProductsWithAreas,
   DufryStoreArea,
   DufryStoreAreas,
@@ -22,10 +22,6 @@ const stores = {
 // TODO: If the area declares `brands`, typescript
 // should throw an error if we gonna include `excludedBrands`.
 // And vice versa.
-
-interface DufryProduct extends Product {
-  vendor: string
-}
 
 /**
  * Get all products which has areas. How do we do it? We gonna check if the product
@@ -142,12 +138,6 @@ const getMapDataSource = (storeID: string) => {
     return store.dataSource
   }
 }
-
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-// Store Areas
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
 
 const getStoreAreasArr = (storeID: string) =>
   Object.values(stores[storeID].dataSource.storeAreas)

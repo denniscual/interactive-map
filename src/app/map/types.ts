@@ -19,7 +19,7 @@ export interface StoreMapConfig {
   dataSource: Types.InteractiveMapsDataSource
 }
 
-export interface Product {
+export interface DufryProduct {
   id: string | number
   /**
    * NOTE: This property name was reference to dufry provider product data type.
