@@ -53,25 +53,31 @@ const initStoreArea: StoreAreaInput = {
   id: '',
   label: '',
   type: 'store',
-  categories: [],
+  mapping: {},
   nodes: [],
 }
 
 const MapFieldArray: React.FC<{
-  values: StoreAreaInput
-  name: keyof StoreAreaInput
+  values: StoreAreaInput | string[]
+  name: string
 }> = ({ values, name }) => {
-  const arrValue = values[name]
+  const arrValue = Array.isArray(values)
+    ? values
+    : values[name as keyof StoreAreaInput]
+  const prefixFieldName = Array.isArray(values) ? `mapping.${name}` : name
+
+  // TODO: We need to add an error message if the type of the value assigned
+  // is not an array. Show an error message.
   return (
     <FieldArray
-      name={name}
+      name={prefixFieldName}
       render={helpers => (
         <ul className={fieldArrayCSS}>
-          {arrValue && Array.isArray(arrValue) && arrValue.length > 0 ? (
+          {Array.isArray(arrValue) && arrValue.length > 0 ? (
             arrValue.map((_, idx) => (
               <li key={idx}>
                 <label>{name} ID</label>
-                <Field name={`${name}.${idx}`} />
+                <Field name={`${prefixFieldName}.${idx}`} />
                 <button
                   type="button"
                   onClick={() => helpers.remove(idx)} // remove a friend from the list
@@ -166,10 +172,13 @@ const StoreAreaInspector: React.FC<{
             <label>Area Nodes</label>
             <MapFieldArray name="nodes" values={values} />
           </div>
-          <div className={fieldGroupCSS}>
-            <label>Area Categories</label>
-            <MapFieldArray name="categories" values={values} />
-          </div>
+          {values.mapping &&
+            Object.entries(values.mapping).map(([key, value]) => (
+              <div key={key} className={fieldGroupCSS}>
+                <label>Area {key}</label>
+                <MapFieldArray name={key} values={value} />
+              </div>
+            ))}
           <button
             className={formButtonCSS}
             type="submit"

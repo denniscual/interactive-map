@@ -24,8 +24,10 @@ const StartpointContext = createContext<types.StoreArea>({
   id: '',
   label: '',
   nodes: [],
-  categories: [],
   floorID: '',
+  mapping: {
+    categories: [],
+  },
   type: types.AreaType.STORE,
 })
 const NavigationDispatchContext = createContext<React.Dispatch<Action>>(

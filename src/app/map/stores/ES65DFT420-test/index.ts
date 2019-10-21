@@ -66,13 +66,6 @@ const floors = [
   },
 ]
 
-const storeAreas = {
-  ...basement.areasAndNodes.storeAreas,
-  ...groundFloor.areasAndNodes.storeAreas,
-  ...levelOneFloor.areasAndNodes.storeAreas,
-  ...portalAreas,
-}
-
 const storeMapConfig: StoreMapConfig = {
   id: 'ES65DFT420',
   dataSource: {
@@ -85,7 +78,14 @@ const storeMapConfig: StoreMapConfig = {
       isNodesVisible: true,
     },
     floors,
-    storeAreas,
+    // FIXME: It doesn't throw an error if you add an unknown field
+    // to an area like adding `name` property.
+    storeAreas: {
+      ...basement.areasAndNodes.storeAreas,
+      ...groundFloor.areasAndNodes.storeAreas,
+      ...levelOneFloor.areasAndNodes.storeAreas,
+      ...portalAreas,
+    },
   },
 }
 

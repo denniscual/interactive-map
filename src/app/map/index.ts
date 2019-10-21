@@ -1,7 +1,11 @@
 import ES65DFT420 from './stores/ES65DFT420-test'
 import * as R from 'ramda'
-import { Types } from '../../interactive-maps'
-import { Product } from './types'
+import {
+  Product,
+  DufryProductsWithAreas,
+  DufryStoreArea,
+  DufryStoreAreas,
+} from './types'
 
 const parseCategory = R.compose(
   R.join('_'),
@@ -15,103 +19,110 @@ const stores = {
   [ES65DFT420.id]: ES65DFT420,
 }
 
-// --------------------------------s--------------------------- //
-// ----------------------------------------------------------- //
-// Typess
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
+// TODO: If the area declares `brands`, typescript
+// should throw an error if we gonna include `excludedBrands`.
+// And vice versa.
 
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-// Data
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-
-interface ProductsWithAreas {
-  [x: string]: {
-    id: string
-    areas: Types.StoreArea[]
-  }
+interface DufryProduct extends Product {
+  vendor: string
 }
-
-interface AreCategoriesEqual {
-  (areaCatID: string, productCatID: string): boolean
-}
-
-const initEqualityFn: AreCategoriesEqual = (areaCatID, productCatID) =>
-  areaCatID === productCatID
 
 /**
- * NOTE: If starting point, we don't need to pass the areaID. But in
- * destination point, we need to pass it.
- *
- * The idea in here is that we need to pass to the interactive maps not only nodes
- * but also we need to pass the areas. So basically we need to pass the areas
- * with the given nodes. Note that product could be associated to different areas because
- * of its categories. Basically categories could be assigned to 1 to many areas
- * Meaning that product can be found to different areas. But then
- * in our interactive map, we only need to find the nearest area from the device.
- *
- * The reason why this function is accepting a equalityFn because
- * the mapping of product to categories logic will vary to callee
- * of the function. The default function is `equalFn`
- *
- * TODO: The areas assigned to a product are sometimes duplicated. We need
- * to filter the areas and remove the duplicated data.
+ * Get all products which has areas. How do we do it? We gonna check if the product
+ * category is included to a specific area. If it is included, we need to check the brand.
+ * If the area doesn't have mapped data, no producs would be mapped to this area.
  */
-const getProductsWithAreas = <T extends Product>(
-  areas: Types.StoreAreas,
-  products: T[],
-  equalityFn: AreCategoriesEqual = initEqualityFn
+const getProductsWithAreas = <T extends DufryProduct>(
+  areas: Record<string, DufryStoreArea>,
+  products: T[]
 ) => {
-  // We need to filter only the products which has areas. To be able we can filter it,
-  // we need to check if the assigned categories of a product has associated area.
-  const productsWithAreas: ProductsWithAreas = {}
-  products.forEach(prod => {
-    // let say prod1 has categories = [cat1, cat2]
-    prod.category.forEach(prodCat => {
-      /**
-       * we need to check if the product category has areas through looping
-       * to every area and check if the product category, variable `prodCat`, is
-       * is defined to 1 or more areas.
-       */
-      for (const key in areas) {
-        const area = areas[key]
+  try {
+    const newAreas: {
+      id: string | number
+      areaID: string
+    }[] = []
 
-        if (area.categories) {
-          const foundProductCategory = area.categories.find(areaCat =>
-            equalityFn(areaCat, prodCat)
-          )
+    products.forEach(prod => {
+      // Loop to every product.category
+      prod.category.forEach(prodCat => {
+        Object.values(areas).forEach(area => {
+          // We only need to operate the areas which has mapping data
+          // like area which has category. If the area doesn't have
+          // mapping like Point of sale, no need to operate it. Means
+          // that product will now map to these areas.
+          if (area.mapping) {
+            const {
+              categories: areaCategories,
+              brands,
+              excludedBrands,
+            } = area.mapping
 
-          if (foundProductCategory) {
-            // We need to this because product could be assigned in multiple
-            // areas. We need to check if the product is already given. If
-            // yes, we need to update the areas. Or else, we need to
-            // add it to the product collection.
-            const currentProduct = productsWithAreas[prod.id]
-            if (currentProduct) {
-              // update the current areas
-              currentProduct.areas.push(area)
-            } else {
-              // create a new product with areas
-              productsWithAreas[prod.id] = {
-                id: prod.id as string,
-                areas: [area],
+            // Check if one of the product.categories is included to area categories.
+            const foundCategory = areaCategories.find(areaCat =>
+              prodCat.startsWith(parseCategory(areaCat))
+            )
+            if (foundCategory) {
+              // Check the product.vendor/brand
+              // For brands. Specific Area
+              if (brands) {
+                // we need to check if prod.vendor is existing on the brands. Seaching would based on regex to make it case insensitive.
+                const foundBrand = brands.find(brand => {
+                  const regex = new RegExp(brand, 'i')
+                  // Searchinf if the regex satisfies the `prod.vendor` string value.
+                  return regex.test(prod.vendor)
+                })
+                if (foundBrand) {
+                  return newAreas.push({ id: prod.id, areaID: area.id })
+                }
+              }
+              // For excluded brands. Generic Area
+              else if (excludedBrands) {
+                const foundBrand = excludedBrands.find(brand => {
+                  const regex = new RegExp(brand, 'i')
+                  // Searchinf if the regex satisfies the `prod.vendor` string value.
+                  return regex.test(prod.vendor)
+                })
+                if (!foundBrand) {
+                  return newAreas.push({ id: prod.id, areaID: area.id })
+                }
+              }
+              // Generic Area
+              else if (!brands && excludedBrands!) {
+                return newAreas.push({ id: prod.id, areaID: area.id })
               }
             }
           }
-        }
-      }
+        })
+      })
     })
-  })
 
-  return productsWithAreas
+    const productsWithAreas: DufryProductsWithAreas = newAreas.reduce(
+      (acc, value) => {
+        let currentProd = acc[value.id]
+        if (currentProd) {
+          acc[value.id] = {
+            ...currentProd,
+            areas: [...currentProd.areas, areas[value.areaID]],
+          }
+        } else {
+          acc[value.id] = {
+            id: value.id,
+            areas: [areas[value.areaID]],
+          }
+        }
+        return acc
+      },
+      {} as DufryProductsWithAreas
+    )
+
+    return productsWithAreas
+  } catch (e) {
+    const err = new Error(e.message)
+    err.name = 'Maps Provider Error'
+    err.stack = e.stack
+    throw err
+  }
 }
-
-const getProductWithAreas = (
-  productID: string,
-  productsWithAreas: ProductsWithAreas
-) => productsWithAreas[productID]
 
 /**
  * TODO: We need also need to add the areas in the Categories. Right now, we are just adding it to products.
@@ -138,14 +149,16 @@ const getMapDataSource = (storeID: string) => {
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 
-const getStoreAreasArr = () => Object.values(ES65DFT420.dataSource.storeAreas)
+const getStoreAreasArr = (storeID: string) =>
+  Object.values(stores[storeID].dataSource.storeAreas)
 
-const getStoreAreasByFloorID = (floorID: string) =>
-  getStoreAreasArr().filter(area => area.floorID === floorID)
+const getStoreAreasByFloorID = (storeID: string, floorID: string) =>
+  getStoreAreasArr(storeID).filter(area => area.floorID === floorID)
 
 const getStoreArea = (
+  storeID: string,
   id: string,
-  areas: Types.StoreAreas | Types.StoreArea[] = ES65DFT420.dataSource.storeAreas
+  areas: DufryStoreAreas | DufryStoreArea[]
 ) => {
   let storeArea
   if (Array.isArray(areas)) {
@@ -154,15 +167,13 @@ const getStoreArea = (
       throw new Error(`Area ID'${id}' was not found in store areas collection.`)
     }
   } else {
-    storeArea = ES65DFT420.dataSource.storeAreas[id]
+    storeArea = stores[storeID].dataSource.storeAreas[id]
     if (!storeArea) {
       throw new Error(`Area ID'${id}' was not found in store areas collection.`)
     }
   }
   return storeArea
 }
-
-const storeAreas = ES65DFT420.dataSource.storeAreas
 
 /**
  * Toggling Map feature in store-assistant.
@@ -180,7 +191,6 @@ export {
   getProductsWithAreas,
   areCategoriesEqual,
   getCategorieWithAreas,
-  storeAreas,
   getStoreAreasArr,
   getStoreArea,
   getStoreAreasByFloorID,

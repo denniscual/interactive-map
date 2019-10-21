@@ -1,6 +1,17 @@
 import { Types } from '../../interactive-maps'
 
 /**
+ * Properties use to map the product to an areas
+ */
+type MappedData = {
+  mapping: {
+    categories: string[]
+    brands?: string[]
+    excludedBrands?: string[]
+  }
+}
+
+/**
  * Configuration for every map of a store.
  */
 export interface StoreMapConfig {
@@ -14,6 +25,20 @@ export interface Product {
    * NOTE: This property name was reference to dufry provider product data type.
    */
   category: string[]
+  vendor: string
+}
+
+export type DufryStoreArea = Types.StoreArea & MappedData
+
+export interface DufryStoreAreas {
+  [x: string]: DufryStoreArea
+}
+
+export interface DufryProductsWithAreas {
+  [x: string]: {
+    id: string | number
+    areas: DufryStoreArea[]
+  }
 }
 
 /**

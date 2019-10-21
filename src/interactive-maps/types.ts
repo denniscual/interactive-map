@@ -155,12 +155,6 @@ export type CollectionOfEntity = Record<string, Entity>
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
-// Navigation
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
 // Areas
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -180,12 +174,26 @@ export interface StoreArea {
   type: AreaType | string
   nodes: string[]
   floorID: string
-  categories?: string[]
+  /**
+   * This property will be used by the client data for product mapping.
+   * Maps package doesn't care about the mapping properties. And the mapping
+   * logic is provided by the callee.
+   * NOTE: Not all store area type has mapping functionality.
+   */
+  mapping?: {
+    [x: string]: string[]
+  }
 }
 
 export interface StoreAreas {
   [x: string]: StoreArea
 }
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+// Navigation
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
 
 export type Navigation = {
   startpoint: StoreArea

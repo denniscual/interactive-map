@@ -204,6 +204,7 @@ const appUtils = {
   },
   useResetActiveFloor() {
     const startpoint = nav.stateManager.useStartpoint()
+    console.log('asf', startpoint.floorID)
     return React.useCallback(() => {
       appSetters.activeFloor.setID(startpoint.floorID as string)
     }, [startpoint.floorID])
