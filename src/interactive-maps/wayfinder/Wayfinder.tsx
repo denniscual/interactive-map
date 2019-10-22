@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useAppSelector, appUtils } from '../app-state-manager'
 import * as floors from '../floors'
-import { NotFoundNodeError } from '../__utils__'
+import { NotFoundNodeError, svg } from '../__utils__'
 import * as types from '../types'
 
 const calculateTravelTimeBasedInDistance = (
@@ -15,10 +15,10 @@ const calculateTravelTimeBasedInDistance = (
 type PathProps = {
   length: number
 }
-const AnimatedRoutePath = styled.polyline<PathProps>`
+const AnimatedRoutePath = styled.path<PathProps>`
   stroke: #ba0000;
-  stroke-width: 10px;
-  stroke-linejoin: round;
+  stroke-width: 15px;
+  /* stroke-linejoin: round; */
   stroke-dasharray: ${({ length }) => length};
   stroke-dashoffset: ${({ length }) => length};
   animation: ${({ length }) =>
@@ -49,26 +49,30 @@ const getPolylineLength = (polylineEl: React.RefObject<SVGPolylineElement>) => {
   return 0
 }
 
+/**
+ * TODO: This Component will accept a style prop like "line" or "bezier"
+ */
 const RoutePath: React.FC<{
   paths: string[]
   mapNodes: types.MapNodes
 }> = ({ paths, mapNodes }) => {
   const basePath = paths[0]
 
-  // TODO: Try to use the `bezier` path.
-  // const arrayOfCoordinates = React.useMemo(
-  //   () =>
-  //     paths.map(path => {
-  //       const currentNode = mapNodes[path]
-  //       if (!currentNode) {
-  //         throw NotFoundNodeError(path)
-  //       }
-  //       return [currentNode.coordinates.x, currentNode.coordinates.y]
-  //     }),
-  //   [paths, mapNodes]
-  // )
+  const arrayOfPoints = React.useMemo(
+    () =>
+      paths.map(path => {
+        const currentNode = mapNodes[path]
+        if (!currentNode) {
+          throw NotFoundNodeError(path)
+        }
+        const x: unknown = currentNode.coordinates.x
+        const y: unknown = currentNode.coordinates.y
+        return [parseInt(x as string), parseInt(y as string)]
+      }),
+    [paths, mapNodes]
+  )
 
-  // const s = svg.svgShapePath(arrayOfCoordinates, svg.bezierCommand)
+  const s = svg.svgShapePath(arrayOfPoints, svg.bezierCommand)
 
   // ----- Creating the points for polyline svg element ------- //
   const polylinePoints = React.useMemo(() => {
@@ -123,7 +127,7 @@ const RoutePath: React.FC<{
         <AnimatedRoutePath
           key={`${polylinePoints}`}
           id="wayfinder"
-          points={polylinePoints}
+          d={s}
           length={polylineLength}
           fill="none"
         />

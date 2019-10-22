@@ -74,7 +74,7 @@ const storeMapConfig: StoreMapConfig = {
       deviceAngle: parseInt(process.env.DEVICE_ANGLE || '180'),
       voiceDirectionIsEnabled: false,
       mapCSS,
-      isMapEditorVisible: true,
+      isMapEditorVisible: false,
       isNodesVisible: false,
     },
     floors,

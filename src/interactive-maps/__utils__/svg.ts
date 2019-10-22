@@ -12,6 +12,9 @@ const line = (pointA: number[], pointB: number[]) => {
   }
 } // function line
 
+// The SMOOTHING ratio
+const SMOOTHING = 0.07
+
 // Util for bezierCommand function
 const controlPoint = (
   current: number[],
@@ -24,13 +27,11 @@ const controlPoint = (
   // Replace with 'current'
   const p = previous || current
   const n = next || current
-  // The smoothing ratio
-  const smoothing = 0.02
   // Properties of the opposed-line
   const o = line(p, n)
   // If is end-control-point, add PI to the angle to go backward
   const angle = o.angle + (reverse ? Math.PI : 0)
-  const length = o.length * smoothing
+  const length = o.length * SMOOTHING
   // The control point position is relative to the current point
   const x = current[0] + Math.cos(angle) * length
   const y = current[1] + Math.sin(angle) * length
