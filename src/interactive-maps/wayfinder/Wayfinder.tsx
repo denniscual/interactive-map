@@ -8,7 +8,7 @@ import * as types from '../types'
 const calculateTravelTimeBasedInDistance = (
   distance: number,
   // Value to hold about the duration of the wayfinder animation.
-  estimatedtime: number = 360
+  estimatedtime: number = 480
 ) => distance / estimatedtime // divide the distance by estimated time to get the travel time
 
 // TODO: We need to expose an API to modify the styles of our route path / wayfinder path.
@@ -72,7 +72,7 @@ const RoutePath: React.FC<{
     [paths, mapNodes]
   )
 
-  const s = svg.svgShapePath(arrayOfPoints, svg.bezierCommand)
+  const drawing = svg.svgShapePath(arrayOfPoints, svg.bezierCommand)
 
   // ----- Creating the points for polyline svg element ------- //
   const polylinePoints = React.useMemo(() => {
@@ -127,7 +127,7 @@ const RoutePath: React.FC<{
         <AnimatedRoutePath
           key={`${polylinePoints}`}
           id="wayfinder"
-          d={s}
+          d={drawing}
           length={polylineLength}
           fill="none"
         />
