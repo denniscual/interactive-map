@@ -1,6 +1,6 @@
 // Credit to this blog - https://medium.com/@francoisromain/smooth-a-svg-path-with-cubic-bezier-curves-e37b49d46c74
 
-export const lineCommand = (point: number[]) => `L ${point[0]} ${point[1]}`
+const lineCommand = (point: number[]) => `L ${point[0]} ${point[1]}`
 
 // Util for bezierCommand function
 const line = (pointA: number[], pointB: number[]) => {
@@ -37,11 +37,7 @@ const controlPoint = (
   return [x, y]
 } // function controlPoint
 
-export const bezierCommand = (
-  point: number[],
-  i: number,
-  points: number[][]
-) => {
+const bezierCommand = (point: number[], i: number, points: number[][]) => {
   // start control point
   const [cpsX, cpsY] = controlPoint(points[i - 1], points[i - 2], point)
   // end control point
@@ -52,7 +48,7 @@ export const bezierCommand = (
 /**
  * Creating svg shape path based on the given points, an array of points, and specified path command.
  */
-export const svgShapePath = (points: number[][], command: Function) =>
+const svgShapePath = (points: number[][], command: Function) =>
   // build the d attributes by looping over the points
   points.reduce(
     (acc, point, i, a) =>
@@ -63,3 +59,5 @@ export const svgShapePath = (points: number[][], command: Function) =>
           `${acc} ${command(point, i, a)}`,
     ''
   ) // function svgShapePath
+
+export { svgShapePath, bezierCommand, lineCommand }
