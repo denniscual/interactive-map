@@ -25,6 +25,17 @@ const storeAreasState = {
         state[area.id] = area
         return state
       },
+      removeNode(nodeID: string) {
+        for (const key in state) {
+          const area = state[key]
+          const newNodes = area.nodes.filter(node => node !== nodeID)
+          state[area.id] = {
+            ...area,
+            nodes: newNodes,
+          }
+        }
+        return state
+      },
       deleteArea(id: string) {
         delete state[id]
         return state

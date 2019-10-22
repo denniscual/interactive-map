@@ -296,7 +296,7 @@ export const storeAreas = {
   'device-marker': {
     id: 'device-marker',
     label: 'Device Marker',
-    type: 'store',
+    type: 'device',
     nodes: ['node_0.188541'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',

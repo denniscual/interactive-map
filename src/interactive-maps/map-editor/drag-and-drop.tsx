@@ -1,10 +1,11 @@
 import React from 'react'
 import MouseBackEnd from 'react-dnd-mouse-backend'
+import { css } from 'emotion'
 import { dissoc } from 'ramda'
 import { mapNodesDirectionsStateManager } from '../map-nodes'
 import * as DnD from 'react-dnd'
 import * as messageBoxCoordinates from './message-box-coordinates'
-import { css } from 'emotion'
+import { appSetters } from '../app-state-manager'
 import * as types from '../types'
 
 const ItemTypes = {
@@ -324,6 +325,8 @@ const MapNodeMessageBox: React.FC<MessageBoxProps> = ({
       mapNodesDispatch({ type: 'DELETE_NODE', payload: id })
       activeTool.dispatch('PAN_AND_ZOOM')
       setMapNodeMessageBox(<g />)
+      // update areas. remove the deleted nodes.
+      appSetters.storeAreas.removeNode(id)
     }
 
     const handleMapNodeAddDirectionButton: React.MouseEventHandler = e => {

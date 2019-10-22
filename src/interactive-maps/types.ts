@@ -162,6 +162,7 @@ export type CollectionOfEntity = Record<string, Entity>
 export enum AreaType {
   'STORE' = 'store',
   'PORTAL' = 'portal',
+  'DEVICE' = 'device',
 }
 
 export interface StoreArea {

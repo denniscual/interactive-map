@@ -43,11 +43,11 @@ const useWayfinder = () => {
       activeFloor.setID(startpointArea.floorID)
       // TODO: Revert the code
       // activeArea.setID(area.id)
-      activeArea.setID('RESET')
+      // activeArea.setID('RESET')
       navigationDispatch({ type: 'RESET', payload: { endpoint: area } })
     },
     [
-      activeArea,
+      // activeArea,
       navigationDispatch,
       activeFloor,
       storeAreas,
@@ -83,7 +83,8 @@ const useAreaItemsByFloor = (): (Types.StoreArea & UIProps)[] => {
     const areaItems = []
     for (const key in storeAreas) {
       const storeArea = storeAreas[key]
-      if (storeArea.floorID === activeFloorID) {
+      // Filter only the areas from the `activeFloor` and only `store` areas.
+      if (storeArea.floorID === activeFloorID && storeArea.type === 'store') {
         areaItems.push({
           ...storeArea,
           isActive: storeArea.id === activeAreaID,

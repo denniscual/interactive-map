@@ -71,11 +71,11 @@ const storeMapConfig: StoreMapConfig = {
   dataSource: {
     general: {
       defaultStartingPoint: process.env.DEVICE_LOCATION || 'device-marker',
-      deviceAngle: parseInt(process.env.DEVICE_LOCATION || '180'),
+      deviceAngle: parseInt(process.env.DEVICE_ANGLE || '180'),
       voiceDirectionIsEnabled: false,
       mapCSS,
       isMapEditorVisible: true,
-      isNodesVisible: true,
+      isNodesVisible: false,
     },
     floors,
     // FIXME: It doesn't throw an error if you add an unknown field
