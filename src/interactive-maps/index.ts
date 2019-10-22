@@ -6,6 +6,7 @@ import * as navigation from './navigation'
 import * as appStateManager from './app-state-manager'
 import * as layouts from './layouts'
 import { useDataSource } from './contexts'
+import { createError } from './__utils__'
 import * as Types from './types'
 
 // ----------------------------------------------------------- //
@@ -41,13 +42,12 @@ const useWayfinder = () => {
     (area: Types.StoreArea) => {
       const startpointArea = storeAreas[general.defaultStartingPoint]
       activeFloor.setID(startpointArea.floorID)
-      // TODO: Revert the code
-      // activeArea.setID(area.id)
       // activeArea.setID('RESET')
+      activeArea.setID(area.id)
       navigationDispatch({ type: 'RESET', payload: { endpoint: area } })
     },
     [
-      // activeArea,
+      activeArea,
       navigationDispatch,
       activeFloor,
       storeAreas,
@@ -70,7 +70,7 @@ const useSetPoint = () => {
 
 interface UIProps {
   isActive: boolean
-  onClick?: () => void
+  onClick: () => void
 }
 const useAreaItemsByFloor = (): (Types.StoreArea & UIProps)[] => {
   const storeAreas = useAppSelector(appUtils.getStoreAreas)
@@ -110,7 +110,7 @@ const useFloorItems = (): (Types.EnhancedFloor & UIProps)[] => {
   )
 }
 
-const useMapItems = (): (Types.Map & UIProps)[] => {
+const useMapItems = (): (Types.Map & Omit<UIProps, 'onClick'>)[] => {
   const activeFloorID = useAppSelector(appUtils.getActiveFloor)
   const maps = useInteractiveMaps()
   return React.useMemo(
@@ -154,6 +154,30 @@ const useDeviceLocation = (): { x: number; y: number; angle: number } => {
   }
 }
 
+const useDefaultData = (): { floorID: string; startingpointArea: string } => {
+  const {
+    general: { defaultStartingPoint },
+  } = useDataSource()
+  // TODO: We need to store the `state` into a Provider Component
+  // so that we can control the accessing to this `state`. Basically,
+  // we only want to consume this into Component or hooks. `appSetters`
+  // can only be called also inside Component or hooks. We gonna do this
+  // to remove indirection issue.
+  const storeAreas = useAppSelector(appUtils.getStoreAreas)
+  const storeArea = storeAreas[defaultStartingPoint]
+  if (!storeArea) {
+    throw createError(
+      new Error(
+        `Area ID '${defaultStartingPoint}' was not found in store areas collection.`
+      )
+    )
+  }
+  return {
+    floorID: storeArea.floorID,
+    startingpointArea: storeArea.id,
+  }
+}
+
 const utils = {
   useSwitchFloor,
   useWayfinder,
@@ -163,6 +187,7 @@ const utils = {
   useMapItems,
   useResetNavigation,
   useDeviceLocation,
+  useDefaultData,
 }
 
 export { InteractiveMaps as default, layouts, utils, Types }
