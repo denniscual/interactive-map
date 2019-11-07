@@ -137,20 +137,23 @@ const useResetNavigation = () => {
  * This is useful when creating `DeviceMarker` wherein the returned data is
  * coming from the set `startingPoint`.
  */
-const useDeviceLocation = (): { x: number; y: number; angle: number } => {
+const useDeviceLocation = () => {
   const {
     general: { defaultStartingPoint, deviceAngle },
   } = useDataSource()
   const storeAreas = useAppSelector(appUtils.getStoreAreas)
   const storeArea = storeAreas[defaultStartingPoint]
-  // device location area must only hold 1 node.
-  const {
-    graphAndNodes: { mapNodes },
-  } = floors.stateManager.useGetFloorByID(storeArea.floorID)
-  const deviceNode = mapNodes[storeArea.nodes[0]]
-  return {
-    ...deviceNode.coordinates,
-    angle: deviceAngle,
+  const storeFloors = floors.stateManager.useFloorsToObj()
+  if (storeArea) {
+    const {
+      graphAndNodes: { mapNodes },
+    } = storeFloors[storeArea.floorID]
+    // device location area must only hold 1 node.
+    const deviceNode = mapNodes[storeArea.nodes[0]]
+    return {
+      ...deviceNode.coordinates,
+      angle: deviceAngle,
+    }
   }
 }
 

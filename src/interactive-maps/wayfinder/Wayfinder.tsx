@@ -6,14 +6,23 @@ import { NotFoundNodeError, svg } from '../__utils__'
 import * as types from '../types'
 
 // TODO:
-// - add device marker with animation.
+// - add device marker with animation. When integrate the device marker, change the
+//   implementaiton of useDeviceLcoation and conditionally render it in app.
 // - fix the overlapping issue. right now the revieler path
 //   overlap the store areas. We need to port this revieler path
 //   at the back of the store areas or wakable path elements.
 // - use the areas nodes from latest updates so that we can
 //   avoid the overlapping issue of the route paths when trasitioning out.
+//   When changing the nodes, test the gdm because some areas are not synced
+//   to the integrated areas.
 
 const MARKER_COLOR = '#3555FF'
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+// MaskedPath
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
 
 const calculateTravelTimeBasedInDistance = (
   distance: number,
@@ -21,44 +30,15 @@ const calculateTravelTimeBasedInDistance = (
   estimatedtime: number = 6000
 ) => distance / estimatedtime // divide the distance by estimated time to get the travel time
 
-const RoutePath = styled.path`
-  fill: none;
-  stroke-dasharray: 0 40 0 40;
-  stroke-linecap: round;
-  stroke-width: 25px;
-  stroke: ${MARKER_COLOR};
-`
-
-const BorderRoutePath = styled(RoutePath)`
-  fill: none;
-  stroke: #494949;
-  stroke-width: 42px;
-  stroke-opacity: 0.1;
-`
-
-const InnerRoutePath = styled(RoutePath)`
-  fill: none;
-  stroke: white;
-  stroke-width: 38px;
-`
-
 // TODO: We need to expose an API to modify the styles of our route path / wayfinder path.
-type PathProps = {
-  length: number
-}
-const RevielerPath = styled.path<PathProps>`
-  /* This stroke color should be the same in walkable-path fill color to achieve animation */
-  /* TODO: Next time don't couple */
+const MaskedPath = styled.path<{ length: number }>`
   stroke: #ffffff;
   stroke-width: 45px;
-  /* stroke-linejoin: round; */
+  stroke-linecap: round;
   stroke-dasharray: ${({ length }) => length};
-  stroke-dashoffset: ${({ length }) => -length};
-  animation: ${({ length }) =>
-    // duration of the animation should based in length, the distance, instead of relying in static duration.
-    // through here, the duration is consistent in different distances.
-    `${calculateTravelTimeBasedInDistance(length)}s linear forwards dash}`};
-  animation-direction: reverse;
+  stroke-dashoffset: ${({ length }) => length};
+  animation: dash ${({ length }) => calculateTravelTimeBasedInDistance(length)}s
+    linear forwards;
 
   @keyframes dash {
     to {
@@ -66,8 +46,61 @@ const RevielerPath = styled.path<PathProps>`
     }
   }
 `
-const dis = (p: types.Coordinates, q: types.Coordinates) => {
-  return Math.sqrt((p.x - q.x) * (p.x - q.x) + (p.y - q.y) * (p.y - q.y))
+
+const WayfinderMaskedPath: React.FC<{ d: string; length: number }> = props => (
+  <defs>
+    <mask id="mymask">
+      <MaskedPath key={`${props.d}`} id="wayfinder" {...props} />
+    </mask>
+  </defs>
+)
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+// WayfinderDottedPath
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+const DottedPath = styled.path`
+  fill: none;
+  stroke-dasharray: 0 40 0 40;
+  stroke-linecap: round;
+  stroke-width: 25px;
+  stroke: ${MARKER_COLOR};
+`
+
+const BorderDottedPath = styled(DottedPath)`
+  fill: none;
+  stroke: #494949;
+  stroke-width: 42px;
+  stroke-opacity: 0.1;
+`
+
+const InnerDottedPath = styled(DottedPath)`
+  fill: none;
+  stroke: white;
+  stroke-width: 38px;
+`
+
+const WayfinderDottedPath: React.FC<{ d: string }> = ({ d }) => (
+  <>
+    <BorderDottedPath d={d} mask="url(#mymask)" />
+    <InnerDottedPath d={d} mask="url(#mymask)" />
+    <DottedPath d={d} mask="url(#mymask)" />
+  </>
+)
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+// WayfinderPath
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+const getLength = (point1: types.Coordinates, point2: types.Coordinates) => {
+  return Math.sqrt(
+    (point1.x - point2.x) * (point1.x - point2.x) +
+      (point1.y - point2.y) * (point1.y - point2.y)
+  )
 }
 
 const getPolylineLength = (polylineEl: React.RefObject<SVGPolylineElement>) => {
@@ -76,16 +109,13 @@ const getPolylineLength = (polylineEl: React.RefObject<SVGPolylineElement>) => {
     const ps = polylineEl.current.points
     const numberOfItems = ps.numberOfItems
     for (var i = 1; i < numberOfItems; i++) {
-      totalLength += dis(ps.getItem(i - 1), ps.getItem(i))
+      totalLength += getLength(ps.getItem(i - 1), ps.getItem(i))
     }
     return totalLength
   }
   return 0
 }
 
-/**
- * TODO: This Component will accept a style prop like "line" or "bezier"
- */
 const WayfinderPath: React.FC<{
   paths: string[]
   mapNodes: types.MapNodes
@@ -150,27 +180,19 @@ const WayfinderPath: React.FC<{
   }, [polylineEl, polylinePoints])
 
   return (
-    <g>
+    <g id="wayfinder-container">
       {/* This polyline element is used as data not UI. It means, no need to display
       this in browser. We are using this polyline to get the length of polyline with
-      points prop. Then, assign it to RevielerPath. */}
+      points prop. Then, assign it to MaskedPath. */}
       <polyline ref={polylineEl} points={polylinePoints} fill="none" />
-      {/* Render this RevielerPath if the pathLength is not 0 */}
+      {/* Render this MaskedPath if the pathLength is not 0 */}
       {/* Don't ever remove the `id` because we are using it to wayinderObservables */}
       {polylineLength > 0 && (
         <>
-          <BorderRoutePath d={drawingPath} />
-          <InnerRoutePath d={drawingPath} />
-          <RoutePath d={drawingPath} />
           {/* Don't remove the wayfinder id because wayfinder observable is listening
           TODO: In the future, remove the coupling or find better solution. */}
-          <RevielerPath
-            key={`${polylinePoints}`}
-            id="wayfinder"
-            d={drawingPath}
-            length={polylineLength}
-            fill="none"
-          />
+          <WayfinderMaskedPath d={drawingPath} length={polylineLength} />
+          <WayfinderDottedPath d={drawingPath} />
         </>
       )}
     </g>

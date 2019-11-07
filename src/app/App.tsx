@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useTransition, animated } from 'react-spring'
 import AreasControls from './AreaControls'
 import FloorControls from './FloorControls'
+import DeviceMarker from './device-marker'
 import InteractiveMaps, { utils } from '../interactive-maps'
 import { getMapDataSource } from './map'
 
@@ -25,6 +26,7 @@ const StyledSection = styled.section`
  * Creating a transition effect between maps using react-spring
  */
 const useMapTransition1 = () => {
+  const deviceLocation = utils.useDeviceLocation()
   const mapItems = utils.useMapItems()
   const activeFloor = mapItems.find(map => map.isActive) || { id: '' }
   // create transition effect
@@ -38,12 +40,16 @@ const useMapTransition1 = () => {
       const activeMap = mapItems.find(map => map.isActive)
       return (
         <animated.div key={key} style={props}>
-          {activeMap && <activeMap.Component />}
+          {activeMap && (
+            <activeMap.Component>
+              {deviceLocation && <DeviceMarker {...deviceLocation} />}
+            </activeMap.Component>
+          )}
         </animated.div>
       )
     })
     return transitionedMaps
-  }, [mapItems, transitions])
+  }, [mapItems, transitions, deviceLocation])
 }
 
 const TestInteractiveMaps: React.FC = () => {
