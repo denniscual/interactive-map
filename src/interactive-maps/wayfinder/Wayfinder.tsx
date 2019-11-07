@@ -5,17 +5,6 @@ import * as floors from '../floors'
 import { NotFoundNodeError, svg } from '../__utils__'
 import * as types from '../types'
 
-// TODO:
-// - add device marker with animation. When integrate the device marker, change the
-//   implementaiton of useDeviceLcoation and conditionally render it in app.
-// - fix the overlapping issue. right now the revieler path
-//   overlap the store areas. We need to port this revieler path
-//   at the back of the store areas or wakable path elements.
-// - use the areas nodes from latest updates so that we can
-//   avoid the overlapping issue of the route paths when trasitioning out.
-//   When changing the nodes, test the gdm because some areas are not synced
-//   to the integrated areas.
-
 const MARKER_COLOR = '#3555FF'
 
 // ----------------------------------------------------------- //
