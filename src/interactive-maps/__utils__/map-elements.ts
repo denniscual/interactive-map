@@ -1,7 +1,6 @@
 import { createElement } from 'react'
 import * as nodes from './nodes'
 import * as types from '../types'
-import { appSetters } from '../app-state-manager'
 
 const e = createElement
 /**
@@ -32,7 +31,6 @@ const createReactElements = (
             // the parent id in active area state.
             // e.stopPropagation()
             // activeAreaDispatch(attributes.id)
-            appSetters.activeArea.setID(attributes.id)
           },
         }
       : props

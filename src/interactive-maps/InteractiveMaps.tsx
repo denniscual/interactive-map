@@ -11,8 +11,8 @@ import {
 import * as utils from './__utils__'
 import { DataSourceProvider } from './contexts'
 import { MapNodeDirections } from './map-nodes/types'
+import * as translations from './translations'
 import * as types from './types'
-import { DnD } from './map-editor'
 
 /**
  * Creating interactive map based in given floors, stores, and portals.*
@@ -80,7 +80,7 @@ const useDataSourceForInteractiveMap = (
 
 const initStoreArea: types.StoreArea = {
   id: '',
-  label: '',
+  labels: {},
   floorID: '',
   nodes: [],
   type: '',
@@ -172,9 +172,7 @@ const MapsDataSource: React.FC<{
             floors={enhancedFloors}
             defaultNav={defaultNav}
           >
-            <DnD.MapDragDropProvider>
-              <maps.Maps voiceAssistant={voiceAssistant}>{children}</maps.Maps>
-            </DnD.MapDragDropProvider>
+            <maps.Maps voiceAssistant={voiceAssistant}>{children}</maps.Maps>
           </nav.stateManager.NavigationProvider>
         </floors.stateManager.FloorsProvider>
       </mapNodesDirectionsStateManager.MapNodesDirectionsProvider>
@@ -185,26 +183,63 @@ const MapsDataSource: React.FC<{
 const InteractiveMaps: React.FC<{
   dataSource?: types.InteractiveMapsDataSource
   voiceAssistant?: types.VoiceAssistantModifier
+  language: string
   children: JSX.Element
-}> = React.memo(({ dataSource, ...otherProps }) => {
-  return dataSource ? (
-    // InteractiveMapsProvider is little confusing name for using consuming maps.
-    <maps.InteractiveMapsProvider>
-      {/* passing the dataSource with omitted `storeAreas` */}
-      <DataSourceProvider
-        value={
-          omit(['storeAreas'], dataSource) as Omit<
-            types.InteractiveMapsDataSource,
-            'storeAreas'
-          >
-        }
+}> = ({
+  dataSource,
+  language = translations.getDefaultLanguage(),
+  ...otherProps
+}) => {
+  return React.useMemo(() => {
+    // merge the translations from provider and the map translations
+    let newTranslations: types.Translations = {}
+    if (dataSource) {
+      newTranslations = Object.entries(dataSource.translations)
+        .map(([lang, value]) => [
+          lang,
+          {
+            ...(translations.data as Record<string, any>)[lang],
+            // translations from callee e.g provider has higher precedence.
+            // Means that translations can override the default translations of the maps.
+            // And also, whatever languages given by the provider, that the languages will be created.
+            ...value,
+          },
+        ])
+        .reduce(
+          (acc, [lang, value]) => ({
+            ...acc,
+            [lang]: value,
+          }),
+          {}
+        )
+    }
+
+    // get the store labels on the floors and group it.
+    return dataSource ? (
+      // translations.data should be coming from another package? I think some. For now, put here
+      <translations.TranslationsProvider
+        value={{ data: newTranslations, lang: language }}
       >
-        <MapsDataSource dataSource={dataSource} {...otherProps} />
-      </DataSourceProvider>
-    </maps.InteractiveMapsProvider>
-  ) : (
-    otherProps.children
-  )
-})
+        {/* InteractiveMapsProvider is little confusing name for using consuming maps. */}
+        <maps.InteractiveMapsProvider>
+          {/* passing the dataSource with omitted `storeAreas` */}
+          <DataSourceProvider
+            value={
+              omit(['storeAreas'], dataSource) as Omit<
+                types.InteractiveMapsDataSource,
+                'storeAreas'
+              >
+            }
+          >
+            <MapsDataSource dataSource={dataSource} {...otherProps} />
+          </DataSourceProvider>
+        </maps.InteractiveMapsProvider>
+      </translations.TranslationsProvider>
+    ) : (
+      otherProps.children
+    )
+    // es
+  }, [otherProps, language, dataSource])
+}
 
 export default InteractiveMaps

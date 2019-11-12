@@ -1,13 +1,47 @@
 import { Types } from '../../interactive-maps'
 
+// TODO: This should be came from in `api` types. Because we are coupled to that, we need to
+// be synced.
+export enum SpecialCategories {
+  PROMOTIONS = 'PROMOTIONS',
+  NOVELTY = 'NOVELTY',
+  EXCLUSIVES = 'EXCLUSIVES',
+}
+
 /**
  * Properties use to map the product to an areas
  */
-type MappedData = {
-  mapping: {
+interface MappedData {
+  mapping?: {
     categories: string[]
+    specialCategories?: SpecialCategories[]
     brands?: string[]
     excludedBrands?: string[]
+  }
+}
+
+// NOTE: Value of the enum should be synced to the Languages uses by
+// maps package and also the storea assistant. It means that they must be the same.
+// But this is easy maintenance.
+// TODO: But I think we can simplify this through our translation will
+// be given by the provider and maps package doesn't have now default translation
+// for more simpler approach. Because this is little brittle.
+
+// TODO: The source of truth about the languages must be coming in
+// dufry provider. We need to follow that languages instead of having isolated
+// translations.
+
+export enum Languages {
+  EN = 'en', // English-Great Britain
+  ES = 'es', // Spanish - Spain (Traditional)
+  DE = 'de', // German - Germany
+}
+
+interface Labels {
+  labels: {
+    [Languages.EN]: string
+    [Languages.DE]?: string
+    [Languages.ES]?: string
   }
 }
 
@@ -19,6 +53,8 @@ export interface StoreMapConfig {
   dataSource: Types.InteractiveMapsDataSource
 }
 
+// TODO: This should be came from in `api` types. Because we are coupled to that, we need to
+// be synced.
 export interface DufryProduct {
   id: string | number
   /**
@@ -28,7 +64,7 @@ export interface DufryProduct {
   vendor: string
 }
 
-export type DufryStoreArea = Types.StoreArea & MappedData
+export type DufryStoreArea = Types.StoreArea & MappedData & Labels
 
 export interface DufryStoreAreas {
   [x: string]: DufryStoreArea
@@ -37,7 +73,8 @@ export interface DufryStoreAreas {
 export interface DufryProductsWithAreas {
   [x: string]: {
     id: string | number
-    areas: DufryStoreArea[]
+    areaID: string
+    specialCategory?: string
   }
 }
 

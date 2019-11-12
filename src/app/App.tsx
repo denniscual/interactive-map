@@ -7,16 +7,6 @@ import DeviceMarker from './device-marker'
 import InteractiveMaps, { utils } from '../interactive-maps'
 import { getMapDataSource } from './map'
 
-const getStoreId = () => {
-  const storeIdEnv = (process.env.STORE_ID || '').toUpperCase()
-
-  if (!storeIdEnv && process.env.NODE_ENV === 'development') {
-    return 'ES65DFT420'
-  }
-
-  return storeIdEnv
-}
-
 const StyledSection = styled.section`
   margin: 4em;
   text-align: center;
@@ -67,8 +57,27 @@ const TestInteractiveMaps: React.FC = () => {
   )
 }
 
+const getStoreId = () => {
+  const storeIdEnv = (process.env.STORE_ID || '').toUpperCase()
+
+  if (!storeIdEnv && process.env.NODE_ENV === 'development') {
+    return 'ES65DFT420'
+  }
+
+  return storeIdEnv
+}
+
+const supportedLanguages = ['en-GB', 'es-ES', 'de-DE']
+
 const App: React.FC = () => (
-  <InteractiveMaps dataSource={getMapDataSource(getStoreId())}>
+  <InteractiveMaps
+    dataSource={getMapDataSource(getStoreId(), supportedLanguages, 'true')}
+    voiceAssistant={{
+      onSpeak: (message: any) => {},
+      audioElement: {} as any,
+    }}
+    language="en-GB"
+  >
     <TestInteractiveMaps />
   </InteractiveMaps>
 )

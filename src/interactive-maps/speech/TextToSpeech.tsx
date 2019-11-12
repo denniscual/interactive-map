@@ -4,6 +4,7 @@ import { Observable } from 'rxjs'
 import { noop } from '../__utils__'
 import * as nav from '../navigation'
 import * as types from '../types'
+import { useTranslations, getDefaultLanguage } from '../translations'
 
 const { SpeechSynthesis } = require('./speech-synthesizer')
 
@@ -113,13 +114,17 @@ const TextToSpeech: React.FC<{
     const speechGenerator = React.useRef<IterableIterator<
       Speech | undefined
     > | null>(null)
+    const t = useTranslations()
+    const { currentLanguage } = t
+    const [src, setSrc] = React.useState('')
+    const audioTimeoutRef = React.useRef(0)
 
     const textToSpeechReset = React.useCallback(() => {
       speechGenerator.current = null
       setSpeech({ text: '' })
       // pause the audio
-      if (audioEl.current) {
-        audioEl.current.pause()
+      if (options && options.audioElement) {
+        /* options.audioElement.pause() */
       }
     }, [])
 
@@ -163,24 +168,35 @@ const TextToSpeech: React.FC<{
       [collection, text, textToSpeechReset]
     )
 
-    // TODO: We need this to the template
-    // - its own speech synthesizer
-    // - its own audio element
-    // - and send
-
-    const [src, setSrc] = React.useState('')
     const createMediaSrcWithAudioCancellation = useCreateMediaSrcWithAudioCancellation(
       audioDelay
     )
     React.useEffect(
-      function settingMediaSrcAndHandleAudioCancellation() {
+      function triggerOnSpeak() {
         if (speech.text !== '') {
           // If the speech synthesizer is handled by the template app
-          if (options && options.send) {
-            options.send({
-              type: 'FLASH_MESSAGE',
-              message: { en: speech.text },
+          if (options && options.onSpeak) {
+            // NOTE: We need to pass a message object. The type of the object is the same
+            // message type which our store-assistant uses. E.g
+            // { en: 'hello worlds', }
+            options.onSpeak({
+              [currentLanguage]: speech.text,
+              // `currentLanguage` is referencing to current language used by the app.
+              // but because our `translate` function can create a text from default resource if no translation for the given tranlsation , English resource,
+              // then `speech.text` could be possible English text even though the `currentLanguage` is spanish.
+              // Because of this, we need a fallback and that the `defaultLangauge` property is.
+              [getDefaultLanguage()]: speech.text,
             })
+
+            /**
+             * Using `window` is just workaround to properly set the type of the `setTimeout` returned value.
+             * This is an audio cancellation scheduling. We gonna schedule to reset the speech if the response
+             * doens't come withing 3 seconds. This will be destroyed if the response is executed on
+             * `audio.onEnded` before 3000.
+             */
+            /* audioTimeoutRef.current = window.setTimeout(() => { */
+            /*   textToSpeechReset(); */
+            /* }, 3000); */
           } else {
             const _audioEl = audioEl.current
             const subscriber = createMediaSrcWithAudioCancellation(
@@ -212,6 +228,7 @@ const TextToSpeech: React.FC<{
         createMediaSrcWithAudioCancellation,
         onAudioTimeout,
         textToSpeechReset,
+        currentLanguage,
       ]
     )
 
@@ -221,6 +238,9 @@ const TextToSpeech: React.FC<{
           // onPlay(speech.text);
         }
         const handleEnded = () => {
+          // This will destroy the audio cancellation scheduling. We need to destory if the audio response
+          // is early to scheduled time.
+          /* clearTimeout(audioTimeoutRef.current); */
           // This would handle the tracking of audios for speech collection
           if (!isNil(speechGenerator.current) && arrayIsNotEmpty(collection)) {
             const { value: speech, done } = speechGenerator.current.next()
@@ -250,17 +270,15 @@ const TextToSpeech: React.FC<{
           onEnded()
         }
 
-        if (options && options.speechSynthesizer) {
-          const {
-            audioElement: templateAudioElement,
-          } = options.speechSynthesizer
+        if (options && options.audioElement) {
+          const templateAudioElement = options.audioElement
 
-          templateAudioElement.addEventListener('play', handlePlay)
-          templateAudioElement.addEventListener('ended', handleEnded)
+          /* templateAudioElement.addEventListener('play', handlePlay) */
+          /* templateAudioElement.addEventListener('ended', handleEnded) */
 
           return function effectCleanup() {
-            templateAudioElement.removeEventListener('play', handlePlay)
-            templateAudioElement.removeEventListener('ended', handleEnded)
+            /* templateAudioElement.removeEventListener('play', handlePlay) */
+            /* templateAudioElement.removeEventListener('ended', handleEnded) */
           }
         } else {
           if (audioEl.current) {
@@ -286,6 +304,7 @@ const TextToSpeech: React.FC<{
           }
         }
       },
+      /* eslint-disable react-hooks/exhaustive-deps */
       [
         collection,
         onAudioCollectionEnded,
@@ -294,7 +313,6 @@ const TextToSpeech: React.FC<{
         onPlay,
         textToSpeechReset,
         speech,
-        options,
       ]
     )
 

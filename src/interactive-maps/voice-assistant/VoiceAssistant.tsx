@@ -10,6 +10,27 @@ import { appSetters, useAppSelector, appUtils } from '../app-state-manager'
 import * as types from '../types'
 import { MapNodes, DirectionType } from '../map-nodes/types'
 import { useDataSource } from '../contexts'
+import { useTranslate, getDefaultLanguage } from '../translations'
+
+interface MapTranslate {
+  (key: string, data?: Record<string, string>): string
+}
+
+/**
+ * Translate which has default language set.
+ */
+const useMapTranslate = () => {
+  const translate = useTranslate()
+  return React.useCallback(
+    (key: string, data?: Record<string, string>) => {
+      return translate(key, {
+        data,
+        defaultLang: getDefaultLanguage(),
+      })
+    },
+    [translate]
+  )
+}
 
 const getShortestPathsForRoute = (
   route: types.EnhancedNavigation,
@@ -100,52 +121,6 @@ const getWayfinderDirections = ({
   }
 }
 
-const getRandomInt = (min: number, max: number) => {
-  return Math.random() * (max - min) + min
-}
-
-// NOTE: We use IIFE, Immediate Invoked Function Expression, in here so that we can isolate the
-// local variables.
-const generateDirectionPhrase = (() => {
-  let previousRandomNumber: number | null = null
-  const createPhraseWithDirection = (phrase: string) => (
-    direction: DirectionType
-  ) => `${phrase.trimEnd()} ${direction}.`
-  const phrases = [
-    // the phrase passed is incomplete. `createPhraseWithDirection` will complete the thought
-    // by appending the direction.
-    createPhraseWithDirection('Then just turn'),
-    createPhraseWithDirection('Then turning'),
-    // createPhraseWithDirection('Then Direction is turning'),
-  ]
-  const getPhrase = (idx: number, direction: DirectionType) =>
-    phrases[idx](direction)
-  return (direction: DirectionType): string => {
-    let phrase = ''
-    const randomNumber = Math.round(getRandomInt(0, phrases.length))
-    if (!previousRandomNumber) {
-      previousRandomNumber = 1
-      phrase = getPhrase(previousRandomNumber, direction)
-    } else {
-      if (
-        previousRandomNumber === randomNumber ||
-        randomNumber === phrases.length
-      ) {
-        phrase = generateDirectionPhrase(direction)
-      } else {
-        previousRandomNumber = randomNumber
-        phrase = getPhrase(previousRandomNumber, direction)
-      }
-    }
-
-    if (!phrase) {
-      phrase = generateDirectionPhrase(direction)
-    }
-
-    return phrase
-  }
-})()
-
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
 // Voice direction and wayfinder speechAndWayfinderStatus state
@@ -206,17 +181,19 @@ const speechAndWayfinderStatusReducer = (
  * Distinguish the distance, from startpoint to endpoint, based on the length of the paths.
  * The distance is modeled by word not meter or etc. If pathsLength is empty, returned undefined
  */
-const getMeasurementByDistance = (distance: number) => {
-  const distances = ['After a little longer', 'After a little shorter']
+const getMeasurementByDistance = (
+  distance: number,
+  translate: MapTranslate
+) => {
   if (distance === 0) {
     return
   }
   // NOTE: Number is based in svg coordinates system.
-  if (distance <= 650) {
-    return distances[1]
+  if (distance <= 800) {
+    return translate('measurements.shorter')
   }
-  if (distance > 650) {
-    return distances[0]
+  if (distance > 800) {
+    return translate('measurements.longer')
   }
 }
 
@@ -225,14 +202,17 @@ const useCreateSpeechCollection = ({
   route,
   shortestPortal,
   floorsObj,
+  translate,
 }: {
   storeAreas: types.StoreAreas
   route: types.Route
   shortestPortal: types.ShortestPortal
   floorsObj: Record<string, types.EnhancedFloor>
+  translate: MapTranslate
 }) => {
   const mapNodesDirections = mapNodes.mapNodesDirectionsStateManager.useMapNodesDirections()
   const mapNodesObj = mapNodes.mapNodesStateManager.useMapNodesObj()
+
   // The initial speech collection is depending on the type of route.
   return React.useCallback(
     ({
@@ -250,11 +230,14 @@ const useCreateSpeechCollection = ({
       // you can find it on the right hand side.
       if (route.routeInvolvesMultipleFloors) {
         const portalID = route.endpoint
-        const portalName = storeAreas[portalID].label.split(' ')[0]
+        const portalName = translate(storeAreas[portalID].id)
         const nextFloorLabel = floorsObj[shortestPortal.nextFloorID].label
-        const portalSpeech = `Take ${portalName} ${
-          shortestPortal.portalDirection
-        } to the ${nextFloorLabel}.`
+        // const portalSpeech = `Take ${portalName} ${shortestPortal.portalDirection} to the ${nextFloorLabel}.`;
+        const portalSpeech = translate('portalSpeech', {
+          portalName,
+          portalDirection: shortestPortal.portalDirection,
+          floorLabel: nextFloorLabel,
+        })
         if (introSpeech) {
           return [introSpeech, portalSpeech]
         }
@@ -264,8 +247,6 @@ const useCreateSpeechCollection = ({
       // to the single floor.
       // E.g: You can find department 1 on the basement floor,
       // Turn right and you can find it on the left hand side
-      const startpointAreaType = storeAreas[route.startpoint].type
-      const endpointAreaName = storeAreas[route.endpoint].label
       let otherSpeeches: string[] = []
       const wayfinderDirections = getWayfinderDirections({
         mapNodesObj,
@@ -274,16 +255,21 @@ const useCreateSpeechCollection = ({
       })
       if (wayfinderDirections && wayfinderDirections.length > 0) {
         const directionsSpeech = wayfinderDirections
-          ? wayfinderDirections.map(generateDirectionPhrase)
+          ? wayfinderDirections.map(direction =>
+              translate('whileWalking', {
+                direction: translate(`directions.${direction}`),
+              })
+            )
           : []
         const lastIndex = directionsSpeech.length - 1
         // ----- For creating end speech ------- //
-        const measurement = getMeasurementByDistance(distance)
-        const attachedPhraseIntoLastEndPhrase =
-          startpointAreaType === 'store' ? 'it' : endpointAreaName
-        const lastEndPhrase = `You can find ${attachedPhraseIntoLastEndPhrase} on the ${
-          wayfinderDirections[lastIndex]
-        } hand side.`
+        const measurement = getMeasurementByDistance(distance, translate)
+        // const attachedPhraseIntoLastEndPhrase =
+        //   startpointAreaType === 'store' ? 'it' : endpointAreaName;
+        // const lastEndPhrase = `You can find the area on the ${wayfinderDirections[lastIndex]} hand side.`;
+        const lastEndPhrase = translate('arrivingToDestination', {
+          direction: translate(`directions.${wayfinderDirections[lastIndex]}`),
+        })
         let endSpeech = ''
         if (distance) {
           endSpeech = `${measurement}, ${lastEndPhrase}`
@@ -310,13 +296,13 @@ const useCreateSpeechCollection = ({
       return [...otherSpeeches]
     },
     [
+      translate,
       storeAreas,
       floorsObj,
       mapNodesDirections,
       mapNodesObj,
       route.endpoint,
       route.routeInvolvesMultipleFloors,
-      route.startpoint,
       shortestPortal.nextFloorID,
       shortestPortal.portalDirection,
     ]
@@ -398,12 +384,14 @@ const VoiceAssistant: React.FC<{
       general: { voiceDirectionIsEnabled },
     } = useDataSource()
     const storeAreas = useAppSelector(appUtils.getStoreAreas)
+    const translate = useMapTranslate()
 
     const createSpeechCollection = useCreateSpeechCollection({
       storeAreas,
       route,
       shortestPortal,
       floorsObj,
+      translate,
     })
 
     const audioDelay = React.useCallback(() => wayfinderDistance, [
@@ -437,10 +425,12 @@ const VoiceAssistant: React.FC<{
             appSetters.shortestPaths.setShortestPaths(shortestPath.paths)
 
             // ----------- Speech Collection ------------- //
-            const endArea = storeAreas[endpointID].label
-            const introSpeech = `You can find ${endArea} on the ${
-              activeFloor.label
-            }.`
+            // If no value was specified on a given language, default it to English.
+            const introSpeech = translate('startWalking', {
+              area: translate(endpointID),
+              floorLabel: activeFloor.label,
+            })
+
             const speeches = createSpeechCollection({
               paths: shortestPath.paths,
               introSpeech,
@@ -463,6 +453,7 @@ const VoiceAssistant: React.FC<{
         route,
         routeFloor.graphAndNodes.mapGraph,
         welcomeSpeech,
+        translate,
       ]
     )
 

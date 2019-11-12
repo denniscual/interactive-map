@@ -4,58 +4,59 @@ import * as levelOneFloor from './level-one-floor'
 import nodeDirections from './general-directions'
 import portalAreas from './general-portals'
 import mapCSS from '../map-css'
-import { StoreMapConfig } from '../../types'
+import { groupAreaLabelsByLanguages, mergeTranslations } from '../../utilities'
+import langTranslation from './translations'
 import { Types } from '../../../../interactive-maps'
 
 const floors = [
-  {
-    id: 'basementFloor',
-    label: 'Basement',
-    nodesDirections: nodeDirections,
-    nodes: basement.areasAndNodes.nodes as Types.MapNodesProps[],
-    map: basement.map,
-    // NOTE: The id value is an areaID.
-    portals: [
-      {
-        id: 'elevator-1',
-        type: 'twoWay',
-      } as const,
-      {
-        id: 'escalator-1-ground-level',
-        type: 'oneWay',
-        directionPoint: 'ENTRY',
-      } as const,
-      {
-        id: 'escalator-basement',
-        type: 'oneWay',
-        directionPoint: 'EXIT',
-      } as const,
-    ],
-  },
-  {
-    id: 'groundFloor',
-    label: 'Ground Floor',
-    nodesDirections: nodeDirections,
-    // FIXME: We need to remove this "escape hatch".
-    nodes: groundFloor.areasAndNodes.nodes as Types.MapNodesProps[],
-    map: groundFloor.map,
-    portals: [
-      {
-        id: 'elevator-1',
-        type: 'twoWay',
-      } as const,
-      {
-        id: 'escalator-1-ground-level',
-        type: 'oneWay',
-        directionPoint: 'EXIT',
-      } as const,
-      {
-        id: 'escalator-basement',
-        type: 'oneWay',
-        directionPoint: 'ENTRY',
-      } as const,
-    ],
-  },
+  // {
+  //   id: 'basementFloor',
+  //   label: 'Basement',
+  //   nodesDirections: nodeDirections,
+  //   nodes: basement.areasAndNodes.nodes as Types.MapNodesProps[],
+  //   map: basement.map,
+  //   // NOTE: The id value is an areaID.
+  //   portals: [
+  //     {
+  //       id: 'elevator-1',
+  //       type: 'twoWay',
+  //     } as const,
+  //     {
+  //       id: 'escalator-1-ground-level',
+  //       type: 'oneWay',
+  //       directionPoint: 'ENTRY',
+  //     } as const,
+  //     {
+  //       id: 'escalator-basement',
+  //       type: 'oneWay',
+  //       directionPoint: 'EXIT',
+  //     } as const,
+  //   ],
+  // },
+  // {
+  //   id: 'groundFloor',
+  //   label: 'Ground Floor',
+  //   nodesDirections: nodeDirections,
+  //   // FIXME: We need to remove this "escape hatch".
+  //   nodes: groundFloor.areasAndNodes.nodes as Types.MapNodesProps[],
+  //   map: groundFloor.map,
+  //   portals: [
+  //     {
+  //       id: 'elevator-1',
+  //       type: 'twoWay',
+  //     } as const,
+  //     {
+  //       id: 'escalator-1-ground-level',
+  //       type: 'oneWay',
+  //       directionPoint: 'EXIT',
+  //     } as const,
+  //     {
+  //       id: 'escalator-basement',
+  //       type: 'oneWay',
+  //       directionPoint: 'ENTRY',
+  //     } as const,
+  //   ],
+  // },
   {
     id: 'levelOneFloor',
     label: 'Level One',
@@ -66,27 +67,38 @@ const floors = [
   },
 ]
 
-const storeMapConfig: StoreMapConfig = {
-  id: 'ES65DFT420',
-  dataSource: {
+const storeAreas = {
+  // ...basement.areasAndNodes.storeAreas,
+  // ...groundFloor.areasAndNodes.storeAreas,
+  ...levelOneFloor.areasAndNodes.storeAreas,
+  // ...portalAreas,
+}
+
+const createDataSource = (
+  supportedLanguages: string[]
+): Types.InteractiveMapsDataSource => {
+  return {
     general: {
-      defaultStartingPoint: process.env.DEVICE_LOCATION || 'device-marker',
+      defaultStartingPoint:
+        process.env.DEVICE_LOCATION ||
+        levelOneFloor.areasAndNodes.storeAreas['device-marker'].id,
       deviceAngle: parseInt(process.env.DEVICE_ANGLE || '180'),
-      voiceDirectionIsEnabled: false,
       mapCSS,
+      voiceDirectionIsEnabled: false,
+      // TODO: Make this property as `optional`.
       isMapEditorVisible: false,
       isNodesVisible: false,
     },
     floors,
-    // FIXME: It doesn't throw an error if you add an unknown field
-    // to an area like adding `name` property.
-    storeAreas: {
-      ...basement.areasAndNodes.storeAreas,
-      ...groundFloor.areasAndNodes.storeAreas,
-      ...levelOneFloor.areasAndNodes.storeAreas,
-      ...portalAreas,
-    },
-  },
+    storeAreas,
+    translations: mergeTranslations(
+      groupAreaLabelsByLanguages(storeAreas, supportedLanguages),
+      langTranslation
+    ),
+  }
 }
 
-export default storeMapConfig
+export default {
+  id: 'ES65DFT420',
+  createDataSource,
+}

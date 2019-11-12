@@ -51,7 +51,9 @@ const formButtonCSS = css`
 type StoreAreaInput = Omit<types.StoreArea, 'floorID' | 'description'>
 const initStoreArea: StoreAreaInput = {
   id: '',
-  label: '',
+  labels: {
+    en: '',
+  },
   type: 'store',
   mapping: {},
   nodes: [],
@@ -108,6 +110,7 @@ const MapFieldArray: React.FC<{
   )
 }
 
+// TODO: Support `labels`. The idea is we gonna iterate on the area properties and create a field based on the properties. FOr now, disable it.
 const StoreAreaInspector: React.FC<{
   storeAreas: types.StoreAreas
   activeFloorID: string
@@ -129,8 +132,6 @@ const StoreAreaInspector: React.FC<{
 
         if (!values.id) {
           errors.id = 'Required'
-        } else if (!values.label) {
-          errors.label = 'Required'
         }
         return errors
       }}

@@ -155,6 +155,12 @@ export type CollectionOfEntity = Record<string, Entity>
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
+// Navigation
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
 // Areas
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
@@ -167,7 +173,9 @@ export enum AreaType {
 
 export interface StoreArea {
   id: string
-  label: string
+  labels: {
+    [x: string]: string
+  }
   description?: string
   /**
    * Array of node ids
@@ -189,12 +197,6 @@ export interface StoreArea {
 export interface StoreAreas {
   [x: string]: StoreArea
 }
-
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-// Navigation
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
 
 export type Navigation = {
   startpoint: StoreArea
@@ -325,21 +327,31 @@ export interface Modifiers {
 
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
+// Translations
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+export type Translations = {
+  [x: string]: {
+    [x: string]: any
+  }
+}
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
 // InteractiveMaps Datasource
 // ----------------------------------------------------------- //
 // ----------------------------------------------------------- //
+
 export interface InteractiveMapsDataSource {
   general: Modifiers
   floors: Omit<Floor, 'graphAndNodes'>[]
   storeAreas: StoreAreas
+  translations: Translations
 }
 
 export type VoiceAssistantModifier = {
-  speechSynthesizer: {
-    speak: () => {}
-    audioElement: HTMLAudioElement
-  }
-  send: any
+  audioElement: HTMLAudioElement
+  onSpeak: (message: Record<string, any>) => void
 }
 
 // ----------------------------------------------------------- //

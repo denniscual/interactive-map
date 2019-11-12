@@ -22,7 +22,7 @@ type Action = {
 const NavigationContext = createContext({} as types.Navigation)
 const StartpointContext = createContext<types.StoreArea>({
   id: '',
-  label: '',
+  labels: {},
   nodes: [],
   floorID: '',
   mapping: {

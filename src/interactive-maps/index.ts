@@ -7,6 +7,7 @@ import * as appStateManager from './app-state-manager'
 import * as layouts from './layouts'
 import { useDataSource } from './contexts'
 import { createError } from './__utils__'
+import { useTranslate, getDefaultLanguage } from './translations'
 import * as Types from './types'
 
 // ----------------------------------------------------------- //
@@ -39,12 +40,22 @@ const useWayfinder = () => {
   const storeAreas = useAppSelector(appUtils.getStoreAreas)
   const navigationDispatch = navigation.stateManager.useNavigationDispatch()
   return React.useCallback(
-    (area: Types.StoreArea) => {
+    (areaID: string) => {
       const startpointArea = storeAreas[general.defaultStartingPoint]
+      const destination = storeAreas[areaID]
+
+      if (!destination) {
+        throw createError(
+          new Error(
+            `Area ID'${areaID}' was not found in store areas collection.`
+          )
+        )
+      }
+
       activeFloor.setID(startpointArea.floorID)
       // activeArea.setID('RESET')
-      activeArea.setID(area.id)
-      navigationDispatch({ type: 'RESET', payload: { endpoint: area } })
+      activeArea.setID(destination.id)
+      navigationDispatch({ type: 'RESET', payload: { endpoint: destination } })
     },
     [
       activeArea,
@@ -72,13 +83,17 @@ interface UIProps {
   isActive: boolean
   onClick: () => void
 }
-const useAreaItemsByFloor = (): (Types.StoreArea & UIProps)[] => {
+
+const useAreaItemsByFloor = (): (Types.StoreArea &
+  UIProps & { label: string })[] => {
   const storeAreas = useAppSelector(appUtils.getStoreAreas)
   const { activeFloorID, activeAreaID } = useAppSelector(state => ({
     activeFloorID: state.activeFloor,
     activeAreaID: state.activeArea.id,
   }))
   const wayfinder = useWayfinder()
+  const translate = useTranslate()
+
   return React.useMemo(() => {
     const areaItems = []
     for (const key in storeAreas) {
@@ -87,14 +102,17 @@ const useAreaItemsByFloor = (): (Types.StoreArea & UIProps)[] => {
       if (storeArea.floorID === activeFloorID && storeArea.type === 'store') {
         areaItems.push({
           ...storeArea,
+          // NOTE: We already localised the label of the area.
+          label: translate(storeArea.id, { defaultLang: getDefaultLanguage() }),
           isActive: storeArea.id === activeAreaID,
-          onClick: () => wayfinder(storeArea),
+          onClick: () => wayfinder(storeArea.id),
         })
       }
     }
     return areaItems
-  }, [storeAreas, activeFloorID, activeAreaID, wayfinder])
+  }, [storeAreas, activeFloorID, activeAreaID, wayfinder, translate])
 }
+
 const useFloorItems = (): (Types.EnhancedFloor & UIProps)[] => {
   const mapFloors = floors.stateManager.useStoreFloors()
   const activeFloorID = useAppSelector(appUtils.getActiveFloor)
@@ -143,6 +161,7 @@ const useDeviceLocation = () => {
   } = useDataSource()
   const storeAreas = useAppSelector(appUtils.getStoreAreas)
   const storeArea = storeAreas[defaultStartingPoint]
+  // device location area must only hold 1 node.
   const storeFloors = floors.stateManager.useFloorsToObj()
   if (storeArea) {
     const {

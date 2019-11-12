@@ -5,86 +5,32 @@ import * as floors from '../floors'
 import { NotFoundNodeError, svg } from '../__utils__'
 import * as types from '../types'
 
-const MARKER_COLOR = '#3555FF'
-
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-// MaskedPath
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-
 const calculateTravelTimeBasedInDistance = (
   distance: number,
   // Value to hold about the duration of the wayfinder animation.
-  estimatedtime: number = 6000
+  estimatedtime: number = 480
 ) => distance / estimatedtime // divide the distance by estimated time to get the travel time
 
 // TODO: We need to expose an API to modify the styles of our route path / wayfinder path.
-const MaskedPath = styled.path<{ length: number }>`
-  stroke: #ffffff;
-  stroke-width: 45px;
-  stroke-linecap: round;
+type PathProps = {
+  length: number
+}
+const AnimatedRoutePath = styled.path<PathProps>`
+  stroke: #ba0000;
+  stroke-width: 10px;
+  stroke-linejoin: round;
   stroke-dasharray: ${({ length }) => length};
   stroke-dashoffset: ${({ length }) => length};
-  animation: dash ${({ length }) => calculateTravelTimeBasedInDistance(length)}s
-    linear forwards;
-
+  animation: ${({ length }) =>
+    // duration of the animation should based in length, the distance, instead of relying in static duration.
+    // through here, the duration is consistent in different distances.
+    `${calculateTravelTimeBasedInDistance(length)}s linear forwards dash}`};
   @keyframes dash {
     to {
       stroke-dashoffset: 0;
     }
   }
 `
-
-const WayfinderMaskedPath: React.FC<{ d: string; length: number }> = props => (
-  <defs>
-    <mask id="mymask">
-      <MaskedPath key={`${props.d}`} id="wayfinder" {...props} />
-    </mask>
-  </defs>
-)
-
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-// WayfinderDottedPath
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-
-const DottedPath = styled.path`
-  fill: none;
-  stroke-dasharray: 0 40 0 40;
-  stroke-linecap: round;
-  stroke-width: 25px;
-  stroke: ${MARKER_COLOR};
-`
-
-const BorderDottedPath = styled(DottedPath)`
-  fill: none;
-  stroke: #494949;
-  stroke-width: 42px;
-  stroke-opacity: 0.1;
-`
-
-const InnerDottedPath = styled(DottedPath)`
-  fill: none;
-  stroke: white;
-  stroke-width: 38px;
-`
-
-const WayfinderDottedPath: React.FC<{ d: string }> = ({ d }) => (
-  <>
-    <BorderDottedPath d={d} mask="url(#mymask)" />
-    <InnerDottedPath d={d} mask="url(#mymask)" />
-    <DottedPath d={d} mask="url(#mymask)" />
-  </>
-)
-
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-// WayfinderPath
-// ----------------------------------------------------------- //
-// ----------------------------------------------------------- //
-
 const getLength = (point1: types.Coordinates, point2: types.Coordinates) => {
   return Math.sqrt(
     (point1.x - point2.x) * (point1.x - point2.x) +
@@ -105,7 +51,10 @@ const getPolylineLength = (polylineEl: React.RefObject<SVGPolylineElement>) => {
   return 0
 }
 
-const WayfinderPath: React.FC<{
+/**
+ * TODO: This Component will accept a style prop like "line" or "bezier"
+ */
+const RoutePath: React.FC<{
   paths: string[]
   mapNodes: types.MapNodes
 }> = ({ paths, mapNodes }) => {
@@ -125,7 +74,7 @@ const WayfinderPath: React.FC<{
     [paths, mapNodes]
   )
 
-  const drawingPath = svg.svgShapePath(arrayOfPoints, svg.bezierCommand)
+  const drawing = svg.svgShapePath(arrayOfPoints, svg.lineCommand)
 
   // ----- Creating the points for polyline svg element ------- //
   const polylinePoints = React.useMemo(() => {
@@ -169,24 +118,25 @@ const WayfinderPath: React.FC<{
   }, [polylineEl, polylinePoints])
 
   return (
-    <g id="wayfinder-container">
+    <g>
       {/* This polyline element is used as data not UI. It means, no need to display
       this in browser. We are using this polyline to get the length of polyline with
-      points prop. Then, assign it to MaskedPath. */}
+      points prop. Then, assign it to AnimatedRoutePath. */}
       <polyline ref={polylineEl} points={polylinePoints} fill="none" />
-      {/* Render this MaskedPath if the pathLength is not 0 */}
+      {/* Render this AnimatedRoutePath if the pathLength is not 0 */}
       {/* Don't ever remove the `id` because we are using it to wayinderObservables */}
       {polylineLength > 0 && (
-        <>
-          {/* Don't remove the wayfinder id because wayfinder observable is listening
-          TODO: In the future, remove the coupling or find better solution. */}
-          <WayfinderMaskedPath d={drawingPath} length={polylineLength} />
-          <WayfinderDottedPath d={drawingPath} />
-        </>
+        <AnimatedRoutePath
+          key={`${polylinePoints}`}
+          id="wayfinder"
+          d={drawing}
+          length={polylineLength}
+          fill="none"
+        />
       )}
     </g>
   )
-} // FC WayfinderPath
+} // FC RoutePath
 
 /**
  * Finding the shortest way going to the destination given the ActiveMap
@@ -202,8 +152,8 @@ const Wayfinder: React.FC<{
   if (endpoint === '' || paths === null) {
     return null
   }
-  // If endpoint is not empty, create a WayfinderPath.
-  return <WayfinderPath paths={paths} mapNodes={mapNodes} />
+  // If endpoint is not empty, create a RoutePath.
+  return <RoutePath paths={paths} mapNodes={mapNodes} />
 }
 
 export default Wayfinder

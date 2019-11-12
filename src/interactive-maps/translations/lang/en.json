@@ -1,0 +1,19 @@
+{
+  "startWalking": "You can find {{area}} to the {{floorLabel}}.",
+  "arrivingToDestination": "You can find the area to the {{direction}} hand side.",
+  "whileWalking": "Then just turn to {{direction}}|Then turning to {{direction}}",
+  "portalSpeech": "Take {{portalName}} {{portalDirection}} to the {{floorLabel}}.",
+  "directions": {
+    "LEFT": "left",
+    "RIGHT": "right"
+  },
+  "portalDirections": {
+    "UP": "up",
+    "DOWN": "down"
+  },
+  "measurements": {
+    "longer": "After little longer",
+    "shorter": "After little shorter"
+  }
+}
+
