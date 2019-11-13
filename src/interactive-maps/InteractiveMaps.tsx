@@ -11,6 +11,7 @@ import {
 import * as utils from './__utils__'
 import { DataSourceProvider } from './contexts'
 import { MapNodeDirections } from './map-nodes/types'
+import { DnD } from './map-editor'
 import * as translations from './translations'
 import * as types from './types'
 
@@ -164,17 +165,19 @@ const MapsDataSource: React.FC<{
       <mapNodesDirectionsStateManager.MapNodesDirectionsProvider
         nodesDirections={nodesDirections}
       >
-        <floors.stateManager.FloorsProvider
-          floors={enhancedFloors}
-          defaultActiveFloorID={defaultFloor.id}
-        >
-          <nav.stateManager.NavigationProvider
+        <DnD.MapDragDropProvider>
+          <floors.stateManager.FloorsProvider
             floors={enhancedFloors}
-            defaultNav={defaultNav}
+            defaultActiveFloorID={defaultFloor.id}
           >
-            <maps.Maps voiceAssistant={voiceAssistant}>{children}</maps.Maps>
-          </nav.stateManager.NavigationProvider>
-        </floors.stateManager.FloorsProvider>
+            <nav.stateManager.NavigationProvider
+              floors={enhancedFloors}
+              defaultNav={defaultNav}
+            >
+              <maps.Maps voiceAssistant={voiceAssistant}>{children}</maps.Maps>
+            </nav.stateManager.NavigationProvider>
+          </floors.stateManager.FloorsProvider>
+        </DnD.MapDragDropProvider>
       </mapNodesDirectionsStateManager.MapNodesDirectionsProvider>
     </mapNodesStateManager.MapNodesProvider>
   )

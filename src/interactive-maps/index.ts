@@ -55,7 +55,7 @@ const useWayfinder = () => {
       activeFloor.setID(startpointArea.floorID)
       // activeArea.setID('RESET')
       activeArea.setID(destination.id)
-      navigationDispatch({ type: 'RESET', payload: { endpoint: destination } })
+      // navigationDispatch({ type: 'RESET', payload: { endpoint: destination } })
     },
     [
       activeArea,

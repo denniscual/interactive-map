@@ -86,7 +86,7 @@ const createDataSource = (
       mapCSS,
       voiceDirectionIsEnabled: false,
       // TODO: Make this property as `optional`.
-      isMapEditorVisible: false,
+      isMapEditorVisible: true,
       isNodesVisible: false,
     },
     floors,
