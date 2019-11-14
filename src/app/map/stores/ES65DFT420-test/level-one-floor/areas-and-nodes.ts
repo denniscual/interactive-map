@@ -16,6 +16,9 @@ export const storeAreas = {
     id: 'food',
     type: 'store',
     nodes: ['node_0.788308', 'node_0.398115'],
+    mapping: {
+      categories: ['DCIS_030001', 'DCIS_030002', 'DCIS_030003', 'DCIS_030004'],
+    },
     floorID: 'levelOneFloor',
     labels: { en: 'Food', es: 'Alimentación' },
   },
@@ -58,7 +61,7 @@ export const storeAreas = {
     id: 'toys',
     type: 'store',
     nodes: ['node_0.62088'],
-    mapping: { categories: [] },
+    mapping: { categories: ['DCIS_060001', 'DCIS_060002', 'DCIS_060003'] },
     floorID: 'levelOneFloor',
     labels: { en: 'Toys', es: 'Juguetes' },
   },
@@ -66,6 +69,9 @@ export const storeAreas = {
     id: 'tobacco',
     type: 'store',
     nodes: ['node_0.367212'],
+    mapping: {
+      categories: ['DCIS_010004', 'DCIS_010005', 'DCIS_010006', ''],
+    },
     floorID: 'levelOneFloor',
     labels: { en: 'Tobacco', es: 'Tabaco' },
   },
@@ -73,6 +79,19 @@ export const storeAreas = {
     id: 'liquor-promotions',
     type: 'store',
     nodes: ['node_0.334801', 'node_0.88762'],
+    mapping: {
+      categories: [
+        'DCIS_020002',
+        'DCIS_020003',
+        'DCIS_020004',
+        'DCIS_020005',
+        'DCIS_020006',
+        'DCIS_020007',
+        'DCIS_020009',
+        'DCIS_020010',
+      ],
+      specialCategories: ['PROMOTIONS'],
+    },
     floorID: 'levelOneFloor',
     labels: { en: 'Liquor Promotions', es: 'Promoción Bebidas' },
   },
@@ -80,6 +99,18 @@ export const storeAreas = {
     id: 'liquor',
     type: 'store',
     nodes: ['node_0.973137', 'node_0.048638', 'node_0.834564', 'node_0.575438'],
+    mapping: {
+      categories: [
+        'DCIS_020002',
+        'DCIS_020003',
+        'DCIS_020004',
+        'DCIS_020005',
+        'DCIS_020006',
+        'DCIS_020007',
+        'DCIS_020009',
+        'DCIS_020010',
+      ],
+    },
     floorID: 'levelOneFloor',
     labels: { en: 'Liquor', es: 'Bebidas' },
   },
@@ -87,6 +118,14 @@ export const storeAreas = {
     id: 'sunglasses-and-watches',
     type: 'store',
     nodes: ['node_0.641606'],
+    mapping: {
+      categories: [
+        'DCIS_07000516',
+        'DCIS_050006',
+        'DCIS_0900012',
+        'DCIS_050001',
+      ],
+    },
     floorID: 'levelOneFloor',
     labels: { en: 'Sunglasses and Watches', es: 'Gafas y Relojes' },
   },
@@ -95,12 +134,19 @@ export const storeAreas = {
     type: 'store',
     nodes: ['node_0.877376', 'node_0.856542', 'node_0.534422'],
     floorID: 'levelOneFloor',
+    mapping: {
+      categories: ['DCIS_040001'],
+      specialCategories: ['PROMOTIONS'],
+    },
     labels: { en: 'Perfumes Promotions', es: 'Promoción Perfumería' },
   },
   'perfumes-and-cosmetics': {
     id: 'perfumes-and-cosmetics',
     type: 'store',
     nodes: ['node_0.677911', 'node_0.016556', 'node_0.534943', 'node_0.785772'],
+    mapping: {
+      categories: ['DCIS_040005'],
+    },
     floorID: 'levelOneFloor',
     labels: { en: 'Perfumes y Cosmetics', es: 'Perfumerías y Cosméticos' },
   },
@@ -728,4 +774,3 @@ export const nodes = [
     'data-key-id': 'node_0.859558',
   },
 ]
-
