@@ -29,8 +29,8 @@ const createReactElements = (
           onClick: (e: MouseEvent) => {
             // disable the bubbling phase to prevent persisting
             // the parent id in active area state.
-            e.stopPropagation()
-            activeAreaDispatch(attributes.id)
+            // e.stopPropagation()
+            // activeAreaDispatch(attributes.id)
           },
         }
       : props
