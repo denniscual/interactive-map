@@ -151,6 +151,14 @@ const useResetNavigation = () => {
   }, [navigationDispatch, resetActiveFloor])
 }
 
+const useActiveArea = () => {
+  const activeArea = useAppSelector(appUtils.getActiveArea)
+  const storeAreas = useAppSelector(appUtils.getStoreAreas)
+  if (typeof activeArea.id === 'string') {
+    return storeAreas[activeArea.id]
+  }
+}
+
 /**
  * This is useful when creating `DeviceMarker` wherein the returned data is
  * coming from the set `startingPoint`.
@@ -210,6 +218,7 @@ const utils = {
   useResetNavigation,
   useDeviceLocation,
   useDefaultData,
+  useActiveArea,
 }
 
 export { InteractiveMaps as default, layouts, utils, Types }
