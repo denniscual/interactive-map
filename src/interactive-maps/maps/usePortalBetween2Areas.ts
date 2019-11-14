@@ -4,7 +4,6 @@ import * as floors from '../floors'
 import { getShortestPaths, createError } from '../__utils__'
 import { useAppSelector, appUtils } from '../app-state-manager'
 import * as types from '../types'
-import { useDataSource } from '../contexts'
 
 /**
  * Getting the next floor ID. It is used if no direct portal, e.g elevator, is used
@@ -25,13 +24,13 @@ const getNextFloorIDAndPortalDirection = (
   if (!(startpointFloorIDIndex - endpointFloorIDIndex > 0)) {
     // Increment the startpoint.floorIDIndex. Direction is 'UP'
     return {
-      portalDirection: 'UP' as const,
+      portalDirection: 'up' as const,
       nextFloorID: mapFloors[startpointFloorIDIndex + 1].id,
     }
   } else {
     // Decrement the startpoint.floorIDIndex. Direction is 'DOWN'
     return {
-      portalDirection: 'DOWN' as const,
+      portalDirection: 'down' as const,
       nextFloorID: mapFloors[startpointFloorIDIndex - 1].id,
     }
   }
@@ -94,7 +93,7 @@ const createShortestPortal = ({
   mapFloorsObj: types.EnhancedFloorsObj
   mapFloorsArr: types.EnhancedFloors
   mapGraph: any // FIXME: Fix this type. Don't use any type.
-  portalDirection?: 'UP' | 'DOWN'
+  portalDirection?: 'up' | 'down'
   storeAreas: types.StoreAreas
 }): types.ShortestPortal => {
   if (startpointFloorID && endpointFloorID) {

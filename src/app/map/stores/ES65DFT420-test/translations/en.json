@@ -4,12 +4,12 @@
   "whileWalking": "Then just turn to {{direction}}|Then turning to {{direction}}",
   "portalSpeech": "Take {{portalName}} {{portalDirection}} to the {{floorLabel}}.",
   "directions": {
-    "LEFT": "left",
-    "RIGHT": "right"
+    "left": "left",
+    "right": "right"
   },
   "portalDirections": {
-    "UP": "up",
-    "DOWN": "down"
+    "up": "up",
+    "down": "down"
   },
   "measurements": {
     "longer": "After little longer",

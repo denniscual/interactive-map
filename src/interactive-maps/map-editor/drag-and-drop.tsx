@@ -182,7 +182,7 @@ const MapNodeDirectionsMessageBox: React.FC<
 
   const messageBox = React.useMemo(() => {
     const keyID = node['data-key-id']
-    const addNodeDirection = (direction: 'LEFT' | 'RIGHT') => {
+    const addNodeDirection = (direction: 'left' | 'right') => {
       const chosenNode = nodeDirections.get(keyID)
       // We need to check if the node is already included in mapNodesDirections collection. If yes, just update the
       // assigned value or add a new direction. Else, add it.
@@ -206,8 +206,8 @@ const MapNodeDirectionsMessageBox: React.FC<
       // This will hide the message box and set the activeTool.
       activeTool.dispatch('PAN_AND_ZOOM')
     }
-    const handleLeftButton = () => addNodeDirection('LEFT')
-    const handleRightButton = () => addNodeDirection('RIGHT')
+    const handleLeftButton = () => addNodeDirection('left')
+    const handleRightButton = () => addNodeDirection('right')
 
     return (
       <>

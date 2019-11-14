@@ -640,7 +640,7 @@ const MapNodeDirectionPaths: React.FC<{ activeMapNodeID: string }> = ({
     <g id="map-node-directions">
       {pointsWithDirection.map(({ id, points, direction }) => {
         const path = svg.svgShapePath(points, svg.lineCommand)
-        const stroke = direction === 'LEFT' ? 'green' : '#e400ff'
+        const stroke = direction === 'left' ? 'green' : '#e400ff'
         const handleClick: React.MouseEventHandler = () => {
           console.log('click')
         }
