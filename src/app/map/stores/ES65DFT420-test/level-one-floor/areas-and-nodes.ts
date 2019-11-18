@@ -27,6 +27,9 @@ export const storeAreas = {
     type: 'store',
     nodes: ['node_0.027089'],
     floorID: 'levelOneFloor',
+    mapping: {
+      categories: ['DCIS_0200074'],
+    },
     labels: { en: 'Thinking Spain', es: 'Thinking España' },
   },
   'tasting-bar': {
@@ -35,13 +38,6 @@ export const storeAreas = {
     nodes: ['node_0.145795'],
     floorID: 'levelOneFloor',
     labels: { en: 'Tasting Bar', es: 'TastiBar' },
-  },
-  'barra-bebida': {
-    id: 'barra-bebida',
-    type: 'store',
-    nodes: ['node_0.783864'],
-    floorID: 'levelOneFloor',
-    labels: { en: 'Barra Bebida', es: 'Barra Bebida' },
   },
   'special-promotions': {
     id: 'special-promotions',
@@ -69,9 +65,7 @@ export const storeAreas = {
     id: 'tobacco',
     type: 'store',
     nodes: ['node_0.367212'],
-    mapping: {
-      categories: ['DCIS_010004', 'DCIS_010005', 'DCIS_010006', ''],
-    },
+    mapping: { categories: ['DCIS_010004', 'DCIS_010005', 'DCIS_010006', ''] },
     floorID: 'levelOneFloor',
     labels: { en: 'Tobacco', es: 'Tabaco' },
   },
@@ -98,7 +92,13 @@ export const storeAreas = {
   liquor: {
     id: 'liquor',
     type: 'store',
-    nodes: ['node_0.973137', 'node_0.048638', 'node_0.834564', 'node_0.575438'],
+    nodes: [
+      'node_0.783864',
+      'node_0.973137',
+      'node_0.048638',
+      'node_0.834564',
+      'node_0.575438',
+    ],
     mapping: {
       categories: [
         'DCIS_020002',
@@ -134,19 +134,14 @@ export const storeAreas = {
     type: 'store',
     nodes: ['node_0.877376', 'node_0.856542', 'node_0.534422'],
     floorID: 'levelOneFloor',
-    mapping: {
-      categories: ['DCIS_040001'],
-      specialCategories: ['PROMOTIONS'],
-    },
+    mapping: { categories: ['DCIS_040001'], specialCategories: ['PROMOTIONS'] },
     labels: { en: 'Perfumes Promotions', es: 'Promoción Perfumería' },
   },
   'perfumes-and-cosmetics': {
     id: 'perfumes-and-cosmetics',
     type: 'store',
     nodes: ['node_0.677911', 'node_0.016556', 'node_0.534943', 'node_0.785772'],
-    mapping: {
-      categories: ['DCIS_040005'],
-    },
+    mapping: { categories: ['DCIS_040005'] },
     floorID: 'levelOneFloor',
     labels: { en: 'Perfumes y Cosmetics', es: 'Perfumerías y Cosméticos' },
   },
@@ -774,3 +769,4 @@ export const nodes = [
     'data-key-id': 'node_0.859558',
   },
 ]
+
