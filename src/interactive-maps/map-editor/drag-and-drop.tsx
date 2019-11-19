@@ -386,14 +386,12 @@ const MapNodeMessageBox: React.FC<MessageBoxProps> = ({
             Direction
           </text>
         </g>
-        <g
-          className={buttonGroupCSS}
-          onClick={handleMapNodeAddDirectNodesButton}
-        >
+        <g className={buttonGroupCSS}>
           <text className={textCSS} x={textX} y={textY}>
             Add direct nodes?
           </text>
           <rect
+            onClick={handleMapNodeAddDirectNodesButton}
             className={buttonCSS}
             fill="#282828"
             x={buttonX}

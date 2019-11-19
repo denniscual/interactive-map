@@ -754,6 +754,10 @@ const useMapNodeElements = ({
         })
       }
 
+      console.log('activeTool', activeTool.activeTool)
+      console.log('active map node', activeMapNodeID.activeMapNodeID)
+      console.log('current target', currentTarget.id)
+
       // Adding direction for map node
       if (
         activeTool.activeTool === 'ADD_NODE_DIRECTION' &&
