@@ -25,7 +25,7 @@ export default [
     id: 'node_0.2098',
     directions: [
       [['node_0.698', 'node_0.1639'], 'RIGHT'],
-      [['node_0.3015', 'node_0.1639'], 'LEFT'],
+      [['node_0.3015', 'ode_0.1639'], 'LEFT'],
       [['node_0.3015', 'node_0.3872'], 'RIGHT'],
       [['node_0.698', 'node_0.3872'], 'LEFT'],
     ],
@@ -835,6 +835,7 @@ export default [
     directions: [
       [['node_0.337076', 'node_0.603249'], 'left'],
       [['node_0.053937', 'node_0.603249'], 'right'],
+      [['node_0.603249', 'node_0.053937'], 'left'],
     ],
   },
   {
@@ -894,10 +895,8 @@ export default [
     directions: [
       [['node_0.401908', 'node_0.027089'], 'left'],
       [['node_0.563145', 'node_0.027089'], 'right'],
-      [['node_0.563145', 'node_0.181689'], 'right'],
-      [['node_0.401908', 'node_0.181689'], 'left'],
-      [['node_0.181689', 'node_0.563145'], 'left'],
-      [['node_0.181689', 'node_0.401908'], 'right'],
+      [['node_0.027089', 'node_0.563145'], 'left'],
+      [['node_0.027089', 'node_0.401908'], 'right'],
     ],
   },
   {
@@ -925,6 +924,8 @@ export default [
       [['node_0.844993', 'node_0.500546'], 'left'],
       [['node_0.844993', 'node_0.334801'], 'right'],
       [['node_0.888666', 'node_0.334801'], 'left'],
+      [['node_0.500546', 'node_0.888666'], 'left'],
+      [['node_0.500546', 'node_0.844993'], 'right'],
     ],
   },
   {
@@ -941,6 +942,7 @@ export default [
       [['node_0.870289', 'node_0.783864'], 'left'],
       [['node_0.030537', 'node_0.677911'], 'left'],
       [['node_0.030537', 'node_0.783864'], 'right'],
+      [['node_0.350631', 'node_0.870289'], 'right'],
     ],
   },
   {
@@ -955,6 +957,7 @@ export default [
     directions: [
       [['node_0.770664', 'node_0.563145'], 'left'],
       [['node_0.030537', 'node_0.563145'], 'right'],
+      [['node_0.350631', 'node_0.030537'], 'left'],
     ],
   },
   {
@@ -985,6 +988,7 @@ export default [
     directions: [
       [['node_0.271', 'node_0.276243'], 'right'],
       [['node_0.173597', 'node_0.276243'], 'left'],
+      [['node_0.462711', 'node_0.271'], 'right'],
     ],
   },
   {
@@ -992,6 +996,11 @@ export default [
     directions: [
       [['node_0.740987', 'node_0.534422'], 'right'],
       [['node_0.466744', 'node_0.534422'], 'left'],
+      [['node_0.866073', 'node_0.740987'], 'right'],
+      [['node_0.866073', 'node_0.466744'], 'left'],
+      [['node_0.740987', 'node_0.866073'], 'right'],
+      [['node_0.466744', 'node_0.866073'], 'left'],
+      [['node_0.462711', 'node_0.534422'], 'left'],
     ],
   },
   {
@@ -1004,7 +1013,11 @@ export default [
   },
   {
     id: 'node_0.037817',
-    directions: [[['node_0.740987', 'node_0.016556'], 'right']],
+    directions: [
+      [['node_0.740987', 'node_0.016556'], 'right'],
+      [['node_0.740987', 'node_0.496116'], 'left'],
+      [['node_0.496116', 'node_0.740987'], 'left'],
+    ],
   },
   {
     id: 'node_0.550939',
@@ -1026,7 +1039,10 @@ export default [
   },
   {
     id: 'node_0.646228',
-    directions: [[['node_0.686202', 'node_0.534943'], 'left']],
+    directions: [
+      [['node_0.686202', 'node_0.534943'], 'left'],
+      [['node_0.097749', 'node_0.534943'], 'right'],
+    ],
   },
   {
     id: 'node_0.686202',
@@ -1063,6 +1079,38 @@ export default [
       [['node_0.006664', 'node_0.856542'], 'right'],
       [['node_0.856542', 'node_0.006664'], 'left'],
     ],
+  },
+  {
+    id: 'node_0.066782',
+    directions: [
+      [['node_0.466744', 'node_0.496116'], 'right'],
+      [['node_0.496116', 'node_0.466744'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.841841',
+    directions: [
+      [['node_0.870289', 'node_0.888666'], 'right'],
+      [['node_0.888666', 'node_0.870289'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.275278',
+    directions: [
+      [['node_0.870289', 'node_0.362517'], 'left'],
+      [['node_0.362517', 'node_0.870289'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.350631',
+    directions: [
+      [['node_0.030537', 'node_0.563145'], 'right'],
+      [['node_0.770664', 'node_0.563145'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.466744',
+    directions: [[['node_0.462711', 'node_0.066782'], 'left']],
   },
 ]
 

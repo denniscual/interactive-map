@@ -81,7 +81,7 @@ const createDataSource = (
     general: {
       defaultStartingPoint:
         process.env.DEVICE_LOCATION ||
-        levelOneFloor.areasAndNodes.storeAreas['device-marker'].id,
+        levelOneFloor.areasAndNodes.storeAreas['test-device-marker'].id,
       deviceAngle: parseInt(process.env.DEVICE_ANGLE || '180'),
       mapCSS,
       voiceDirectionIsEnabled: false,
