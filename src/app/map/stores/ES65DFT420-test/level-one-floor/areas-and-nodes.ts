@@ -301,7 +301,7 @@ export const nodes = [
     id: 'node_0.641606',
     cx: 733,
     cy: 1824,
-    'data-direct-nodes': ['node_0.780199'],
+    'data-direct-nodes': ['node_0.780199', 'node_0.976133'],
     'data-floor-id': 'levelOneFloor',
     'data-key-id': 'node_0.641606',
   },
@@ -365,7 +365,12 @@ export const nodes = [
     id: 'node_0.976133',
     cx: 898,
     cy: 1846,
-    'data-direct-nodes': ['node_0.780199', 'node_0.500546', 'node_0.803288'],
+    'data-direct-nodes': [
+      'node_0.780199',
+      'node_0.500546',
+      'node_0.803288',
+      'node_0.641606',
+    ],
     'data-floor-id': 'levelOneFloor',
     'data-key-id': 'node_0.976133',
   },
@@ -846,4 +851,3 @@ export const nodes = [
     'data-key-id': 'node_0.462711',
   },
 ]
-
