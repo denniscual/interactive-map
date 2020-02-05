@@ -6,6 +6,8 @@ import App from './app'
 import './index.css'
 import * as serviceWorker from './serviceWorker'
 
+const age = 5
+
 const Root: React.FC = () => {
   return <App />
 }
