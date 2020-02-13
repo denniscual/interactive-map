@@ -6,15 +6,17 @@ export default {
       fill: #fff;
     }
 
-    .non-walkable-area {
-      fill: #f9fafa;
+    .non-reachable-area {
+      fill: #ecf0f1;
+      stroke: #f6cf65;
+      stroke-width: 9px;
     }
 
     .walkable-area {
       fill: #fff;
     }
 
-    .map-outer-boarder {
+    .map-outer-border {
       fill: #ecf0f1;
       stroke: #bdc3c7;
     }
@@ -35,11 +37,11 @@ export default {
       stroke-width: 8.5px;
     }
 
-    .portal-area, .portal-area-line-bold, .store-area, .map-outer-boarder {
+    .portal-area, .portal-area-line-bold, .store-area, .map-outer-border {
       stroke-miterlimit: 10;
     }
 
-    .portal-area, .store-area, .map-outer-boarder {
+    .portal-area, .store-area, .map-outer-border {
       stroke-width: 9px;
     } 
   `,
