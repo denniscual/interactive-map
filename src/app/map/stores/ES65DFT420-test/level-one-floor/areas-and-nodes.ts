@@ -1,4 +1,4 @@
-export const storeAreas = {
+export const storeAreas: any = {
   tobacco: {
     id: 'tobacco',
     type: 'store',
@@ -119,13 +119,29 @@ export const storeAreas = {
     floorID: 'levelOneFloor',
     labels: { en: 'Liquors' },
   },
-  'skincare-sisley-loccitane-givenchy': {
-    id: 'skincare-sisley-loccitane-givenchy',
+  'skincare-sisley': {
+    id: 'skincare-sisley',
     type: 'store',
     nodes: ['node_0.864868', 'node_0.831461'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: "Sisley, L'Occitane, Givenchy" },
+    labels: { en: 'Sisley' },
+  },
+  'skincare-loccitane': {
+    id: 'skincare-loccitane',
+    type: 'store',
+    nodes: ['node_0.864868', 'node_0.831461'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: "L'Occitane" },
+  },
+  'skincare-givenchy': {
+    id: 'skincare-givenchy',
+    type: 'store',
+    nodes: ['node_0.864868', 'node_0.831461'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Givenchy' },
   },
   'experience-zone-skincare': {
     id: 'experience-zone-skincare',
@@ -183,40 +199,135 @@ export const storeAreas = {
     floorID: 'levelOneFloor',
     labels: { en: 'Clinique' },
   },
-  'perfumes-grupo-puig-lancaster-essie-loreal': {
-    id: 'perfumes-grupo-puig-lancaster-essie-loreal',
+  'perfumes-grupo-puig': {
+    id: 'perfumes-grupo-puig',
     type: 'store',
     nodes: ['node_0.286817', 'node_0.404864'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: "Grupo Puig, Lancaster, Essie, L'Oreal" },
+    labels: { en: 'Grupo Puig' },
   },
-  'perfumes-viktor-and-rofl-dkny-e-zegna-m-kors-narciso-rodriguez': {
-    id: 'perfumes-viktor-and-rofl-dkny-e-zegna-m-kors-narciso-rodriguez',
+  'perfumes-lancaster': {
+    id: 'perfumes-lancaster',
+    type: 'store',
+    nodes: ['node_0.286817', 'node_0.404864'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Lancaster' },
+  },
+  'perfumes-essie': {
+    id: 'perfumes-essie',
+    type: 'store',
+    nodes: ['node_0.286817', 'node_0.404864'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Essie' },
+  },
+  'perfumes-loreal': {
+    id: 'perfumes-loreal',
+    type: 'store',
+    nodes: ['node_0.286817', 'node_0.404864'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: "L'Oreal" },
+  },
+  'perfumes-viktor-and-rofl': {
+    id: 'perfumes-viktor-and-rofl',
     type: 'store',
     nodes: ['node_0.359626', 'node_0.969207'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
     labels: {
-      en:
-        'Viktor & Rolf, DKNY, Ermenegildo Zegna, Michael Kors, Narciso ROdriguez',
+      en: 'Viktor & Rolf',
     },
   },
-  'perfumes-r-lauren-diesel-privee-armani': {
-    id: 'perfumes-r-lauren-diesel-privee-armani',
+  'perfumes-dkny': {
+    id: 'perfumes-dkny',
+    type: 'store',
+    nodes: ['node_0.359626', 'node_0.969207'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'DKNY',
+    },
+  },
+  'perfumes-ermenegildo-zegna': {
+    id: 'perfumes-ermenegildo-zegna',
+    type: 'store',
+    nodes: ['node_0.359626', 'node_0.969207'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Ermenegildo Zegna',
+    },
+  },
+  'perfumes-michael-kors': {
+    id: 'perfumes-michael-kors',
+    type: 'store',
+    nodes: ['node_0.359626', 'node_0.969207'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Michael Kors',
+    },
+  },
+  'perfumes-narciso-rodriguez': {
+    id: 'perfumes-narciso-rodriguez',
+    type: 'store',
+    nodes: ['node_0.359626', 'node_0.969207'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Narciso ROdriguez',
+    },
+  },
+  'perfumes-ralph-lauren': {
+    id: 'perfumes-ralph-lauren',
     type: 'store',
     nodes: ['node_0.534943'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'Ralp Lauren, Diesel, Privee, Armani' },
+    labels: { en: 'Ralp Lauren' },
   },
-  'perfumes-hpp-hermes-loewe': {
-    id: 'perfumes-hpp-hermes-loewe',
+  'perfumes-diesel': {
+    id: 'perfumes-diesel',
+    type: 'store',
+    nodes: ['node_0.534943'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Diesel' },
+  },
+  'perfumes-privee': {
+    id: 'perfumes-privee',
+    type: 'store',
+    nodes: ['node_0.534943'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Privee' },
+  },
+  'perfumes-armani': {
+    id: 'perfumes-armani',
+    type: 'store',
+    nodes: ['node_0.534943'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Armani' },
+  },
+  'perfumes-hermes': {
+    id: 'perfumes-hermes',
     type: 'store',
     nodes: ['node_0.109067'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'Hermes, Loewe' },
+    labels: { en: 'Hermes' },
+  },
+  'perfumes-loewe': {
+    id: 'perfumes-loewe',
+    type: 'store',
+    nodes: ['node_0.109067'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Loewe' },
   },
   'perfumes-mac': {
     id: 'perfumes-mac',
@@ -242,7 +353,7 @@ export const storeAreas = {
     floorID: 'levelOneFloor',
     labels: { en: 'Perfumes Promo' },
   },
-  'perfumes-e-lauder': {
+  'perfumes-estee-lauder': {
     id: 'perfumes-e-lauder',
     type: 'store',
     nodes: ['node_0.233069'],
@@ -258,32 +369,117 @@ export const storeAreas = {
     floorID: 'levelOneFloor',
     labels: { en: 'Chanel' },
   },
-  'perfumes-carolina-herrera-paco-rabanne-c-klein': {
-    id: 'perfumes-carolina-herrera-paco-rabanne-c-klein',
+  'perfumes-carolina-herrera': {
+    id: 'perfumes-carolina-herrera',
     type: 'store',
     nodes: ['node_0.405538'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'Carolina Herrera, Paco Rabanne' },
+    labels: { en: 'Carolina Herrera' },
   },
-  'perfumes-ellie-saab-c-klein-botega-veneta-issey-miyake': {
-    id: 'perfumes-ellie-saab-c-klein-botega-veneta-issey-miyake',
+  'perfumes-paco-rabanne': {
+    id: 'perfumes-paco-rabanne',
+    type: 'store',
+    nodes: ['node_0.405538'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Paco Rabanne' },
+  },
+  'perfumes-ellie': {
+    id: 'perfumes-ellie',
     type: 'store',
     nodes: ['node_0.811728'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
     labels: {
-      en:
-        'Ellie, Saab, Calvin Klein, Botega veneta, Issey MIyake Burberry, Marc Jabos, Nina Ricci',
+      en: 'Ellie',
     },
   },
-  'perfumes-hpp-montblanc-cartier': {
-    id: 'perfumes-hpp-montblanc-cartier',
+  'perfumes-saab': {
+    id: 'perfumes-saab',
+    type: 'store',
+    nodes: ['node_0.811728'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Saab',
+    },
+  },
+  'perfumes-calvin-klein': {
+    id: 'perfumes-calvin-klein',
+    type: 'store',
+    nodes: ['node_0.811728'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Calvin Klein',
+    },
+  },
+  'perfumes-botega-veneta': {
+    id: 'perfumes-botega-veneta',
+    type: 'store',
+    nodes: ['node_0.811728'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Botega Veneta',
+    },
+  },
+  'perfumes-issey-miyake': {
+    id: 'issey-miyake',
+    type: 'store',
+    nodes: ['node_0.811728'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Issey Miyake',
+    },
+  },
+  'perfumes-burberry': {
+    id: 'perfumes-burberry',
+    type: 'store',
+    nodes: ['node_0.811728'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Burberry',
+    },
+  },
+  'perfumes-marc-jabos': {
+    id: 'perfumes-marc-jabos',
+    type: 'store',
+    nodes: ['node_0.811728'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Marc Jabos',
+    },
+  },
+  'perfumes-nina-ricci': {
+    id: 'perfumes-nina-ricci',
+    type: 'store',
+    nodes: ['node_0.811728'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: {
+      en: 'Nina Ricci',
+    },
+  },
+  'perfumes-montblanc': {
+    id: 'perfumes-montblanc',
     type: 'store',
     nodes: ['node_0.91536'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'Montblanc, Cartier' },
+    labels: { en: 'Montblanc' },
+  },
+  'perfumes-cartier': {
+    id: 'perfumes-cartier',
+    type: 'store',
+    nodes: ['node_0.91536'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Cartier' },
   },
   'perfumes-kenzo-gucci-jpg': {
     id: 'perfumes-kenzo-gucci-jpg',
@@ -293,21 +489,77 @@ export const storeAreas = {
     floorID: 'levelOneFloor',
     labels: { en: 'Kenzo, Gucci, JPG' },
   },
-  'perfumes-hugo-boss-d-and-g': {
-    id: 'perfumes-hugo-boss-d-and-g',
+  'perfumes-kenzo': {
+    id: 'perfumes-kenzo',
+    type: 'store',
+    nodes: ['node_0.046896'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Kenzo' },
+  },
+  'perfumes-gucci': {
+    id: 'perfumes-gucci',
+    type: 'store',
+    nodes: ['node_0.046896'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Gucci' },
+  },
+  'perfumes-jpg': {
+    id: 'perfumes-jpg',
+    type: 'store',
+    nodes: ['node_0.046896'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'JPG' },
+  },
+  'perfumes-hugo-boss': {
+    id: 'perfumes-hugo-boss',
     type: 'store',
     nodes: ['node_0.425935'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'HUgo Boss, D&G' },
+    labels: { en: 'Hugo Boss' },
   },
-  'perfumes-tiffany-escada-bvlgari-tom-ford': {
-    id: 'perfumes-tiffany-escada-bvlgari-tom-ford',
+  'perfumes-d-and-g': {
+    id: 'perfumes-d-and-g',
+    type: 'store',
+    nodes: ['node_0.425935'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'D&G' },
+  },
+  'perfumes-tiffany': {
+    id: 'perfumes-tiffany',
     type: 'store',
     nodes: ['node_0.933885'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'Tiffany, Escada, Bvlgari, Tm Ford' },
+    labels: { en: 'Tiffany' },
+  },
+  'perfumes-escada': {
+    id: 'perfumes-escada',
+    type: 'store',
+    nodes: ['node_0.933885'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Escada' },
+  },
+  'perfumes-bvlgari': {
+    id: 'perfumes-bvlgari',
+    type: 'store',
+    nodes: ['node_0.933885'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Bvlgari' },
+  },
+  'perfumes-tom-ford': {
+    id: 'perfumes-tom-ford',
+    type: 'store',
+    nodes: ['node_0.933885'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Tm Ford' },
   },
   'perfumes-jo-malone': {
     id: 'perfumes-jo-malone',
@@ -317,13 +569,21 @@ export const storeAreas = {
     floorID: 'levelOneFloor',
     labels: { en: 'Jo Malone' },
   },
-  'pefumes-lancom-moschino': {
-    id: 'pefumes-lancom-moschino',
+  'pefumes-moschino': {
+    id: 'pefumes-moschino',
     type: 'store',
     nodes: ['node_0.535807', 'node_0.286817'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'Moschino, Lancom' },
+    labels: { en: 'Moschino' },
+  },
+  'pefumes-lancom': {
+    id: 'pefumes-lancom',
+    type: 'store',
+    nodes: ['node_0.535807', 'node_0.286817'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Lancom' },
   },
   'perfumes-dior': {
     id: 'perfumes-dior',
@@ -333,21 +593,61 @@ export const storeAreas = {
     floorID: 'levelOneFloor',
     labels: { en: 'Dior' },
   },
-  'perfumes-guerlain-clarins-kiehls': {
-    id: 'perfumes-guerlain-clarins-kiehls',
+  'perfumes-guerlain-': {
+    id: 'perfumes-guerlain',
     type: 'store',
     nodes: ['node_0.428963'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'Guerlain, Clarins, Kiehls' },
+    labels: { en: 'Guerlain' },
   },
-  'perfumes-opi-benefit-azarro-tous': {
-    id: 'perfumes-opi-benefit-azarro-tous',
+  'perfumes-clarins': {
+    id: 'perfumes-clarins',
+    type: 'store',
+    nodes: ['node_0.428963'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Clarins' },
+  },
+  'perfumes-kiehls': {
+    id: 'perfumes-kiehls',
+    type: 'store',
+    nodes: ['node_0.428963'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Kiehls' },
+  },
+  'perfumes-opi': {
+    id: 'perfumes-opi',
     type: 'store',
     nodes: ['node_0.027201'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
-    labels: { en: 'OPI, Benefit, Azarro, Tous' },
+    labels: { en: 'OPI' },
+  },
+  'perfumes-benefit': {
+    id: 'perfumes-benefit',
+    type: 'store',
+    nodes: ['node_0.027201'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Benefit' },
+  },
+  'perfumes-azarro': {
+    id: 'perfumes-azarro',
+    type: 'store',
+    nodes: ['node_0.027201'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Azarro' },
+  },
+  'perfumes-tous': {
+    id: 'perfumes-tous',
+    type: 'store',
+    nodes: ['node_0.027201'],
+    mapping: { categories: [] },
+    floorID: 'levelOneFloor',
+    labels: { en: 'Tous' },
   },
   'duf-mad-pro1': {
     id: 'duf-mad-pro1',
@@ -391,6 +691,28 @@ export const storeAreas = {
     labels: { en: 'Test Device Marker', es: 'Test Device Marker' },
   },
 }
+
+const test: any[] = []
+Object.keys(storeAreas).forEach(key => {
+  test.push(storeAreas[key])
+})
+
+test.sort(function(a, b) {
+  if (a.labels.en < b.labels.en) {
+    return -1
+  }
+  if (a.labels > b.labels.en) {
+    return 1
+  }
+  return 0
+})
+
+const sortedObj: any = {}
+test.forEach(item => {
+  sortedObj[item.id] = item
+})
+
+console.log(sortedObj)
 
 export const nodes = [
   {
