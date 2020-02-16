@@ -81,7 +81,7 @@ const createDataSource = (
     general: {
       defaultStartingPoint:
         process.env.DEVICE_LOCATION ||
-        levelOneFloor.areasAndNodes.storeAreas['duf-mad-pro2'].id,
+        levelOneFloor.areasAndNodes.storeAreas['duf-mad-pro1'].id,
       deviceAngle: parseInt(process.env.DEVICE_ANGLE || '180'),
       mapCSS,
       voiceDirectionIsEnabled: false,
