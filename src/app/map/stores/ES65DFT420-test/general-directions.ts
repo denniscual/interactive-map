@@ -1264,6 +1264,7 @@ export default [
     directions: [
       [['node_0.42189', 'node_0.428963'], 'left'],
       [['node_0.713342', 'node_0.428963'], 'right'],
+      [['node_0.517404', 'node_0.561256'], 'right'],
     ],
   },
   {
@@ -1418,5 +1419,16 @@ export default [
       [['node_0.686069', 'node_0.640443'], 'right'],
       [['node_0.279262', 'node_0.640443'], 'left'],
     ],
+  },
+  {
+    id: 'node_0.462711',
+    directions: [
+      [['node_0.462711', 'node_0.807059'], 'right'],
+      [['node_0.462711', 'node_0.831461'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.198673',
+    directions: [[['node_0.198673', 'node_0.69192'], 'right']],
   },
 ]
