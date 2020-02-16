@@ -821,7 +821,10 @@ export default [
   },
   {
     id: 'node_0.807564',
-    directions: [[['node_0.337076', 'node_0.933252'], 'left']],
+    directions: [
+      [['node_0.337076', 'node_0.454849'], 'left'],
+      [['node_0.991408', 'node_0.454849'], 'right'],
+    ],
   },
   {
     id: 'node_0.337076',
@@ -858,20 +861,23 @@ export default [
       [['node_0.145795', 'node_0.145795'], 'right'],
       [['node_0.976133', 'node_0.145795'], 'right'],
       [['node_0.053937', 'node_0.641606'], 'right'],
+      [['node_0.053937', 'node_0.484658'], 'right'],
+      [['node_0.523007', 'node_0.484658'], 'left'],
+      [['node_0.523007', 'node_0.145795'], 'right'],
     ],
   },
   {
     id: 'node_0.976133',
     directions: [
-      [['node_0.500546', 'node_0.641606'], 'left'],
-      [['node_0.780199', 'node_0.803288'], 'right'],
+      [['node_0.500546', 'node_0.803288'], 'left'],
+      [['node_0.523007', 'node_0.803288'], 'right'],
     ],
   },
   {
     id: 'node_0.500546',
     directions: [
-      [['node_0.694604', 'node_0.803288'], 'left'],
       [['node_0.976133', 'node_0.575438'], 'right'],
+      [['node_0.514185', 'node_0.575438'], 'left'],
     ],
   },
   {
@@ -902,9 +908,8 @@ export default [
   {
     id: 'node_0.844993',
     directions: [
-      [['node_0.694604', 'node_0.606699'], 'right'],
+      [['node_0.514185', 'node_0.606699'], 'right'],
       [['node_0.362517', 'node_0.606699'], 'left'],
-      [['node_0.606699', 'node_0.362517'], 'right'],
     ],
   },
   {
@@ -930,10 +935,7 @@ export default [
   },
   {
     id: 'node_0.870289',
-    directions: [
-      [['node_0.275278', 'node_0.88762'], 'left'],
-      [['node_0.841841', 'node_0.88762'], 'right'],
-    ],
+    directions: [[['node_0.870289', 'node_0.806656'], 'right']],
   },
   {
     id: 'node_0.770664',
@@ -943,6 +945,9 @@ export default [
       [['node_0.030537', 'node_0.677911'], 'left'],
       [['node_0.030537', 'node_0.783864'], 'right'],
       [['node_0.350631', 'node_0.870289'], 'right'],
+      [['node_0.705819', 'node_0.286817'], 'left'],
+      [['node_0.870289', 'node_0.286817'], 'right'],
+      [['node_0.705819', 'node_0.783864'], 'right'],
     ],
   },
   {
@@ -952,23 +957,8 @@ export default [
       [['node_0.841841', 'node_0.973137'], 'right'],
     ],
   },
-  {
-    id: 'node_0.705819',
-    directions: [
-      [['node_0.770664', 'node_0.563145'], 'left'],
-      [['node_0.030537', 'node_0.563145'], 'right'],
-      [['node_0.350631', 'node_0.030537'], 'left'],
-    ],
-  },
-  {
-    id: 'node_0.030537',
-    directions: [
-      [['node_0.770664', 'node_0.503802'], 'right'],
-      [['node_0.271', 'node_0.503802'], 'left'],
-      [['node_0.503802', 'node_0.271'], 'right'],
-      [['node_0.503802', 'node_0.705819'], 'left'],
-    ],
-  },
+  { id: 'node_0.705819', directions: [] },
+  { id: 'node_0.030537', directions: [] },
   {
     id: 'node_0.503802',
     directions: [
@@ -1046,7 +1036,12 @@ export default [
   },
   {
     id: 'node_0.686202',
-    directions: [[['node_0.646228', 'node_0.130076'], 'right']],
+    directions: [
+      [['node_0.559969', 'node_0.433778'], 'right'],
+      [['node_0.351794', 'node_0.433778'], 'left'],
+      [['node_0.559969', 'node_0.561908'], 'left'],
+      [['node_0.351794', 'node_0.561908'], 'right'],
+    ],
   },
   {
     id: 'node_0.130076',
@@ -1112,5 +1107,316 @@ export default [
     id: 'node_0.466744',
     directions: [[['node_0.462711', 'node_0.066782'], 'left']],
   },
+  {
+    id: 'node_0.305403',
+    directions: [
+      [['node_0.432583', 'node_0.197964'], 'left'],
+      [['node_0.628624', 'node_0.197964'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.135046',
+    directions: [
+      [['node_0.628624', 'node_0.487218'], 'left'],
+      [['node_0.892505', 'node_0.487218'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.892505',
+    directions: [
+      [['node_0.135046', 'node_0.935523'], 'left'],
+      [['node_0.676887', 'node_0.935523'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.676887',
+    directions: [
+      [['node_0.892505', 'node_0.821193'], 'left'],
+      [['node_0.381133', 'node_0.821193'], 'right'],
+      [['node_0.381133', 'node_0.864868'], 'left'],
+      [['node_0.892505', 'node_0.864868'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.379143',
+    directions: [[['node_0.827852', 'node_0.746244'], 'right']],
+  },
+  {
+    id: 'node_0.827852',
+    directions: [
+      [['node_0.878285', 'node_0.155304'], 'right'],
+      [['node_0.379143', 'node_0.155304'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.878285',
+    directions: [
+      [['node_0.630863', 'node_0.09732'], 'right'],
+      [['node_0.630863', 'node_0.886053'], 'left'],
+      [['node_0.827852', 'node_0.886053'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.030527',
+    directions: [
+      [['node_0.686069', 'node_0.886053'], 'right'],
+      [['node_0.053937', 'node_0.886053'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.96924',
+    directions: [[['node_0.763809', 'node_0.155304'], 'left']],
+  },
+  {
+    id: 'node_0.087146',
+    directions: [[['node_0.693434', 'node_0.320581'], 'left']],
+  },
+  {
+    id: 'node_0.391988',
+    directions: [
+      [['node_0.947547', 'node_0.081369'], 'left'],
+      [['node_0.693434', 'node_0.081369'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.947547',
+    directions: [
+      [['node_0.633406', 'node_0.204019'], 'right'],
+      [['node_0.391988', 'node_0.204019'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.633406',
+    directions: [
+      [['node_0.054049', 'node_0.753621'], 'right'],
+      [['node_0.947547', 'node_0.753621'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.991408',
+    directions: [
+      [['node_0.763809', 'node_0.200377'], 'left'],
+      [['node_0.807564', 'node_0.200377'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.739428',
+    directions: [
+      [['node_0.337076', 'node_0.029165'], 'left'],
+      [['node_0.630863', 'node_0.029165'], 'right'],
+    ],
+  },
+  { id: 'node_0.251274', directions: [] },
+  {
+    id: 'node_0.046896',
+    directions: [[['node_0.807564', 'node_0.739428'], 'right']],
+  },
+  {
+    id: 'node_0.523007',
+    directions: [
+      [['node_0.976133', 'node_0.484658'], 'left'],
+      [['node_0.780199', 'node_0.484658'], 'left'],
+    ],
+  },
+  { id: 'node_0.575438', directions: [] },
+  {
+    id: 'node_0.514185',
+    directions: [
+      [['node_0.500546', 'node_0.606699'], 'right'],
+      [['node_0.181872', 'node_0.606699'], 'left'],
+      [['node_0.844993', 'node_0.606699'], 'left'],
+      [['node_0.514185', 'node_0.806656'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.566136',
+    directions: [
+      [['node_0.981727', 'node_0.404864'], 'right'],
+      [['node_0.545774', 'node_0.404864'], 'left'],
+      [['node_0.981727', 'node_0.772507'], 'left'],
+      [['node_0.545774', 'node_0.772507'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.182753',
+    directions: [
+      [['node_0.355351', 'node_0.535807'], 'right'],
+      [['node_0.198673', 'node_0.535807'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.295694',
+    directions: [[['node_0.713342', 'node_0.668771'], 'left']],
+  },
+  {
+    id: 'node_0.982723',
+    directions: [[['node_0.198673', 'node_0.668771'], 'right']],
+  },
+  {
+    id: 'node_0.713342',
+    directions: [
+      [['node_0.295694', 'node_0.747952'], 'right'],
+      [['node_0.517404', 'node_0.747952'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.517404',
+    directions: [
+      [['node_0.42189', 'node_0.428963'], 'left'],
+      [['node_0.713342', 'node_0.428963'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.42189',
+    directions: [
+      [['node_0.517404', 'node_0.056092'], 'right'],
+      [['node_0.559969', 'node_0.056092'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.559969',
+    directions: [
+      [['node_0.42189', 'node_0.233069'], 'right'],
+      [['node_0.686202', 'node_0.233069'], 'left'],
+    ],
+  },
+  { id: 'node_0.405538', directions: [] },
+  {
+    id: 'node_0.835961',
+    directions: [
+      [['node_0.351794', 'node_0.405538'], 'right'],
+      [['node_0.236748', 'node_0.405538'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.773281',
+    directions: [
+      [['node_0.236748', 'node_0.811728'], 'right'],
+      [['node_0.021325', 'node_0.811728'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.758889',
+    directions: [
+      [['node_0.021325', 'node_0.91536'], 'right'],
+      [['node_0.589843', 'node_0.91536'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.589843',
+    directions: [
+      [['node_0.758889', 'node_0.046896'], 'right'],
+      [['node_0.694331', 'node_0.046896'], 'left'],
+      [['node_0.758889', 'node_0.109067'], 'left'],
+      [['node_0.694331', 'node_0.109067'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.694331',
+    directions: [
+      [['node_0.589843', 'node_0.425935'], 'right'],
+      [['node_0.023244', 'node_0.425935'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.023244',
+    directions: [
+      [['node_0.694331', 'node_0.933885'], 'right'],
+      [['node_0.694331', 'node_0.251274'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.097749',
+    directions: [
+      [['node_0.097749', 'node_0.34626'], 'left'],
+      [['node_0.097749', 'node_0.34626'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.245619',
+    directions: [
+      [['node_0.097749', 'node_0.933885'], 'left'],
+      [['node_0.023244', 'node_0.247323'], 'left'],
+      [['node_0.097749', 'node_0.247323'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.021325',
+    directions: [
+      [['node_0.773281', 'node_0.534943'], 'left'],
+      [['node_0.758889', 'node_0.534943'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.236748',
+    directions: [
+      [['node_0.773281', 'node_0.969207'], 'right'],
+      [['node_0.835961', 'node_0.969207'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.664696',
+    directions: [
+      [['node_0.351794', 'node_0.359626'], 'right'],
+      [['node_0.653674', 'node_0.359626'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.696654',
+    directions: [
+      [['node_0.077455', 'node_0.431849'], 'left'],
+      [['node_0.517404', 'node_0.431849'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.540726',
+    directions: [
+      [['node_0.381133', 'node_0.723595'], 'right'],
+      [['node_0.683422', 'node_0.723595'], 'left'],
+      [['node_0.381133', 'node_0.59146'], 'left'],
+      [['node_0.683422', 'node_0.59146'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.381133',
+    directions: [
+      [['node_0.676887', 'node_0.896477'], 'left'],
+      [['node_0.540726', 'node_0.896477'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.628624',
+    directions: [
+      [['node_0.305403', 'node_0.853151'], 'right'],
+      [['node_0.135046', 'node_0.853151'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.355351',
+    directions: [
+      [['node_0.030537', 'node_0.514615'], 'left'],
+      [['node_0.182753', 'node_0.514615'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.432583',
+    directions: [
+      [['node_0.279262', 'node_0.053102'], 'right'],
+      [['node_0.305403', 'node_0.053102'], 'left'],
+    ],
+  },
+  {
+    id: 'node_0.279262',
+    directions: [
+      [['node_0.194697', 'node_0.550198'], 'left'],
+      [['node_0.432583', 'node_0.550198'], 'right'],
+    ],
+  },
+  {
+    id: 'node_0.194697',
+    directions: [
+      [['node_0.686069', 'node_0.640443'], 'right'],
+      [['node_0.279262', 'node_0.640443'], 'left'],
+    ],
+  },
 ]
-
