@@ -236,7 +236,7 @@ export const storeAreas = {
   'duf-mad-sa43': {
     id: 'duf-mad-sa43',
     type: 'device',
-    nodes: [],
+    nodes: ['node_0.079542'],
     mapping: { categories: [] },
     floorID: 'levelOneFloor',
     labels: {
@@ -531,7 +531,7 @@ export const storeAreas = {
   'pefumes-lancom': {
     id: 'pefumes-lancom',
     type: 'store',
-    nodes: ['node_0.535807', 'node_0.286817'],
+    nodes: ['node_0.535807', 'node_0.772507'],
     mapping: {
       categories: perfumesCategories,
       brands: ['Lancôme'],
@@ -613,7 +613,7 @@ export const storeAreas = {
   'pefumes-moschino': {
     id: 'pefumes-moschino',
     type: 'store',
-    nodes: ['node_0.535807', 'node_0.286817'],
+    nodes: ['node_0.535807', 'node_0.772507'],
     mapping: {
       categories: perfumesCategories,
       brands: ['Moschino'],
@@ -845,7 +845,7 @@ export const nodes = [
     id: 'node_0.466744',
     cx: '2491',
     cy: 1840,
-    'data-direct-nodes': ['node_0.462711', 'node_0.077455'],
+    'data-direct-nodes': ['node_0.077455', 'node_0.855011'],
     'data-floor-id': 'levelOneFloor',
     'data-key-id': 'node_0.466744',
   },
@@ -1387,10 +1387,10 @@ export const nodes = [
     cx: 2395,
     cy: 1814,
     'data-direct-nodes': [
-      'node_0.466744',
       'node_0.198673',
       'node_0.831461',
       'node_0.807059',
+      'node_0.855011',
     ],
     'data-floor-id': 'levelOneFloor',
     'data-key-id': 'node_0.462711',
@@ -1801,9 +1801,9 @@ export const nodes = [
   },
   {
     id: 'node_0.705819',
-    cx: 1813,
+    cx: '1821',
     cy: '1965',
-    'data-direct-nodes': ['node_0.770664', 'node_0.030537'],
+    'data-direct-nodes': ['node_0.770664', 'node_0.030537', 'node_0.079542'],
     'data-floor-id': 'levelOneFloor',
     'data-key-id': 'node_0.705819',
   },
@@ -1964,9 +1964,9 @@ export const nodes = [
     cy: '1965',
     'data-direct-nodes': [
       'node_0.982723',
-      'node_0.462711',
       'node_0.182753',
       'node_0.69192',
+      'node_0.855011',
     ],
     'data-floor-id': 'levelOneFloor',
     'data-key-id': 'node_0.198673',
@@ -2018,5 +2018,45 @@ export const nodes = [
     'data-direct-nodes': ['node_0.42189'],
     'data-floor-id': 'levelOneFloor',
     'data-key-id': 'node_0.056092',
+  },
+  {
+    id: 'node_0.079542',
+    cx: 1821,
+    cy: 1895,
+    'data-direct-nodes': ['node_0.705819'],
+    'data-floor-id': 'levelOneFloor',
+    'data-key-id': 'node_0.079542',
+  },
+  {
+    id: 'node_0.855011',
+    cx: 2409,
+    cy: 1871,
+    'data-direct-nodes': ['node_0.198673', 'node_0.466744', 'node_0.462711'],
+    'data-floor-id': 'levelOneFloor',
+    'data-key-id': 'node_0.855011',
+  },
+  {
+    id: 'node_0.753312',
+    cx: 2521,
+    cy: 635,
+    'data-direct-nodes': [],
+    'data-floor-id': 'levelOneFloor',
+    'data-key-id': 'node_0.753312',
+  },
+  {
+    id: 'node_0.48242',
+    cx: 2388,
+    cy: 796,
+    'data-direct-nodes': [],
+    'data-floor-id': 'levelOneFloor',
+    'data-key-id': 'node_0.48242',
+  },
+  {
+    id: 'node_0.311589',
+    cx: 2314,
+    cy: 1050,
+    'data-direct-nodes': [],
+    'data-floor-id': 'levelOneFloor',
+    'data-key-id': 'node_0.311589',
   },
 ]
